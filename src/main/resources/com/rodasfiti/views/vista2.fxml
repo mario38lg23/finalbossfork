@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="371.0" prefWidth="478.0" style="-fx-border-color: black;" />
+      <AnchorPane layoutX="487.0" layoutY="10.0" prefHeight="198.0" prefWidth="94.0" style="-fx-border-color: black;">
+         <children>
+            <Label fx:id="Nivel" alignment="CENTER" layoutX="28.0" layoutY="14.0" prefHeight="19.0" prefWidth="42.0" style="-fx-border-color: black;" text="Nvl" />
+            <Label fx:id="Vida" alignment="CENTER" layoutX="29.0" layoutY="55.0" prefHeight="19.0" prefWidth="42.0" style="-fx-border-color: black;" text="Vida" />
+            <Label fx:id="Escudo" alignment="CENTER" layoutX="29.0" layoutY="95.0" prefHeight="19.0" prefWidth="42.0" style="-fx-border-color: black;" text="Escudo" />
+            <Label fx:id="Ataque" alignment="CENTER" layoutX="29.0" layoutY="129.0" prefHeight="19.0" prefWidth="42.0" style="-fx-border-color: black;" text="Ataque" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="487.0" layoutY="208.0" prefHeight="86.0" prefWidth="94.0" style="-fx-border-color: black;">
+         <children>
+            <Label fx:id="Enemigos" layoutX="21.0" layoutY="5.0" style="-fx-underline: true;" text="Enemigos" />
+            <Label fx:id="Duendes" alignment="CENTER" layoutX="13.0" layoutY="23.0" prefHeight="18.0" prefWidth="68.0" text="Duendes:0" />
+            <Label fx:id="Esqueletos" alignment="CENTER" layoutX="13.0" layoutY="41.0" prefHeight="18.0" prefWidth="68.0" text="Esqueletos:0" />
+            <Label fx:id="Orcos" alignment="CENTER" layoutX="13.0" layoutY="59.0" prefHeight="18.0" prefWidth="68.0" text="Orcos:0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="487.0" layoutY="294.0" prefHeight="87.0" prefWidth="94.0" style="-fx-border-color: black;">
+         <children>
+            <Label alignment="CENTER" layoutX="-4.0" layoutY="-1.0" prefHeight="30.0" prefWidth="94.0" text="Siguiente ronda" />
+            <Label alignment="CENTER" layoutX="-4.0" layoutY="20.0" prefHeight="18.0" prefWidth="94.0" text="Movimientos:" />
+            <Label fx:id="MovimientosFaltantes" layoutX="43.0" layoutY="43.0" text="0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
