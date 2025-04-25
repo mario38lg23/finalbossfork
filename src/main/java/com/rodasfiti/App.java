@@ -18,7 +18,7 @@ public class App extends Application {
         
         sm.init(stage, "css");
 
-        sm.setScene(SceneID.MAINVISTA, "MainView");
+        sm.setScene(SceneID.MAINVISTA, "paginaInicio");
 
         sm.loadScene(SceneID.MAINVISTA);
     }
