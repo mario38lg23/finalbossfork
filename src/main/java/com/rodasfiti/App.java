@@ -15,10 +15,10 @@ public class App extends Application {
         stage.setTitle("FinalBoss");
 
         SceneManager sm = SceneManager.getInstance();
-        
-        sm.init(stage, "css");
 
-        sm.setScene(SceneID.MAINVISTA, "paginaInicio");
+        sm.init(stage, "css");
+        
+        sm.setScene(SceneID.MAINVISTA, "paginaInicio.fxml");
 
         sm.loadScene(SceneID.MAINVISTA);
     }
