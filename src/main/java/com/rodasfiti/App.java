@@ -18,7 +18,7 @@ public class App extends Application {
 
         sm.init(stage, "css");
 
-        sm.setScene(SceneID.MAINVISTA, "paginaInicio.fxml");
+        sm.setScene(SceneID.MAINVISTA, "vista1.fxml");
 
         sm.loadScene(SceneID.MAINVISTA);
     }

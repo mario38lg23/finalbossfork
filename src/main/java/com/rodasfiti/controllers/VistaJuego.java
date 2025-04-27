@@ -10,13 +10,11 @@ import java.util.ResourceBundle;
 import com.rodasfiti.App;
 
 public class VistaJuego implements Initializable {
-    @FXML
-    private ImageView imageView;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        imageView.setImage(
-                new Image(App.class.getResource("src/main/resources/com/rodafiti/images/math.png").toExternalForm()));
-
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'initialize'");
     }
+
 }

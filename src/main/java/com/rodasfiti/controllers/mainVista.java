@@ -1,9 +1,6 @@
 package com.rodasfiti.controllers;
 
 import javafx.scene.image.ImageView;
-
-import com.rodasfiti.SceneID;
-import com.rodasfiti.SceneManager;
 import com.rodasfiti.model.Protagonista;
 import com.rodasfiti.model.Proveedor;
 
@@ -42,7 +39,6 @@ public class mainVista {
 
     @FXML
     private Button botonJugar;
-    private SceneManager sceneManager = SceneManager.getInstance();
 
     @FXML
     private void onJugarButtonClick() {
