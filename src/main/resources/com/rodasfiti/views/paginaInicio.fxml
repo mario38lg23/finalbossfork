@@ -19,19 +19,31 @@
       <Slider fx:id="SliderSalud" blockIncrement="1.0" layoutX="640.0" layoutY="167.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <ImageView fx:id="imageVida" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
          <image>
+<<<<<<< HEAD:src/main/resources/com/rodasfiti/views/paginaInicio.fxml
             <Image url="@../images/corazon.png" />
+=======
+            <Image url="@../images/fondo.jpg" />
+>>>>>>> origin/Mario:target/classes/com/rodasfiti/views/vista1.fxml
          </image>
       </ImageView>
       <ImageView fx:id="imageDefensa" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
          <image>
+<<<<<<< HEAD:src/main/resources/com/rodasfiti/views/paginaInicio.fxml
             <Image url="@../images/escudo.png" />
+=======
+            <Image url="@../images/fondo.jpg" />
+>>>>>>> origin/Mario:target/classes/com/rodasfiti/views/vista1.fxml
          </image>
       </ImageView>
       <Slider fx:id="sliderDefensa" blockIncrement="1.0" layoutX="640.0" layoutY="266.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <Label layoutX="640.0" layoutY="226.0" prefHeight="25.0" prefWidth="61.0" text="Desfensa" />
       <ImageView fx:id="imageAtaque" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true">
          <image>
+<<<<<<< HEAD:src/main/resources/com/rodasfiti/views/paginaInicio.fxml
             <Image url="@../images/espada.png" />
+=======
+            <Image url="@../images/fondo.jpg" />
+>>>>>>> origin/Mario:target/classes/com/rodasfiti/views/vista1.fxml
          </image>
       </ImageView>
       <Slider fx:id="SliderAtaque" blockIncrement="1.0" layoutX="640.0" layoutY="374.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
