@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -7,17 +8,26 @@
 
 <AnchorPane fx:id="contenedorPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rodasfiti.controllers.mainVista">
    <children>
-      <TextField layoutX="65.0" layoutY="59.0" text="Nombre Personaje" />
-      <ImageView fx:id="imagePersonaje" fitHeight="313.0" fitWidth="503.0" layoutX="65.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
+      <TextField layoutX="40.0" layoutY="40.0" text="Nombre Personaje" />
+      <ImageView fx:id="imagePersonaje" fitHeight="596.0" fitWidth="560.0" layoutX="40.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/caballero.png" />
          </image>
       </ImageView>
-      <Label layoutX="640.0" layoutY="55.0" prefHeight="25.0" prefWidth="340.0" text="Aqui deberas seleccionar los atributos de tu personaje:" />
-      <Label layoutX="640.0" layoutY="80.0" prefHeight="25.0" prefWidth="340.0" text="Recuerda que solo tienes 15 puntos a repartir." />
-      <Label layoutX="640.0" layoutY="127.0" prefHeight="25.0" prefWidth="61.0" text="Vida" />
-      <Slider fx:id="SliderSalud" blockIncrement="1.0" layoutX="640.0" layoutY="167.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-      <ImageView fx:id="imageVida" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+      <Label layoutX="760.0" layoutY="60.0" prefHeight="25.0" prefWidth="400.0" text="Aqui deberas seleccionar los atributos de tu personaje:">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Label layoutX="800.0" layoutY="475.0" prefHeight="25.0" prefWidth="172.0" text="Recuerda que solo tienes">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <Label layoutX="800.0" layoutY="130.0" prefHeight="25.0" prefWidth="120.0" text="Vida">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Slider fx:id="SliderSalud" blockIncrement="1.0" layoutX="800.0" layoutY="170.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="60.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <ImageView fx:id="imageVida" fitHeight="100.0" fitWidth="100.0" layoutX="1000.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
          <image>
 <<<<<<< HEAD:src/main/resources/com/rodasfiti/views/paginaInicio.fxml
             <Image url="@../images/corazon.png" />
@@ -26,7 +36,7 @@
 >>>>>>> origin/Mario:target/classes/com/rodasfiti/views/vista1.fxml
          </image>
       </ImageView>
-      <ImageView fx:id="imageDefensa" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imageDefensa" fitHeight="100.0" fitWidth="100.0" layoutX="1000.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
          <image>
 <<<<<<< HEAD:src/main/resources/com/rodasfiti/views/paginaInicio.fxml
             <Image url="@../images/escudo.png" />
@@ -35,9 +45,12 @@
 >>>>>>> origin/Mario:target/classes/com/rodasfiti/views/vista1.fxml
          </image>
       </ImageView>
-      <Slider fx:id="sliderDefensa" blockIncrement="1.0" layoutX="640.0" layoutY="266.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-      <Label layoutX="640.0" layoutY="226.0" prefHeight="25.0" prefWidth="61.0" text="Desfensa" />
-      <ImageView fx:id="imageAtaque" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true">
+      <Slider fx:id="sliderDefensa" blockIncrement="1.0" layoutX="800.0" layoutY="270.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="60.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Label layoutX="800.0" layoutY="230.0" prefHeight="25.0" prefWidth="120.0" text="Desfensa">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <ImageView fx:id="imageAtaque" fitHeight="100.0" fitWidth="100.0" layoutX="1000.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true">
          <image>
 <<<<<<< HEAD:src/main/resources/com/rodasfiti/views/paginaInicio.fxml
             <Image url="@../images/espada.png" />
@@ -46,10 +59,21 @@
 >>>>>>> origin/Mario:target/classes/com/rodasfiti/views/vista1.fxml
          </image>
       </ImageView>
-      <Slider fx:id="SliderAtaque" blockIncrement="1.0" layoutX="640.0" layoutY="374.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-      <Label layoutX="640.0" layoutY="334.0" prefHeight="25.0" prefWidth="61.0" text="Ataque" />
-      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="759.0" layoutY="455.0" prefHeight="70.0" prefWidth="61.0" progress="1.0" />
-      <Label layoutX="640.0" layoutY="455.0" prefHeight="25.0" prefWidth="61.0" text="Atributos" />
-      <Button fx:id="botonJugar" layoutX="684.0" layoutY="576.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="140.0" text="Jugar" />
+      <Slider fx:id="SliderAtaque" blockIncrement="1.0" layoutX="800.0" layoutY="370.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="60.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Label layoutX="800.0" layoutY="330.0" prefHeight="25.0" prefWidth="120.0" text="Ataque">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="1000.0" layoutY="450.0" prefHeight="100.0" prefWidth="100.0" progress="1.0" />
+      <Label layoutX="800.0" layoutY="450.0" prefHeight="25.0" prefWidth="120.0" text="Atributos">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Button fx:id="botonJugar" layoutX="865.0" layoutY="600.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Jugar" />
+      <Label layoutX="800.0" layoutY="494.0" prefHeight="25.0" prefWidth="172.0" text="15 puntos a repartir.">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

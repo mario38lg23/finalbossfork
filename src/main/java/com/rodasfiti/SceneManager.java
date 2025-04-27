@@ -30,38 +30,54 @@ public class SceneManager {
     }
 
     @SuppressWarnings("exports")
-    public void init(Stage stage, String styles) {
+    public void init(Stage stage, String styles){
+        this.stage = stage;
+        this.styles = App.class.getResource("styles/" + styles + ".css");
+    }
+
+    @SuppressWarnings("exports")
+    public void init(Stage stage){
         this.stage = stage;
     }
 
+
     public void setScene(SceneID sceneID, String fxml) {
-        // Obtener la pantalla principal
         Screen screen = Screen.getPrimary();
 
-        // Obtener el tamaño de la pantalla
         double screenWidth = screen.getBounds().getWidth();
         double screenHeight = screen.getBounds().getHeight();
         try {
-            // Carga el archivo FXML
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("views/" + fxml));
+            URL url = App.class.getResource("views/" + fxml + ".fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
             Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, screenWidth * 0.7, screenHeight * 0.7); // Crea la escena con el tamaño
-                                                                                  // especificado
-            scene.getStylesheets().add(styles.toExternalForm()); // Añade la hoja de estilo
-            scenes.put(sceneID, scene); // Almacena la escena en el mapa con el identificador correspondiente
+            Scene scene = new Scene(root, screenWidth*0.7, screenHeight*0.7);
+            if (styles!=null) scene.getStylesheets().add(styles.toExternalForm());
+            scenes.put(sceneID, scene);
         } catch (IOException e) {
-            e.printStackTrace(); // En caso de error al cargar el FXML
+            e.printStackTrace();
         }
     }
 
     public void removeScene(SceneID sceneID) {
-        scenes.remove(sceneID); // Elimina la escena del mapa
+        scenes.remove(sceneID);
     }
 
     public void loadScene(SceneID sceneID) {
         if (scenes.containsKey(sceneID)) {
-            stage.setScene(scenes.get(sceneID)); // Establece la escena en la ventana principal
-            stage.show(); // Muestra la ventana con la nueva escena
+            stage.setScene(scenes.get(sceneID));
+            stage.show();
+        }
+    }
+
+    @SuppressWarnings("exports")
+    public Scene getScene(SceneID sceneID){
+        if (scenes.containsKey(sceneID)){
+            Scene scene = scenes.get(sceneID);
+            FXMLLoader loader = (FXMLLoader) scene.getUserData(); // Recuperar el loader
+            return loader.getController();
+        } else {
+            System.err.println("La escena seleccionada no existe");
+            return null;
         }
     }
 }

@@ -16,7 +16,7 @@ public class Proveedor {
     }
 
     public Protagonista getProtagonista() {
-        return protagonista;
+        return this.protagonista;
     }
 
     public void setProtagonista(Protagonista protagonista) {

@@ -45,14 +45,16 @@ public class mainVista {
     @FXML
     private Button botonJugar;
 
-    @FXML
-    private void onJugarButtonClick() {
+    /*@FXML
+    private void initialize() {
         String nombre = nombrePersonaje.getText();
         int vida = (int) SliderSalud.getValue();
         int ataque = (int) SliderAtaque.getValue();
         int defensa = (int) sliderSalud.getValue();
+        int atributos = (int) (vida + ataque + defensa) * 100 / 300;
 
-        Protagonista protagonista = new Protagonista(nombre, vida, ataque, defensa);
+
+        Protagonista protagonista = new Protagonista(nombre, vida, ataque, defensa, atributos);
 
         Proveedor.getInstance().setProtagonista(protagonista);
 

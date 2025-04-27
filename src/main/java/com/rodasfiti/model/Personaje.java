@@ -1,8 +1,11 @@
 package com.rodasfiti.model;
 
+import java.util.ArrayList;
 import java.util.Random;
+import com.rodasfiti.interfaces.Observer;
 
 public abstract class Personaje {
+    private ArrayList<Observer> observers;
     protected String nombre;
     protected int vida;
     protected int ataque;
@@ -10,11 +13,28 @@ public abstract class Personaje {
     protected int atributos;
     protected static Random r = new Random();
 
-    public Personaje(String nombre, int vida, int ataque, int defensa) {
+    public Personaje() {
+        this.observers = new ArrayList<>();
+    }
+
+    public Personaje(String nombre, int vida, int ataque, int defensa, int atributos) {
         this.nombre = nombre;
         this.vida = vida;
         this.ataque = ataque;
         this.defensa = defensa;
+        this.atributos = vida + ataque + defensa;
+    }
+
+    public void suscribe(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void unsuscribe(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers() {
+        observers.forEach(x -> x.onChange());
     }
 
     public String getNombre() {
@@ -23,6 +43,7 @@ public abstract class Personaje {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+        notifyObservers();
     }
 
     public int getVida() {
@@ -32,6 +53,7 @@ public abstract class Personaje {
     public void setVida(int vida) {
         if (this.vida > 0 && this.vida < 15) {
             this.vida = vida;
+            notifyObservers();
         }
     }
 
@@ -42,6 +64,7 @@ public abstract class Personaje {
     public void setAtaque(int ataque) {
         if (this.ataque > 0 && this.ataque < 15) {
             this.ataque = ataque;
+            notifyObservers();
         }
     }
 
@@ -52,6 +75,7 @@ public abstract class Personaje {
     public void setDefensa(int defensa) {
         if (this.defensa > 0 && this.defensa < 15) {
             this.defensa = defensa;
+            notifyObservers();
         }
     }
 
@@ -62,6 +86,7 @@ public abstract class Personaje {
     public void setAtributos(int atributos) {
         if (getAtaque() + getDefensa() + getVida() == 15) {
             this.atributos = atributos;
+            notifyObservers();
         }
     }
 
