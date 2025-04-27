@@ -1,19 +1,18 @@
 package com.rodasfiti.model;
 
-public class Protagonista {
-    private String nombre;
-    private int vida;
-    private int ataque;
-    private int defensa;
+public class Protagonista extends Personaje {
 
     public Protagonista(String nombre, int vida, int ataque, int defensa) {
-        this.nombre = nombre;
-        this.vida = vida;
-        this.ataque = ataque;
-        this.defensa = defensa;
+        super(nombre, vida, ataque, defensa);
     }
 
-    public void movimiento() {
+    @Override
+    public void atacar() {
+        super.atacar();
+    }
 
+    @Override
+    public void movimiento() {
+        super.movimiento();
     }
 }

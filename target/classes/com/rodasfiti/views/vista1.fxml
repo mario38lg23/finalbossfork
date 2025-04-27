@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="808.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rodasfiti.controllers.mainVista">
+   <children>
+      <TextField layoutX="65.0" layoutY="59.0" text="Nombre Personaje" />
+      <ImageView fx:id="imagePersonaje" fitHeight="608.0" fitWidth="392.0" layoutX="65.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="ghjkghj" />
+         </image>
+      </ImageView>
+      <Label layoutX="640.0" layoutY="55.0" prefHeight="25.0" prefWidth="340.0" text="Aqui deberas seleccionar los atributos de tu personaje:" />
+      <Label layoutX="640.0" layoutY="80.0" prefHeight="25.0" prefWidth="340.0" text="Recuerda que solo tienes 15 puntos a repartir." />
+      <Label layoutX="640.0" layoutY="127.0" prefHeight="25.0" prefWidth="61.0" text="Vida" />
+      <Slider fx:id="SliderSalud" blockIncrement="1.0" layoutX="640.0" layoutY="167.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <ImageView fx:id="imageVida" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="sf" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="imageSalud" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="sdf" />
+         </image>
+      </ImageView>
+      <Slider fx:id="sliderSalud" blockIncrement="1.0" layoutX="640.0" layoutY="266.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Label layoutX="640.0" layoutY="226.0" prefHeight="25.0" prefWidth="61.0" text="Salud" />
+      <ImageView fx:id="imageAtaque" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="sdf" />
+         </image>
+      </ImageView>
+      <Slider fx:id="SliderAtaque" blockIncrement="1.0" layoutX="640.0" layoutY="374.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Label layoutX="640.0" layoutY="334.0" prefHeight="25.0" prefWidth="61.0" text="Ataque" />
+      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="759.0" layoutY="455.0" prefHeight="70.0" prefWidth="61.0" progress="0.0" />
+      <Label layoutX="640.0" layoutY="455.0" prefHeight="25.0" prefWidth="61.0" text="Atributos" />
+      <Button fx:id="botonJugar" layoutX="684.0" layoutY="576.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="140.0" text="Jugar" />
+   </children>
+</AnchorPane>

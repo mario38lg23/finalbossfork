@@ -11,9 +11,12 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
- * La clase <code>SceneManager</code> es responsable de gestionar las escenas de la aplicación JavaFX.
- * Permite cargar, almacenar, cambiar y eliminar escenas. Además, gestiona la asignación de hojas de estilo (CSS)
- * para cada escena y se asegura de que la escena actual se cargue en la ventana principal (Stage).
+ * La clase <code>SceneManager</code> es responsable de gestionar las escenas de
+ * la aplicación JavaFX.
+ * Permite cargar, almacenar, cambiar y eliminar escenas. Además, gestiona la
+ * asignación de hojas de estilo (CSS)
+ * para cada escena y se asegura de que la escena actual se cargue en la ventana
+ * principal (Stage).
  */
 public class SceneManager {
     // Instancia única (singleton) de SceneManager
@@ -24,7 +27,7 @@ public class SceneManager {
     private HashMap<SceneID, Scene> scenes; // Mapa para almacenar las escenas según su identificador
 
     /**
-     * Constructor privado de <code>SceneManager</code>. 
+     * Constructor privado de <code>SceneManager</code>.
      * Inicializa el mapa de escenas vacío.
      */
     private SceneManager() {
@@ -32,11 +35,12 @@ public class SceneManager {
     }
 
     /**
-     * Método estático para obtener la instancia única de <code>SceneManager</code> (patrón Singleton).
+     * Método estático para obtener la instancia única de <code>SceneManager</code>
+     * (patrón Singleton).
      * 
      * @return La instancia única de <code>SceneManager</code>.
      */
-    public static SceneManager getInstance(){
+    public static SceneManager getInstance() {
         if (instance == null) {
             instance = new SceneManager();
         }
@@ -44,13 +48,15 @@ public class SceneManager {
     }
 
     /**
-     * Inicializa el <code>SceneManager</code> con el <code>Stage</code> principal y la ruta de la hoja de estilo.
+     * Inicializa el <code>SceneManager</code> con el <code>Stage</code> principal y
+     * la ruta de la hoja de estilo.
      * 
-     * @param stage la ventana principal de la aplicación donde se mostrarán las escenas.
+     * @param stage  la ventana principal de la aplicación donde se mostrarán las
+     *               escenas.
      * @param styles el nombre de la hoja de estilo CSS a aplicar a las escenas.
      */
     @SuppressWarnings("exports")
-    public void init(Stage stage, String styles){
+    public void init(Stage stage, String styles) {
         this.stage = stage;
         this.styles = App.class.getResource("styles/" + styles + ".css"); // Ruta al archivo CSS
     }
@@ -60,11 +66,11 @@ public class SceneManager {
      * La escena también se asocia con la hoja de estilo definida previamente.
      * 
      * @param sceneID el identificador único de la escena.
-     * @param fxml el nombre del archivo FXML que define la vista de la escena.
-     * @param width el ancho de la escena.
-     * @param height el alto de la escena.
+     * @param fxml    el nombre del archivo FXML que define la vista de la escena.
+     * @param width   el ancho de la escena.
+     * @param height  el alto de la escena.
      */
-    public void setScene(SceneID sceneID, String fxml){
+    public void setScene(SceneID sceneID, String fxml) {
         // Obtener la pantalla principal
         Screen screen = Screen.getPrimary();
 
@@ -75,7 +81,8 @@ public class SceneManager {
             // Carga el archivo FXML
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("views/" + fxml + ".fxml"));
             Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, screenWidth*0.7, screenHeight*0.7); // Crea la escena con el tamaño especificado
+            Scene scene = new Scene(root, screenWidth * 0.7, screenHeight * 0.7); // Crea la escena con el tamaño
+                                                                                  // especificado
             scene.getStylesheets().add(styles.toExternalForm()); // Añade la hoja de estilo
             scenes.put(sceneID, scene); // Almacena la escena en el mapa con el identificador correspondiente
         } catch (IOException e) {
@@ -88,19 +95,21 @@ public class SceneManager {
      * 
      * @param sceneID el identificador único de la escena que se desea eliminar.
      */
-    public void removeScene(SceneID sceneID){
+    public void removeScene(SceneID sceneID) {
         scenes.remove(sceneID); // Elimina la escena del mapa
     }
 
     /**
-     * Carga y muestra una escena previamente almacenada en el <code>SceneManager</code>.
+     * Carga y muestra una escena previamente almacenada en el
+     * <code>SceneManager</code>.
      * 
      * @param sceneID el identificador único de la escena que se desea cargar.
      */
     public void loadScene(SceneID sceneID) {
-        if (scenes.containsKey(sceneID)){
+        if (scenes.containsKey(sceneID)) {
             stage.setScene(scenes.get(sceneID)); // Establece la escena en la ventana principal
             stage.show(); // Muestra la ventana con la nueva escena
         }
     }
+
 }
