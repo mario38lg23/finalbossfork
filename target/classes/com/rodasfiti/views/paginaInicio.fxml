@@ -22,13 +22,13 @@
             <Image url="@../images/fondo.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="imageSalud" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imageDefensa" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/fondo.jpg" />
          </image>
       </ImageView>
-      <Slider fx:id="sliderSalud" blockIncrement="1.0" layoutX="640.0" layoutY="266.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-      <Label layoutX="640.0" layoutY="226.0" prefHeight="25.0" prefWidth="61.0" text="Salud" />
+      <Slider fx:id="sliderDefensa" blockIncrement="1.0" layoutX="640.0" layoutY="266.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Label layoutX="640.0" layoutY="226.0" prefHeight="25.0" prefWidth="61.0" text="Desfensa" />
       <ImageView fx:id="imageAtaque" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/fondo.jpg" />
@@ -36,7 +36,7 @@
       </ImageView>
       <Slider fx:id="SliderAtaque" blockIncrement="1.0" layoutX="640.0" layoutY="374.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <Label layoutX="640.0" layoutY="334.0" prefHeight="25.0" prefWidth="61.0" text="Ataque" />
-      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="759.0" layoutY="455.0" prefHeight="70.0" prefWidth="61.0" progress="0.0" />
+      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="759.0" layoutY="455.0" prefHeight="70.0" prefWidth="61.0" progress="1.0" />
       <Label layoutX="640.0" layoutY="455.0" prefHeight="25.0" prefWidth="61.0" text="Atributos" />
       <Button fx:id="botonJugar" layoutX="684.0" layoutY="576.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="140.0" text="Jugar" />
    </children>
