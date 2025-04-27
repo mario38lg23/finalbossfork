@@ -1,5 +1,5 @@
 package com.rodasfiti;
 
 public enum SceneID {
-    MAINVISTA
+    MAINVISTA, JUEGO
 }

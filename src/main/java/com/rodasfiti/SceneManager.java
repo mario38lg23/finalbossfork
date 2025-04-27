@@ -10,21 +10,19 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-
 public class SceneManager {
 
     private static SceneManager instance;
 
     private Stage stage;
-    private URL styles; 
-    private HashMap<SceneID, Scene> scenes; 
+    private URL styles;
+    private HashMap<SceneID, Scene> scenes;
 
     private SceneManager() {
         scenes = new HashMap<>();
     }
 
-
-    public static SceneManager getInstance(){
+    public static SceneManager getInstance() {
         if (instance == null) {
             instance = new SceneManager();
         }
@@ -32,11 +30,11 @@ public class SceneManager {
     }
 
     @SuppressWarnings("exports")
-    public void init(Stage stage){
+    public void init(Stage stage, String styles) {
         this.stage = stage;
     }
 
-    public void setScene(SceneID sceneID, String fxml){
+    public void setScene(SceneID sceneID, String fxml) {
         // Obtener la pantalla principal
         Screen screen = Screen.getPrimary();
 
@@ -45,9 +43,10 @@ public class SceneManager {
         double screenHeight = screen.getBounds().getHeight();
         try {
             // Carga el archivo FXML
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("views/" + fxml + ".fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("views/" + fxml));
             Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, screenWidth*0.7, screenHeight*0.7); // Crea la escena con el tamaño especificado
+            Scene scene = new Scene(root, screenWidth * 0.7, screenHeight * 0.7); // Crea la escena con el tamaño
+                                                                                  // especificado
             scene.getStylesheets().add(styles.toExternalForm()); // Añade la hoja de estilo
             scenes.put(sceneID, scene); // Almacena la escena en el mapa con el identificador correspondiente
         } catch (IOException e) {
@@ -55,12 +54,12 @@ public class SceneManager {
         }
     }
 
-    public void removeScene(SceneID sceneID){
+    public void removeScene(SceneID sceneID) {
         scenes.remove(sceneID); // Elimina la escena del mapa
     }
 
     public void loadScene(SceneID sceneID) {
-        if (scenes.containsKey(sceneID)){
+        if (scenes.containsKey(sceneID)) {
             stage.setScene(scenes.get(sceneID)); // Establece la escena en la ventana principal
             stage.show(); // Muestra la ventana con la nueva escena
         }

@@ -30,8 +30,8 @@ public abstract class Personaje {
     }
 
     public void setVida(int vida) {
-        if (this.vida>0 && this.vida<15) {
-            this.vida = vida;   
+        if (this.vida > 0 && this.vida < 15) {
+            this.vida = vida;
         }
     }
 
@@ -40,7 +40,7 @@ public abstract class Personaje {
     }
 
     public void setAtaque(int ataque) {
-        if (this.ataque>0 && this.ataque<15) {
+        if (this.ataque > 0 && this.ataque < 15) {
             this.ataque = ataque;
         }
     }
@@ -50,7 +50,7 @@ public abstract class Personaje {
     }
 
     public void setDefensa(int defensa) {
-        if (this.defensa>0 && this.defensa<15) {
+        if (this.defensa > 0 && this.defensa < 15) {
             this.defensa = defensa;
         }
     }
@@ -60,14 +60,24 @@ public abstract class Personaje {
     }
 
     public void setAtributos(int atributos) {
-        if (getAtaque()+getDefensa()+getVida()==15) {
+        if (getAtaque() + getDefensa() + getVida() == 15) {
             this.atributos = atributos;
         }
     }
 
-    public void atacar(){
-        if (r.nextInt(10)>getDefensa()) {
+    public void atacar() {
+        if (r.nextInt(10) > getDefensa()) {
             vida = getVida() - getAtaque();
+        }
+    }
+
+    public void movimiento() {
+
+    }
+
+    public void morir() {
+        if (getVida() <= 0) {
+            System.out.println("El personaje ha muerto");
         }
     }
 }
