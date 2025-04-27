@@ -5,13 +5,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="808.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rodasfiti.controllers.mainVista">
    <children>
       <TextField layoutX="65.0" layoutY="59.0" text="Nombre Personaje" />
-      <ImageView fx:id="imagePersonaje" fitHeight="608.0" fitWidth="392.0" layoutX="65.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imagePersonaje" fitHeight="313.0" fitWidth="503.0" layoutX="65.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="ghjkghj" />
+            <Image url="@../images/fondo.jpg" />
          </image>
       </ImageView>
       <Label layoutX="640.0" layoutY="55.0" prefHeight="25.0" prefWidth="340.0" text="Aqui deberas seleccionar los atributos de tu personaje:" />
