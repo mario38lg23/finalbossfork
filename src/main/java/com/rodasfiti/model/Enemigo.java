@@ -1,19 +1,27 @@
 package com.rodasfiti.model;
 
-public abstract class Enemigo extends Personaje {
+public abstract class Enemigo{
+    protected String nombre;
+    protected int vida;
+    protected int ataque;
+    protected int defensa;
+    protected int atributos;
 
     public Enemigo(String nombre, int vida, int ataque, int defensa) {
-        super(nombre, vida, ataque, defensa);
+        this.nombre = nombre;
+        this.vida = vida;
+        this.ataque = ataque;
+        this.defensa = defensa;
     }
 
-    @Override
+    
     public void atacar() {
-        super.atacar();
+        
     }
 
-    @Override
+    
     public void movimiento() {
-        super.movimiento();
+        
     }
 
 }

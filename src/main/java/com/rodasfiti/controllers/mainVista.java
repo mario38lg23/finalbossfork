@@ -51,7 +51,7 @@ public class mainVista {
         int vida = (int) SliderSalud.getValue();
         int ataque = (int) SliderAtaque.getValue();
         int defensa = (int) sliderSalud.getValue();
-        int atributos = (int) (vida + ataque + defensa) * 100 / 300;
+        int atributos = (int) porcentajeAtributos.getProgress() * 100;
 
 
         Protagonista protagonista = new Protagonista(nombre, vida, ataque, defensa, atributos);
