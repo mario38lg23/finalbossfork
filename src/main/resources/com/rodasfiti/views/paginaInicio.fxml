@@ -5,12 +5,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="808.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rodasfiti.controllers.mainVista">
+<AnchorPane fx:id="contenedorPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rodasfiti.controllers.mainVista">
    <children>
       <TextField layoutX="65.0" layoutY="59.0" text="Nombre Personaje" />
       <ImageView fx:id="imagePersonaje" fitHeight="313.0" fitWidth="503.0" layoutX="65.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/fondo.jpg" />
+            <Image url="@../images/caballero.png" />
          </image>
       </ImageView>
       <Label layoutX="640.0" layoutY="55.0" prefHeight="25.0" prefWidth="340.0" text="Aqui deberas seleccionar los atributos de tu personaje:" />
@@ -19,19 +19,19 @@
       <Slider fx:id="SliderSalud" blockIncrement="1.0" layoutX="640.0" layoutY="167.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <ImageView fx:id="imageVida" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/fondo.jpg" />
+            <Image url="@../images/corazon.png" />
          </image>
       </ImageView>
       <ImageView fx:id="imageDefensa" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/fondo.jpg" />
+            <Image url="@../images/escudo.png" />
          </image>
       </ImageView>
       <Slider fx:id="sliderDefensa" blockIncrement="1.0" layoutX="640.0" layoutY="266.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <Label layoutX="640.0" layoutY="226.0" prefHeight="25.0" prefWidth="61.0" text="Desfensa" />
       <ImageView fx:id="imageAtaque" fitHeight="64.0" fitWidth="74.0" layoutX="833.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/fondo.jpg" />
+            <Image url="@../images/espada.png" />
          </image>
       </ImageView>
       <Slider fx:id="SliderAtaque" blockIncrement="1.0" layoutX="640.0" layoutY="374.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
