@@ -42,6 +42,7 @@ public class mainVista {
 
     @FXML
     private Button botonJugar;
+    private SceneManager sceneManager = SceneManager.getInstance();
 
     @FXML
     private void onJugarButtonClick() {
