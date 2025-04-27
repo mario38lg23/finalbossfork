@@ -32,7 +32,7 @@ public class SceneManager {
     }
 
     @SuppressWarnings("exports")
-    public void init(Stage stage, String styles){
+    public void init(Stage stage){
         this.stage = stage;
     }
 

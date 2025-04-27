@@ -16,7 +16,7 @@ public class App extends Application {
 
         SceneManager sm = SceneManager.getInstance();
 
-        sm.init(stage, "css");
+        sm.init(stage);
         
         sm.setScene(SceneID.MAINVISTA, "paginaInicio.fxml");
 
