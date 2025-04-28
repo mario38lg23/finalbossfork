@@ -26,15 +26,15 @@
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Slider fx:id="SliderSalud" blockIncrement="1.0" layoutX="800.0" layoutY="170.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="60.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Slider fx:id="SliderVida" blockIncrement="1.0" layoutX="800.0" layoutY="170.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="60.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <ImageView fx:id="imageVida" fitHeight="100.0" fitWidth="100.0" layoutX="1000.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/fondo.jpg" />
+            <Image url="@../images/corazon.png" />
          </image>
       </ImageView>
       <ImageView fx:id="imageDefensa" fitHeight="100.0" fitWidth="100.0" layoutX="1000.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/fondo.jpg" />
+            <Image url="@../images/escudo.png" />
          </image>
       </ImageView>
       <Slider fx:id="sliderDefensa" blockIncrement="1.0" layoutX="800.0" layoutY="270.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="60.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
@@ -44,7 +44,7 @@
          </font></Label>
       <ImageView fx:id="imageAtaque" fitHeight="100.0" fitWidth="100.0" layoutX="1000.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/fondo.jpg" />
+            <Image url="@../images/espada.png" />
          </image>
       </ImageView>
       <Slider fx:id="SliderAtaque" blockIncrement="1.0" layoutX="800.0" layoutY="370.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="60.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
@@ -52,7 +52,7 @@
          <font>
             <Font size="15.0" />
          </font></Label>
-      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="1000.0" layoutY="450.0" prefHeight="100.0" prefWidth="100.0" progress="1.0" />
+      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="1000.0" layoutY="450.0" prefHeight="100.0" prefWidth="100.0" progress="0.0" />
       <Label layoutX="800.0" layoutY="450.0" prefHeight="25.0" prefWidth="120.0" text="Atributos">
          <font>
             <Font size="15.0" />
