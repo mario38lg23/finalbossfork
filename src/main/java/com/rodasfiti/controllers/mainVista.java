@@ -3,6 +3,8 @@ package com.rodasfiti.controllers;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+import com.rodasfiti.SceneID;
+import com.rodasfiti.SceneManager;
 import com.rodasfiti.model.Protagonista;
 import com.rodasfiti.model.Proveedor;
 
@@ -59,6 +61,11 @@ public class mainVista {
             nombrePersonaje.textProperty().addListener((observable, oldValue, newValue) -> actualizarProtagonista());
             actualizarProtagonista();
         }
+
+        botonJugar.setOnAction(event -> {
+            // Carga la escena secundaria cuando el botón es presionado
+            SceneManager.getInstance().loadScene(SceneID.JUEGO);
+        });
     }
 
     private void manejarCambioSlider(Slider sliderModificado, Number oldVal, Number newVal) {
