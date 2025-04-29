@@ -51,11 +51,15 @@ public class mainVista {
 
     @FXML
     public void initialize() {
-        //contenedorPrincipal.heightProperty().addListener((observable, oldValue, newValue) -> ajustarImagen());
+        // contenedorPrincipal.heightProperty().addListener((observable, oldValue,
+        // newValue) -> ajustarImagen());
         // Listeners para actualizar progreso y controlar la suma
-        SliderVida.valueProperty().addListener((obs, oldVal, newVal) -> manejarCambioSlider(SliderVida, oldVal, newVal));
-        SliderAtaque.valueProperty().addListener((obs, oldVal, newVal) -> manejarCambioSlider(SliderAtaque, oldVal, newVal));
-        sliderDefensa.valueProperty().addListener((obs, oldVal, newVal) -> manejarCambioSlider(sliderDefensa, oldVal, newVal));
+        SliderVida.valueProperty()
+                .addListener((obs, oldVal, newVal) -> manejarCambioSlider(SliderVida, oldVal, newVal));
+        SliderAtaque.valueProperty()
+                .addListener((obs, oldVal, newVal) -> manejarCambioSlider(SliderAtaque, oldVal, newVal));
+        sliderDefensa.valueProperty()
+                .addListener((obs, oldVal, newVal) -> manejarCambioSlider(sliderDefensa, oldVal, newVal));
 
         if (nombrePersonaje != null) {
             nombrePersonaje.textProperty().addListener((observable, oldValue, newValue) -> actualizarProtagonista());
@@ -101,41 +105,43 @@ public class mainVista {
         int ataque = (int) SliderAtaque.getValue();
         int defensa = (int) sliderDefensa.getValue();
         int atributos = (int) Math.round(porcentajeAtributos.getProgress() * MAX_PUNTOS);
+        int nivel = 1; // Asignar un valor inicial para el nivel, si es necesario
 
-        Protagonista protagonista = new Protagonista(nombre, vida, ataque, defensa, atributos);
+        Protagonista protagonista = new Protagonista(nombre, vida, ataque, defensa, atributos, nivel);
         Proveedor.getInstance().setProtagonista(protagonista);
     }
 
-    /*private void ajustarImagen() {
-        ajustarImagenIndividual(imagePersonaje);
-        ajustarImagenIndividual(imageAtaque);
-        ajustarImagenIndividual(imageVida);
-        ajustarImagenIndividual(imageDefensa);
-    }
-    
-    private void ajustarImagenIndividual(ImageView imagenView) {
-        if (imagenView.getImage() == null) {
-            return;
-        }
-        double contenedorHeight = contenedorPrincipal.getHeight();
-        double contenedorWidth = contenedorPrincipal.getWidth();
-    
-        double imageWidth = imagenView.getImage().getWidth();
-        double imageHeight = imagenView.getImage().getHeight();
-        double imageAspectRatio = imageWidth / imageHeight;
-    
-        double maxWidth = contenedorWidth * 0.3; // Ajusta el % máximo que puede ocupar
-        double maxHeight = contenedorHeight * 0.3;
-    
-        if (maxWidth / imageAspectRatio <= maxHeight) {
-            imagenView.setFitWidth(maxWidth);
-            imagenView.setFitHeight(maxWidth / imageAspectRatio);
-        } else {
-            imagenView.setFitHeight(maxHeight);
-            imagenView.setFitWidth(maxHeight * imageAspectRatio);
-        }
-    }*/
+    /*
+     * private void ajustarImagen() {
+     * ajustarImagenIndividual(imagePersonaje);
+     * ajustarImagenIndividual(imageAtaque);
+     * ajustarImagenIndividual(imageVida);
+     * ajustarImagenIndividual(imageDefensa);
+     * }
+     * 
+     * private void ajustarImagenIndividual(ImageView imagenView) {
+     * if (imagenView.getImage() == null) {
+     * return;
+     * }
+     * double contenedorHeight = contenedorPrincipal.getHeight();
+     * double contenedorWidth = contenedorPrincipal.getWidth();
+     * 
+     * double imageWidth = imagenView.getImage().getWidth();
+     * double imageHeight = imagenView.getImage().getHeight();
+     * double imageAspectRatio = imageWidth / imageHeight;
+     * 
+     * double maxWidth = contenedorWidth * 0.3; // Ajusta el % máximo que puede
+     * ocupar
+     * double maxHeight = contenedorHeight * 0.3;
+     * 
+     * if (maxWidth / imageAspectRatio <= maxHeight) {
+     * imagenView.setFitWidth(maxWidth);
+     * imagenView.setFitHeight(maxWidth / imageAspectRatio);
+     * } else {
+     * imagenView.setFitHeight(maxHeight);
+     * imagenView.setFitWidth(maxHeight * imageAspectRatio);
+     * }
+     * }
+     */
 
-
-    
 }

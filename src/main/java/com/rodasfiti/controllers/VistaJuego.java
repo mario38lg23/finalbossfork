@@ -1,20 +1,34 @@
 package com.rodasfiti.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.scene.control.Label;
+import com.rodasfiti.model.Protagonista;
+import com.rodasfiti.model.Proveedor;
 
-import com.rodasfiti.App;
+public class VistaJuego {
 
-public class VistaJuego implements Initializable {
+    @FXML
+    private Label vida;
+    @FXML
+    private Label escudo;
+    @FXML
+    private Label ataque;
+    @FXML
+    private Label nivel;
 
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initialize'");
+    @FXML
+    public void initialize() {
+        actualizarDatosProtagonista();
+    }
+
+    public void actualizarDatosProtagonista() {
+        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
+        String vida2 = String.valueOf(protagonista.getVida());
+        vida.setText(vida2);
+        escudo.setText(String.valueOf(protagonista.getDefensa()));
+        ataque.setText(String.valueOf(protagonista.getAtaque()));
+        nivel.setText(String.valueOf(protagonista.getNivel()));
+
     }
 
 }

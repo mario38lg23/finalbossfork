@@ -17,6 +17,7 @@ public class SceneManager {
     private Stage stage;
     private URL styles;
     private HashMap<SceneID, Scene> scenes;
+    private HashMap<SceneID, FXMLLoader> loaders = new HashMap<>();
 
     private SceneManager() {
         scenes = new HashMap<>();
@@ -30,29 +31,31 @@ public class SceneManager {
     }
 
     @SuppressWarnings("exports")
-    public void init(Stage stage, String styles){
+    public void init(Stage stage, String styles) {
         this.stage = stage;
         this.styles = App.class.getResource("styles/" + styles + ".css");
     }
 
     @SuppressWarnings("exports")
-    public void init(Stage stage){
+    public void init(Stage stage) {
         this.stage = stage;
     }
 
-
     public void setScene(SceneID sceneID, String fxml) {
         Screen screen = Screen.getPrimary();
-
         double screenWidth = screen.getBounds().getWidth();
         double screenHeight = screen.getBounds().getHeight();
+
         try {
             URL url = App.class.getResource("views/" + fxml + ".fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(url);
             Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, screenWidth*0.7, screenHeight*0.7);
-            if (styles!=null) scene.getStylesheets().add(styles.toExternalForm());
+            Scene scene = new Scene(root, screenWidth * 0.7, screenHeight * 0.7);
+            if (styles != null)
+                scene.getStylesheets().add(styles.toExternalForm());
+
             scenes.put(sceneID, scene);
+            loaders.put(sceneID, fxmlLoader); // Nuevo: guardar el loader
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,15 +72,13 @@ public class SceneManager {
         }
     }
 
-    @SuppressWarnings("exports")
-    public Scene getScene(SceneID sceneID){
-        if (scenes.containsKey(sceneID)){
-            Scene scene = scenes.get(sceneID);
-            FXMLLoader loader = (FXMLLoader) scene.getUserData(); // Recuperar el loader
-            return loader.getController();
+    public Object getController(SceneID sceneID) {
+        if (loaders.containsKey(sceneID)) {
+            return loaders.get(sceneID).getController();
         } else {
-            System.err.println("La escena seleccionada no existe");
+            System.err.println("No se encontró el controlador para " + sceneID);
             return null;
         }
     }
+
 }
