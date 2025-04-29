@@ -13,8 +13,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 
 public class mainVista {
+
+    @FXML
+    private Label labelVida;
+    @FXML
+    private Label labelEscudo;
+    @FXML
+    private Label labelAtaque;
 
     @FXML
     private AnchorPane contenedorPrincipal;
@@ -60,6 +68,9 @@ public class mainVista {
                 .addListener((obs, oldVal, newVal) -> manejarCambioSlider(SliderAtaque, oldVal, newVal));
         sliderDefensa.valueProperty()
                 .addListener((obs, oldVal, newVal) -> manejarCambioSlider(sliderDefensa, oldVal, newVal));
+        labelAtaque.setText("Ataque: " + (int) SliderAtaque.getValue());
+        labelVida.setText("Vida: " + (int) SliderVida.getValue());
+        labelEscudo.setText("Defensa: " + (int) sliderDefensa.getValue());
 
         if (nombrePersonaje != null) {
             nombrePersonaje.textProperty().addListener((observable, oldValue, newValue) -> actualizarProtagonista());
