@@ -30,6 +30,18 @@ public class VistaJuego {
     public void initialize() {
 
         actualizarDatosProtagonista();
+        Path rutaMapa = Paths.get("src/main/resources/com/rodasfiti/data/mapa.csv");
+        Escenario escenario = Escenario.cargarDesdeCSV(rutaMapa);
+
+        if (escenario != null) {
+
+            for (char[] fila : escenario.getMapa()) {
+                System.out.println(java.util.Arrays.toString(fila));
+            }
+            mostrarMapa(escenario, mapa);
+        } else {
+            System.out.println("Error al cargar el mapa.");
+        }
 
     }
 
@@ -41,6 +53,26 @@ public class VistaJuego {
         ataque.setText(String.valueOf(protagonista.getAtaque()));
         nivel.setText(String.valueOf(protagonista.getNivel()));
 
+    }
+
+    public void mostrarMapa(Escenario escenario, GridPane gridPane) {
+        char[][] mapa = escenario.getMapa();
+
+        gridPane.getChildren().clear();
+
+        for (int fila = 0; fila < mapa.length; fila++) {
+            for (int col = 0; col < mapa[fila].length; col++) {
+                String rutaImagen;
+
+                if (mapa[fila][col] == 'P') {
+                    rutaImagen = "/com/rodasfiti/images/pared2.png";
+                } else if (mapa[fila][col] == 'S') {
+                    rutaImagen = "/com/rodasfiti/images/suelo2.png";
+                } else {
+                    continue;
+                }
+            }
+        }
     }
 
 }
