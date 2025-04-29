@@ -19,24 +19,31 @@ public class Escenario {
     }
 
     public static Escenario cargarDesdeCSV(Path rutaCSV) {
-        List<char[]> filas = new ArrayList<>();
 
-        try (BufferedReader reader = Files.newBufferedReader(rutaCSV)) {
+        List<char[]> filas = new ArrayList<>();
+        try {
+            BufferedReader reader = Files.newBufferedReader(rutaCSV);
             String linea;
+
             while ((linea = reader.readLine()) != null) {
-                String[] tokens = linea.split(",");
-                char[] fila = new char[tokens.length];
-                for (int i = 0; i < tokens.length; i++) {
-                    fila[i] = tokens[i].charAt(0);
+                String[] partes = linea.split(",");
+                char[] fila = new char[partes.length];
+                for (int i = 0; i < partes.length; i++) {
+                    fila[i] = partes[i].trim().charAt(0);
                 }
                 filas.add(fila);
             }
+            reader.close();
+
         } catch (IOException e) {
+            System.out.println("Error leyendo el archivo CSV:");
             e.printStackTrace();
             return null;
         }
-
-        char[][] mapa = filas.toArray(new char[0][]);
+        char[][] mapa = new char[filas.size()][];
+        for (int i = 0; i < filas.size(); i++) {
+            mapa[i] = filas.get(i);
+        }
         return new Escenario(mapa);
     }
 }

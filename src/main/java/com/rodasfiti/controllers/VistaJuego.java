@@ -24,10 +24,11 @@ public class VistaJuego {
     @FXML
     private Label nivel;
     @FXML
-    private GridPane contenedorMapa;
+    private GridPane mapa;
 
     @FXML
     public void initialize() {
+
         actualizarDatosProtagonista();
 
     }
@@ -40,30 +41,6 @@ public class VistaJuego {
         ataque.setText(String.valueOf(protagonista.getAtaque()));
         nivel.setText(String.valueOf(protagonista.getNivel()));
 
-    }
-
-    public void mostrarMapa(Escenario escenario, GridPane gridPane) {
-        char[][] mapa = escenario.getMapa();
-
-        for (int fila = 0; fila < mapa.length; fila++) {
-            for (int col = 0; col < mapa[fila].length; col++) {
-                Image imagen;
-                if (mapa[fila][col] == 'S') {
-                    imagen = new Image(getClass()
-                            .getResource("src\\main\\resources\\com\\rodasfiti\\images\\pared2.png").toExternalForm());
-                } else if (mapa[fila][col] == 'P') {
-                    imagen = new Image(getClass()
-                            .getResource("src\\main\\resources\\com\\rodasfiti\\images\\suelo2.png").toExternalForm());
-                } else {
-                    continue;
-                }
-
-                ImageView imageView = new ImageView(imagen);
-                imageView.setFitWidth(32);
-                imageView.setFitHeight(32);
-                gridPane.add(imageView, col, fila);
-            }
-        }
     }
 
 }
