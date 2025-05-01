@@ -19,8 +19,10 @@ public class mainVista {
 
     @FXML
     private Label labelVida;
+
     @FXML
     private Label labelDefensa;
+
     @FXML
     private Label labelAtaque;
 
@@ -43,6 +45,7 @@ public class mainVista {
 
     @FXML
     private ImageView imageAtaque;
+
     @FXML
     private TextField nombrePersonaje;
 
@@ -78,6 +81,8 @@ public class mainVista {
             labelDefensa.setText(String.valueOf(valor));
             manejarCambioSlider(sliderDefensa, oldVal, newVal);
         });
+
+        
 
         if (nombrePersonaje != null) {
             nombrePersonaje.textProperty().addListener((observable, oldValue, newValue) -> actualizarProtagonista());

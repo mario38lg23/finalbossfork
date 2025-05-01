@@ -31,7 +31,7 @@ public class SceneManager {
     }
 
     @SuppressWarnings("exports")
-    public void init(Stage stage, String styles) {
+    public void init(Stage stage, String styles){
         this.stage = stage;
         this.styles = App.class.getResource("styles/" + styles + ".css");
     }
@@ -41,7 +41,7 @@ public class SceneManager {
         this.stage = stage;
     }
 
-    public void setScene(SceneID sceneID, String fxml) {
+    /*public void setScene(SceneID sceneID, String fxml) {
         Screen screen = Screen.getPrimary();
         double screenWidth = screen.getBounds().getWidth();
         double screenHeight = screen.getBounds().getHeight();
@@ -53,11 +53,30 @@ public class SceneManager {
             Scene scene = new Scene(root, screenWidth * 0.7, screenHeight * 0.7);
             if (styles != null)
                 scene.getStylesheets().add(styles.toExternalForm());
-
             scenes.put(sceneID, scene);
-            loaders.put(sceneID, fxmlLoader); // Nuevo: guardar el loader
+            loaders.put(sceneID, fxmlLoader);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }*/
+
+    public void setScene(SceneID sceneID, String fxml){
+        // Obtener la pantalla principal
+        Screen screen = Screen.getPrimary();
+
+        // Obtener el tamaño de la pantalla
+        double screenWidth = screen.getBounds().getWidth();
+        double screenHeight = screen.getBounds().getHeight();
+        try {
+            // Carga el archivo FXML
+            URL url = App.class.getResource("views/" + fxml + ".fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root, screenWidth*0.7, screenHeight*0.7); // Crea la escena con el tamaño especificado
+            if (styles!=null) scene.getStylesheets().add(styles.toExternalForm()); // Añade la hoja de estilo
+            scenes.put(sceneID, scene); // Almacena la escena en el mapa con el identificador correspondiente
+        } catch (IOException e) {
+            e.printStackTrace(); // En caso de error al cargar el FXML
         }
     }
 
