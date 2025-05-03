@@ -57,7 +57,6 @@ public class VistaJuego {
 
     public void mostrarMapa(Escenario escenario, GridPane gridPane) {
         char[][] mapa = escenario.getMapa();
-
         gridPane.getChildren().clear();
 
         for (int fila = 0; fila < mapa.length; fila++) {
@@ -71,6 +70,11 @@ public class VistaJuego {
                 } else {
                     continue;
                 }
+
+                ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(rutaImagen)));
+                imageView.setFitWidth(32);
+                imageView.setFitHeight(32);
+                gridPane.add(imageView, col, fila);
             }
         }
     }

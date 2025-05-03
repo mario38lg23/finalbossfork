@@ -19,8 +19,10 @@ public class mainVista {
 
     @FXML
     private Label labelVida;
+
     @FXML
     private Label labelDefensa;
+
     @FXML
     private Label labelAtaque;
 
@@ -43,6 +45,7 @@ public class mainVista {
 
     @FXML
     private ImageView imageAtaque;
+
     @FXML
     private TextField nombrePersonaje;
 
@@ -66,13 +69,13 @@ public class mainVista {
             labelVida.setText(String.valueOf(valor));
             manejarCambioSlider(SliderVida, oldVal, newVal);
         });
-    
+
         SliderAtaque.valueProperty().addListener((obs, oldVal, newVal) -> {
             int valor = newVal.intValue();
             labelAtaque.setText(String.valueOf(valor));
             manejarCambioSlider(SliderAtaque, oldVal, newVal);
         });
-    
+
         sliderDefensa.valueProperty().addListener((obs, oldVal, newVal) -> {
             int valor = newVal.intValue();
             labelDefensa.setText(String.valueOf(valor));
@@ -85,6 +88,7 @@ public class mainVista {
         }
 
         botonJugar.setOnAction(event -> {
+
             SceneManager.getInstance().loadScene(SceneID.JUEGO);
         });
     }
