@@ -1,5 +1,15 @@
-.anchor-pane-background {
-    -fx-background-image: url("images/fondo.jpg");
+/* Para establecer el fondo en la raíz de la escena */
+.root {
+    -fx-background-image: url('images\fondo2(1).png');
+    -fx-background-repeat: stretch;
+    -fx-background-position: center;
     -fx-background-size: cover;
+}
+
+/* Para establecer el fondo en un AnchorPane específico (si le has dado un fx:id) */
+#contenedorPrincipal {
+    -fx-background-image: url('images\fondo2(1).png');
     -fx-background-repeat: no-repeat;
+    -fx-background-position: top-left;
+    -fx-background-size: auto;
 }
