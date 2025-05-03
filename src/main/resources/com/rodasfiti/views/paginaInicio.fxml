@@ -63,5 +63,8 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <Label fx:id="labelVida" layoutX="945.0" layoutY="175.0" prefHeight="25.0" prefWidth="30.0" text="0" />
+      <Label fx:id="labelDefensa" layoutX="945.0" layoutY="275.0" prefHeight="25.0" prefWidth="30.0" text="0" />
+      <Label fx:id="labelAtaque" layoutX="945.0" layoutY="375.0" prefHeight="25.0" prefWidth="30.0" text="0" />
    </children>
 </AnchorPane>

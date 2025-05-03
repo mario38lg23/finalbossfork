@@ -13,8 +13,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 
 public class mainVista {
+
+    @FXML
+    private Label labelVida;
+    @FXML
+    private Label labelDefensa;
+    @FXML
+    private Label labelAtaque;
 
     @FXML
     private AnchorPane contenedorPrincipal;
@@ -53,13 +61,23 @@ public class mainVista {
     public void initialize() {
         // contenedorPrincipal.heightProperty().addListener((observable, oldValue,
         // newValue) -> ajustarImagen());
-        // Listeners para actualizar progreso y controlar la suma
-        SliderVida.valueProperty()
-                .addListener((obs, oldVal, newVal) -> manejarCambioSlider(SliderVida, oldVal, newVal));
-        SliderAtaque.valueProperty()
-                .addListener((obs, oldVal, newVal) -> manejarCambioSlider(SliderAtaque, oldVal, newVal));
-        sliderDefensa.valueProperty()
-                .addListener((obs, oldVal, newVal) -> manejarCambioSlider(sliderDefensa, oldVal, newVal));
+        SliderVida.valueProperty().addListener((obs, oldVal, newVal) -> {
+            int valor = newVal.intValue();
+            labelVida.setText(String.valueOf(valor));
+            manejarCambioSlider(SliderVida, oldVal, newVal);
+        });
+    
+        SliderAtaque.valueProperty().addListener((obs, oldVal, newVal) -> {
+            int valor = newVal.intValue();
+            labelAtaque.setText(String.valueOf(valor));
+            manejarCambioSlider(SliderAtaque, oldVal, newVal);
+        });
+    
+        sliderDefensa.valueProperty().addListener((obs, oldVal, newVal) -> {
+            int valor = newVal.intValue();
+            labelDefensa.setText(String.valueOf(valor));
+            manejarCambioSlider(sliderDefensa, oldVal, newVal);
+        });
 
         if (nombrePersonaje != null) {
             nombrePersonaje.textProperty().addListener((observable, oldValue, newValue) -> actualizarProtagonista());
@@ -67,7 +85,6 @@ public class mainVista {
         }
 
         botonJugar.setOnAction(event -> {
-            // Carga la escena secundaria cuando el botón es presionado
             SceneManager.getInstance().loadScene(SceneID.JUEGO);
         });
     }
@@ -76,11 +93,8 @@ public class mainVista {
         int vida = (int) SliderVida.getValue();
         int ataque = (int) SliderAtaque.getValue();
         int defensa = (int) sliderDefensa.getValue();
-
         int total = vida + ataque + defensa;
-
         if (total > MAX_PUNTOS) {
-            // Si supera el máximo, revertimos el cambio en este slider
             sliderModificado.setValue(oldVal.doubleValue());
         } else {
             actualizarProgreso();
@@ -105,7 +119,7 @@ public class mainVista {
         int ataque = (int) SliderAtaque.getValue();
         int defensa = (int) sliderDefensa.getValue();
         int atributos = (int) Math.round(porcentajeAtributos.getProgress() * MAX_PUNTOS);
-        int nivel = 1; // Asignar un valor inicial para el nivel, si es necesario
+        int nivel = 1;
 
         Protagonista protagonista = new Protagonista(nombre, vida, ataque, defensa, atributos, nivel);
         Proveedor.getInstance().setProtagonista(protagonista);
