@@ -86,24 +86,25 @@ public class mainVista {
             manejarCambioSlider(sliderDefensa, oldVal, newVal);
         });
 
-        
-
         if (nombrePersonaje != null) {
             nombrePersonaje.textProperty().addListener((observable, oldValue, newValue) -> actualizarProtagonista());
             actualizarProtagonista();
         }
 
         botonJugar.setOnAction(event -> {
-
+            actualizarProtagonista(); // <--- Añadir esta línea antes de cambiar de escena
             SceneManager.getInstance().loadScene(SceneID.JUEGO);
+            VistaJuego controlador = (VistaJuego) SceneManager.getInstance().getController(SceneID.JUEGO);
+            if (controlador != null) {
+                controlador.actualizarDatosProtagonista();
+            }
         });
 
         fondoImagen.setStyle(
-            "-fx-background-image: url('/images/fondo2(1).jpg');" +
-            "-fx-background-size: cover;" +
-            "-fx-background-repeat: no-repeat;" +
-            "-fx-background-position: center center;"
-        );
+                "-fx-background-image: url('/images/fondo2(1).jpg');" +
+                        "-fx-background-size: cover;" +
+                        "-fx-background-repeat: no-repeat;" +
+                        "-fx-background-position: center center;");
     }
 
     private void manejarCambioSlider(Slider sliderModificado, Number oldVal, Number newVal) {
@@ -132,9 +133,9 @@ public class mainVista {
 
     private void actualizarProtagonista() {
         String nombre = nombrePersonaje.getText();
-        int vida = (int) SliderVida.getValue();
-        int ataque = (int) SliderAtaque.getValue();
-        int defensa = (int) sliderDefensa.getValue();
+        int vida = Integer.parseInt(labelVida.getText());
+        int ataque = Integer.parseInt(labelAtaque.getText());
+        int defensa = Integer.parseInt(labelDefensa.getText());
         int atributos = (int) Math.round(porcentajeAtributos.getProgress() * MAX_PUNTOS);
         int nivel = 1;
 

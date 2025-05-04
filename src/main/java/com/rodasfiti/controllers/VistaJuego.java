@@ -32,29 +32,17 @@ public class VistaJuego {
     public void initialize() {
 
         actualizarDatosProtagonista();
-        Path rutaMapa = Paths.get("src/main/resources/com/rodasfiti/data/mapa.csv");
-        Escenario escenario = Escenario.cargarDesdeCSV(rutaMapa);
-
-        if (escenario != null) {
-
-            for (char[] fila : escenario.getMapa()) {
-                System.out.println(java.util.Arrays.toString(fila));
-            }
-            mostrarMapa(escenario, mapa);
-        } else {
-            System.out.println("Error al cargar el mapa.");
-        }
 
     }
 
     public void actualizarDatosProtagonista() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
-        if (protagonista != null) {
-            vida.setText(String.valueOf(protagonista.getVida()));
-            ataque.setText(String.valueOf(protagonista.getAtaque()));
-            escudo.setText(String.valueOf(protagonista.getDefensa()));
-            nivel.setText(String.valueOf(protagonista.getNivel()));
-        }
+
+        vida.setText(String.valueOf(protagonista.getVida()));
+        ataque.setText(String.valueOf(protagonista.getAtaque()));
+        escudo.setText(String.valueOf(protagonista.getDefensa()));
+        nivel.setText(String.valueOf(protagonista.getNivel()));
+
     }
 
     public void mostrarMapa(Escenario escenario, GridPane gridPane) {
