@@ -1,5 +1,6 @@
 package com.rodasfiti.controllers;
 
+<<<<<<< HEAD
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,8 +11,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.rodasfiti.model.Escenario;
+=======
+>>>>>>> origin/Developer
 import com.rodasfiti.model.Protagonista;
 import com.rodasfiti.model.Proveedor;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
 public class VistaJuego {
 
@@ -44,16 +49,17 @@ public class VistaJuego {
         }
 
     }
-
+    
     public void actualizarDatosProtagonista() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
-        String vida2 = String.valueOf(protagonista.getVida());
-        vida.setText(vida2);
-        escudo.setText(String.valueOf(protagonista.getDefensa()));
-        ataque.setText(String.valueOf(protagonista.getAtaque()));
-        nivel.setText(String.valueOf(protagonista.getNivel()));
-
+        if (protagonista != null) {
+            vida.setText(String.valueOf(protagonista.getVida()));
+            ataque.setText(String.valueOf(protagonista.getAtaque()));
+            escudo.setText(String.valueOf(protagonista.getDefensa()));
+            nivel.setText(String.valueOf(protagonista.getNivel()));
+        }
     }
+<<<<<<< HEAD
 
     public void mostrarMapa(Escenario escenario, GridPane gridPane) {
         char[][] mapa = escenario.getMapa();
@@ -79,4 +85,6 @@ public class VistaJuego {
         }
     }
 
+=======
+>>>>>>> origin/Developer
 }

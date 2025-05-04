@@ -1,5 +1,6 @@
-.anchor-pane-background {
-    -fx-background-image: url("images/fondo.jpg");
-    -fx-background-size: cover;
-    -fx-background-repeat: no-repeat;
+.fondoImagen{
+    background-image: url("imagenes/fondo2(1).png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 }

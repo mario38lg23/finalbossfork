@@ -2,6 +2,7 @@ package com.rodasfiti.controllers;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 
 import com.rodasfiti.SceneID;
 import com.rodasfiti.SceneManager;
@@ -58,6 +59,9 @@ public class mainVista {
     @FXML
     private Button botonJugar;
 
+    @FXML
+    private StackPane fondoImagen;
+
     private static final int MAX_PUNTOS = 15;
 
     @FXML
@@ -82,6 +86,8 @@ public class mainVista {
             manejarCambioSlider(sliderDefensa, oldVal, newVal);
         });
 
+        
+
         if (nombrePersonaje != null) {
             nombrePersonaje.textProperty().addListener((observable, oldValue, newValue) -> actualizarProtagonista());
             actualizarProtagonista();
@@ -91,6 +97,13 @@ public class mainVista {
 
             SceneManager.getInstance().loadScene(SceneID.JUEGO);
         });
+
+        fondoImagen.setStyle(
+            "-fx-background-image: url('/images/fondo2(1).jpg');" +
+            "-fx-background-size: cover;" +
+            "-fx-background-repeat: no-repeat;" +
+            "-fx-background-position: center center;"
+        );
     }
 
     private void manejarCambioSlider(Slider sliderModificado, Number oldVal, Number newVal) {
