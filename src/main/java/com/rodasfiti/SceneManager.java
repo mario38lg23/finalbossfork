@@ -50,8 +50,10 @@ public class SceneManager {
             URL url = App.class.getResource("views/" + fxml + ".fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(url);
             Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, screenWidth * 0.7, screenHeight * 0.7);
-            if (styles != null) scene.getStylesheets().add(styles.toExternalForm());
+            Scene scene = new Scene(root, screenWidth*0.7, screenHeight*0.7);
+            if (styles != null)
+                scene.getStylesheets().add(styles.toExternalForm());
+            scenes.put(sceneID, scene);
             loaders.put(sceneID, fxmlLoader);
             scenes.put(sceneID, scene);
         } catch (IOException e) {
