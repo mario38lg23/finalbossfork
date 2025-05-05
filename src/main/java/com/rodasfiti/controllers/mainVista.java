@@ -1,8 +1,14 @@
 package com.rodasfiti.controllers;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.scene.media.Media;
+
+import java.net.URL;
 
 import com.rodasfiti.SceneID;
 import com.rodasfiti.SceneManager;
@@ -29,6 +35,7 @@ public class mainVista {
 
     @FXML
     private AnchorPane contenedorPrincipal;
+
     @FXML
     private ImageView imagePersonaje;
 
@@ -60,14 +67,21 @@ public class mainVista {
     private Button botonJugar;
 
     @FXML
+    private MediaView musica;
+
+    @FXML
+    private MediaPlayer mediaPlayer;  // El campo de la clase
+
+    @FXML
     private StackPane fondoImagen;
+
+    @FXML
+    private ImageView fondoCastillo;
 
     private static final int MAX_PUNTOS = 15;
 
     @FXML
     public void initialize() {
-        // contenedorPrincipal.heightProperty().addListener((observable, oldValue,
-        // newValue) -> ajustarImagen());
         SliderVida.valueProperty().addListener((obs, oldVal, newVal) -> {
             int valor = newVal.intValue();
             labelVida.setText(String.valueOf(valor));
@@ -90,23 +104,41 @@ public class mainVista {
             nombrePersonaje.textProperty().addListener((observable, oldValue, newValue) -> actualizarProtagonista());
             actualizarProtagonista();
         }
-
         botonJugar.setOnAction(event -> {
-            actualizarProtagonista(); // <--- Añadir esta línea antes de cambiar de escena
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();  // Detener la música al cambiar de escena
+            }
+            actualizarProtagonista();  // Actualizar los datos del protagonista
             SceneManager.getInstance().loadScene(SceneID.JUEGO);
             VistaJuego controlador = (VistaJuego) SceneManager.getInstance().getController(SceneID.JUEGO);
             if (controlador != null) {
                 controlador.actualizarDatosProtagonista();
             }
         });
-
-        fondoImagen.setStyle(
-                "-fx-background-image: url('/images/fondo2(1).jpg');" +
-                        "-fx-background-size: cover;" +
-                        "-fx-background-repeat: no-repeat;" +
-                        "-fx-background-position: center center;");
+        cargarMusica();  // Cargar y reproducir la música de fondo
     }
-
+    private void cargarMusica() {
+        try {
+            // Ruta fija (recomendado si sabes el nombre del archivo)
+            String rutaAudio = "/com/rodasfiti/media/Lord_of_the_Rings_Sound_of_The_Shire.mp3";
+        
+            URL url = getClass().getResource(rutaAudio);
+        
+            if (url == null) {
+                System.err.println("Archivo de audio no encontrado: " + rutaAudio);
+            } else {
+                Media media = new Media(url.toExternalForm());
+                this.mediaPlayer = new MediaPlayer(media);  // Asignamos la instancia de MediaPlayer al campo
+                musica.setMediaPlayer(this.mediaPlayer);  // Usamos el mediaPlayer de la clase
+                this.mediaPlayer.setAutoPlay(true);
+                this.mediaPlayer.setVolume(0.6);
+                this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                this.mediaPlayer.play();
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar audio: " + e.getMessage());
+        }
+    }
     private void manejarCambioSlider(Slider sliderModificado, Number oldVal, Number newVal) {
         int vida = (int) SliderVida.getValue();
         int ataque = (int) SliderAtaque.getValue();
@@ -142,38 +174,5 @@ public class mainVista {
         Protagonista protagonista = new Protagonista(nombre, vida, ataque, defensa, atributos, nivel);
         Proveedor.getInstance().setProtagonista(protagonista);
     }
-
-    /*
-     * private void ajustarImagen() {
-     * ajustarImagenIndividual(imagePersonaje);
-     * ajustarImagenIndividual(imageAtaque);
-     * ajustarImagenIndividual(imageVida);
-     * ajustarImagenIndividual(imageDefensa);
-     * }
-     * 
-     * private void ajustarImagenIndividual(ImageView imagenView) {
-     * if (imagenView.getImage() == null) {
-     * return;
-     * }
-     * double contenedorHeight = contenedorPrincipal.getHeight();
-     * double contenedorWidth = contenedorPrincipal.getWidth();
-     * 
-     * double imageWidth = imagenView.getImage().getWidth();
-     * double imageHeight = imagenView.getImage().getHeight();
-     * double imageAspectRatio = imageWidth / imageHeight;
-     * 
-     * double maxWidth = contenedorWidth * 0.3; // Ajusta el % máximo que puede
-     * ocupar
-     * double maxHeight = contenedorHeight * 0.3;
-     * 
-     * if (maxWidth / imageAspectRatio <= maxHeight) {
-     * imagenView.setFitWidth(maxWidth);
-     * imagenView.setFitHeight(maxWidth / imageAspectRatio);
-     * } else {
-     * imagenView.setFitHeight(maxHeight);
-     * imagenView.setFitWidth(maxHeight * imageAspectRatio);
-     * }
-     * }
-     */
 
 }

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
@@ -11,27 +20,39 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="contenedorPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rodasfiti.controllers.mainVista">
+<StackPane id="fondoImagen" fx:id="fondoImagen" prefHeight="720.0" prefWidth="1280.0" styleClass="fondoImagen" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rodasfiti.controllers.mainVista">
    <children>
-      <TextField fx:id="nombrePersonaje" layoutX="40.0" layoutY="40.0" text="Nombre Personaje" />
+      <ImageView fx:id="fondoCastillo" fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <GaussianBlur radius="0.0" />
+         </effect>
+         <image>
+            <Image url="@../images/fondoCastillo.png" />
+         </image></ImageView>
+      <AnchorPane fx:id="contenedorPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">
+      <children>
+      <TextField fx:id="nombrePersonaje" layoutX="215.0" layoutY="40.0" promptText="Nombre Personaje">
+               <font>
+                  <Font size="17.0" />
+               </font></TextField>
       <ImageView fx:id="imagePersonaje" fitHeight="596.0" fitWidth="560.0" layoutX="40.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/caballero.png" />
          </image>
       </ImageView>
-      <Label layoutX="760.0" layoutY="60.0" prefHeight="25.0" prefWidth="400.0" text="Aqui deberas seleccionar los atributos de tu personaje:">
+      <Label layoutX="760.0" layoutY="60.0" prefHeight="25.0" prefWidth="400.0" text="Aqui deberas seleccionar los atributos de tu personaje:" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label layoutX="800.0" layoutY="475.0" prefHeight="25.0" prefWidth="172.0" text="Recuerda que solo tienes">
+      <Label layoutX="800.0" layoutY="475.0" prefHeight="25.0" prefWidth="172.0" text="Recuerda que solo tienes" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label layoutX="800.0" layoutY="130.0" prefHeight="25.0" prefWidth="120.0" text="Vida">
+      <Label layoutX="800.0" layoutY="130.0" prefHeight="25.0" prefWidth="120.0" text="Vida" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Slider fx:id="SliderVida" blockIncrement="1.0" layoutX="800.0" layoutY="170.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="60.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Slider fx:id="SliderVida" blockIncrement="1.0" layoutX="800.0" layoutY="170.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="44.0" prefWidth="140.0" showTickMarks="true" snapToTicks="true" />
       <ImageView fx:id="imageVida" fitHeight="100.0" fitWidth="100.0" layoutX="1000.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/corazon.png" />
@@ -42,8 +63,8 @@
             <Image url="@../images/escudo.png" />
          </image>
       </ImageView>
-      <Slider fx:id="sliderDefensa" blockIncrement="1.0" layoutX="800.0" layoutY="270.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="60.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-      <Label layoutX="800.0" layoutY="230.0" prefHeight="25.0" prefWidth="120.0" text="Desfensa">
+      <Slider fx:id="sliderDefensa" blockIncrement="1.0" layoutX="800.0" layoutY="270.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="44.0" prefWidth="140.0" showTickMarks="true" snapToTicks="true" />
+      <Label layoutX="800.0" layoutY="230.0" prefHeight="25.0" prefWidth="120.0" text="Desfensa" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font></Label>
@@ -52,25 +73,34 @@
             <Image url="@../images/espada.png" />
          </image>
       </ImageView>
-      <Slider fx:id="SliderAtaque" blockIncrement="1.0" layoutX="800.0" layoutY="370.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="60.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-      <Label layoutX="800.0" layoutY="330.0" prefHeight="25.0" prefWidth="120.0" text="Ataque">
+      <Slider fx:id="SliderAtaque" blockIncrement="1.0" layoutX="800.0" layoutY="370.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="44.0" prefWidth="140.0" showTickMarks="true" snapToTicks="true" />
+      <Label layoutX="800.0" layoutY="330.0" prefHeight="25.0" prefWidth="120.0" text="Ataque" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="1000.0" layoutY="450.0" prefHeight="100.0" prefWidth="100.0" progress="0.0" />
-      <Label layoutX="800.0" layoutY="450.0" prefHeight="25.0" prefWidth="120.0" text="Atributos">
+      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="1000.0" layoutY="450.0" prefHeight="100.0" prefWidth="100.0" progress="0.0">
+               <effect>
+                  <InnerShadow />
+               </effect></ProgressIndicator>
+      <Label layoutX="800.0" layoutY="450.0" prefHeight="25.0" prefWidth="120.0" text="Atributos" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Button fx:id="botonJugar" layoutX="865.0" layoutY="600.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Jugar" />
-      <Label layoutX="800.0" layoutY="494.0" prefHeight="25.0" prefWidth="172.0" text="15 puntos a repartir.">
+      <Button fx:id="botonJugar" layoutX="865.0" layoutY="600.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Jugar">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+      <Label layoutX="800.0" layoutY="494.0" prefHeight="25.0" prefWidth="172.0" text="15 puntos a repartir." textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="labelVida" layoutX="945.0" layoutY="175.0" prefHeight="25.0" prefWidth="30.0" text="0" />
-      <Label fx:id="labelDefensa" layoutX="945.0" layoutY="275.0" prefHeight="25.0" prefWidth="30.0" text="0" />
-      <Label fx:id="labelAtaque" layoutX="945.0" layoutY="375.0" prefHeight="25.0" prefWidth="30.0" text="0" />
-      <StackPane id="fondoImagen" fx:id="fondoImagen" prefHeight="720.0" prefWidth="1280.0" visible="false" />
+      <Label fx:id="labelVida" layoutX="945.0" layoutY="175.0" prefHeight="25.0" prefWidth="30.0" text="0" textFill="WHITE" />
+      <Label fx:id="labelDefensa" layoutX="945.0" layoutY="275.0" prefHeight="25.0" prefWidth="30.0" text="0" textFill="WHITE" />
+      <Label fx:id="labelAtaque" layoutX="945.0" layoutY="375.0" prefHeight="25.0" prefWidth="30.0" text="0" textFill="WHITE" />
+      
+      <MediaView fx:id="musica" fitHeight="200.0" fitWidth="200.0" layoutX="552.0" layoutY="6.0" visible="false" />
    </children>
-</AnchorPane>
+   </AnchorPane>
+   </children>
+</StackPane>

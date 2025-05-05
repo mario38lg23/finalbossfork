@@ -5,6 +5,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.scene.media.Media;
+
+import java.net.URL;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,6 +31,8 @@ public class VistaJuego {
     @FXML
     private Label nivel;
     @FXML
+    private Label nombrePersonaje;
+    @FXML
     private GridPane mapa;
 
     @FXML
@@ -37,7 +44,7 @@ public class VistaJuego {
 
     public void actualizarDatosProtagonista() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
-
+        nombrePersonaje.setText(protagonista.getNombre());
         vida.setText(String.valueOf(protagonista.getVida()));
         ataque.setText(String.valueOf(protagonista.getAtaque()));
         escudo.setText(String.valueOf(protagonista.getDefensa()));

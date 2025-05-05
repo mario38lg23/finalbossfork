@@ -20,6 +20,16 @@
             <artifactId>javafx-fxml</artifactId>
             <version>13</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>13</version> <!-- Usa la misma versión que tus otras dependencias JavaFX -->
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>13</version> <!-- Usa la misma versión que los otros módulos JavaFX -->
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -49,3 +59,4 @@
         </plugins>
     </build>
 </project>
+
