@@ -6,12 +6,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import com.rodasfiti.interfaces.Observer;
 import com.rodasfiti.model.Escenario;
+import com.rodasfiti.model.Personaje;
 import com.rodasfiti.model.Protagonista;
 import com.rodasfiti.model.Proveedor;
 
 
-public class VistaJuego {
+public class VistaJuego implements Observer{
 
     @FXML
     private Label vida;
@@ -23,14 +25,15 @@ public class VistaJuego {
     private Label nivel;
     @FXML
     private Label nombrePersonaje;
-    @FXML
-    private GridPane mapa;
+
+    GridPane mapa;
+    Personaje personaje;
 
     @FXML
     public void initialize() {
-
+        mapa = new GridPane();
         actualizarDatosProtagonista();
-
+        mostrarMapa(null, mapa);
     }
 
     public void actualizarDatosProtagonista() {
@@ -65,6 +68,12 @@ public class VistaJuego {
                 gridPane.add(imageView, col, fila);
             }
         }
+    }
+
+    @Override
+    public void onChange() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'onChange'");
     }
 
 }

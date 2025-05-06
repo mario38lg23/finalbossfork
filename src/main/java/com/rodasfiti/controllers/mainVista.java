@@ -8,7 +8,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.media.Media;
 
 import java.net.URL;
-
+import java.util.Observer;
 import com.rodasfiti.SceneID;
 import com.rodasfiti.SceneManager;
 import com.rodasfiti.model.Protagonista;
@@ -21,7 +21,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 
-public class mainVista {
+public class mainVista{
 
     @FXML
     private Label labelVida;
@@ -69,7 +69,7 @@ public class mainVista {
     private MediaView musica;
 
     @FXML
-    private MediaPlayer mediaPlayer;  // El campo de la clase
+    private MediaPlayer mediaPlayer;
 
     @FXML
     private StackPane fondoImagen;

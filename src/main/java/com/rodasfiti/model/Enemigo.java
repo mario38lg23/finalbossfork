@@ -6,7 +6,6 @@ public abstract class Enemigo{
     protected int ataque;
     protected int defensa;
     protected int atributos;
-
     public Enemigo(String nombre, int vida, int ataque, int defensa) {
         this.nombre = nombre;
         this.vida = vida;
