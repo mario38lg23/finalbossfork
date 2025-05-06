@@ -10,7 +10,7 @@ public abstract class Personaje {
     protected int vida;
     protected int ataque;
     protected int defensa;
-    protected int atributos;
+    protected int posicion;
     protected int nivel;
     protected static Random r = new Random();
 
@@ -18,13 +18,13 @@ public abstract class Personaje {
         this.observers = new ArrayList<>();
     }
 
-    public Personaje(String nombre, int vida, int ataque, int defensa, int atributos, int nivel) {
+    public Personaje(String nombre, int vida, int ataque, int defensa, int posicion, int nivel) {
         this.nombre = nombre;
         this.vida = vida;
         this.ataque = ataque;
         this.defensa = defensa;
         this.nivel = nivel;
-        this.atributos = vida + ataque + defensa;
+        this.posicion = posicion;
     }
 
     public void suscribe(Observer observer) {
@@ -81,16 +81,23 @@ public abstract class Personaje {
         }
     }
 
-    public int getAtributos() {
-        return this.atributos;
+
+    public ArrayList<Observer> getObservers() {
+        return this.observers;
     }
 
-    public void setAtributos(int atributos) {
-        if (getAtaque() + getDefensa() + getVida() == 15) {
-            this.atributos = atributos;
-            notifyObservers();
-        }
+    public void setObservers(ArrayList<Observer> observers) {
+        this.observers = observers;
     }
+
+    public int getPosicion() {
+        return this.posicion;
+    }
+
+    public void setPosicion(int posicion) {
+        this.posicion = posicion;
+    }
+    
 
     public int getNivel() {
         return nivel;
