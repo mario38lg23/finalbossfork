@@ -5,20 +5,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
-import javafx.scene.media.Media;
-
-import java.net.URL;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import com.rodasfiti.model.Escenario;
 import com.rodasfiti.model.Protagonista;
 import com.rodasfiti.model.Proveedor;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+
 
 public class VistaJuego {
 
