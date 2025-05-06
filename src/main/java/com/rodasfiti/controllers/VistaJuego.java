@@ -7,12 +7,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.ColumnConstraints;
 
 import com.rodasfiti.interfaces.Observer;
 import com.rodasfiti.model.Escenario;
-import com.rodasfiti.model.Personaje;
 import com.rodasfiti.model.Protagonista;
 import com.rodasfiti.model.Proveedor;
 
@@ -101,20 +98,21 @@ public class VistaJuego implements Observer{
                 String rutaImagen;
                 switch (mapa[fila][col]) {
                     case 'P':
-                        rutaImagen = "/com/rodasfiti/images/pared2.png";
+                        rutaImagen = "/com/rodasfiti/images/pared.png";
                         break;
                     case 'S':
-                        rutaImagen = "/com/rodasfiti/images/suelo2.png";
+                        rutaImagen = "/com/rodasfiti/images/suelo.png";
                         break;
                     default:
-                        rutaImagen = "/com/rodasfiti/images/suelo2.png"; 
+                        rutaImagen = "/com/rodasfiti/images/suelo.png"; 
                 }
 
                 Image image = cargarImagen(rutaImagen);
                 if (image != null) {
                     ImageView imageView = new ImageView(image);
-                    imageView.setFitWidth(96);
-                    imageView.setFitHeight(67);
+                    imageView.setFitWidth(110);
+                    imageView.setFitHeight(75);
+                    imageView.setPreserveRatio(false);
                     mainGrid.add(imageView, col, fila);
                 }
             }
@@ -128,5 +126,11 @@ public class VistaJuego implements Observer{
             System.err.println("No se pudo cargar la imagen: " + ruta);
             return null;
         }
+    }
+
+    @Override
+    public void onChange() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'onChange'");
     }
 }
