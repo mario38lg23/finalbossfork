@@ -81,7 +81,6 @@ public abstract class Personaje {
         }
     }
 
-
     public ArrayList<Observer> getObservers() {
         return this.observers;
     }
@@ -97,7 +96,6 @@ public abstract class Personaje {
     public void setPosicion(int posicion) {
         this.posicion = posicion;
     }
-    
 
     public int getNivel() {
         return nivel;

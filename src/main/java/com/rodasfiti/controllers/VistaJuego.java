@@ -18,8 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-
-public class VistaJuego implements Observer{
+public class VistaJuego implements Observer {
 
     @FXML
     private Label vida;
@@ -104,13 +103,13 @@ public class VistaJuego implements Observer{
                         rutaImagen = "/com/rodasfiti/images/suelo.png";
                         break;
                     default:
-                        rutaImagen = "/com/rodasfiti/images/suelo.png"; 
+                        rutaImagen = "/com/rodasfiti/images/suelo.png";
                 }
 
                 Image image = cargarImagen(rutaImagen);
                 if (image != null) {
                     ImageView imageView = new ImageView(image);
-                    imageView.setFitWidth(110);
+                    imageView.setFitWidth(109);
                     imageView.setFitHeight(75);
                     imageView.setPreserveRatio(false);
                     mainGrid.add(imageView, col, fila);

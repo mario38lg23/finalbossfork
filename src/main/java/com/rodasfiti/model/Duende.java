@@ -2,8 +2,8 @@ package com.rodasfiti.model;
 
 public class Duende extends Enemigo {
 
-    public Duende(String nombre, int vida, int ataque, int defensa) {
-        super(nombre, vida, ataque, defensa);
+    public Duende(String nombre, int vida, int ataque, int defensa, int percepcion, int velocidad) {
+        super(nombre, vida, ataque, defensa, percepcion, velocidad);
     }
 
     @Override
