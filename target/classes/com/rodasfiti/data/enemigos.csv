@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 tipo,nivel,ataque,defensa,vida,velocidad,percepcion
 Duende,1,1,1,1,2,3
 Esqueleto,3,3,3,3,3,4
 Orco,5,5,5,5,1,5
+=======
+tipo,nivel,ataque,escudo,vida,velocidad
+Duende,1,1,1,1,1
+Esqueleto,3,3,3,3,3
+Orco,5,5,5,5,5
+>>>>>>> 168b86fc99e1307e8b1afaa9a78690d8353c5c3a

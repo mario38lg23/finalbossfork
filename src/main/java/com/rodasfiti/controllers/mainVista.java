@@ -8,7 +8,6 @@ import javafx.scene.media.MediaView;
 import javafx.scene.media.Media;
 
 import java.net.URL;
-import java.util.Observer;
 import com.rodasfiti.SceneID;
 import com.rodasfiti.SceneManager;
 import com.rodasfiti.model.Protagonista;
@@ -33,6 +32,9 @@ public class mainVista{
     private Label labelAtaque;
 
     @FXML
+    private Label labelVelocidad;
+
+    @FXML
     private AnchorPane contenedorPrincipal;
 
     @FXML
@@ -48,7 +50,7 @@ public class mainVista{
     private ImageView imageDefensa;
 
     @FXML
-    private Slider sliderDefensa;
+    private Slider SliderDefensa;
 
     @FXML
     private ImageView imageAtaque;
@@ -58,6 +60,9 @@ public class mainVista{
 
     @FXML
     private Slider SliderAtaque;
+
+    @FXML
+    private Slider SliderVelocidad;
 
     @FXML
     private ProgressIndicator porcentajeAtributos;
@@ -81,7 +86,7 @@ public class mainVista{
     @FXML
     private Label labelVelocidad;
 
-    private static final int MAX_PUNTOS = 15;
+    private static final int MAX_PUNTOS = 20;
 
     @FXML
     public void initialize() {
@@ -97,10 +102,16 @@ public class mainVista{
             manejarCambioSlider(SliderAtaque, oldVal, newVal);
         });
 
-        sliderDefensa.valueProperty().addListener((obs, oldVal, newVal) -> {
+        SliderDefensa.valueProperty().addListener((obs, oldVal, newVal) -> {
             int valor = newVal.intValue();
             labelDefensa.setText(String.valueOf(valor));
-            manejarCambioSlider(sliderDefensa, oldVal, newVal);
+            manejarCambioSlider(SliderDefensa, oldVal, newVal);
+        });
+
+        SliderVelocidad.valueProperty().addListener((obs, oldVal, newVal) -> {
+            int valor = newVal.intValue();
+            labelVelocidad.setText(String.valueOf(valor));
+            manejarCambioSlider(SliderDefensa, oldVal, newVal);
         });
 
         if (nombrePersonaje != null) {
@@ -145,8 +156,9 @@ public class mainVista{
     private void manejarCambioSlider(Slider sliderModificado, Number oldVal, Number newVal) {
         int vida = (int) SliderVida.getValue();
         int ataque = (int) SliderAtaque.getValue();
-        int defensa = (int) sliderDefensa.getValue();
-        int total = vida + ataque + defensa;
+        int defensa = (int) SliderDefensa.getValue();
+        int velocidad = (int) SliderVelocidad.getValue();
+        int total = vida + ataque + defensa + velocidad;
         if (total > MAX_PUNTOS) {
             sliderModificado.setValue(oldVal.doubleValue());
         } else {
@@ -158,9 +170,10 @@ public class mainVista{
     private void actualizarProgreso() {
         int vida = (int) SliderVida.getValue();
         int ataque = (int) SliderAtaque.getValue();
-        int defensa = (int) sliderDefensa.getValue();
+        int defensa = (int) SliderDefensa.getValue();
+        int velocidad = (int) SliderVelocidad.getValue();
 
-        int total = vida + ataque + defensa;
+        int total = vida + ataque + defensa + velocidad;
         double progreso = Math.min(total, MAX_PUNTOS) / (double) MAX_PUNTOS;
 
         porcentajeAtributos.setProgress(progreso);
@@ -171,10 +184,11 @@ public class mainVista{
         int vida = Integer.parseInt(labelVida.getText());
         int ataque = Integer.parseInt(labelAtaque.getText());
         int defensa = Integer.parseInt(labelDefensa.getText());
+        int velocidad = Integer.parseInt(labelVelocidad.getText());
         int atributos = (int) Math.round(porcentajeAtributos.getProgress() * MAX_PUNTOS);
         int nivel = 1;
 
-        Protagonista protagonista = new Protagonista(nombre, vida, ataque, defensa, atributos, nivel);
+        Protagonista protagonista = new Protagonista(nombre, vida, ataque, defensa, atributos, nivel, velocidad);
         Proveedor.getInstance().setProtagonista(protagonista);
     }
 
