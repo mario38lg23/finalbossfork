@@ -12,25 +12,25 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rodasfiti.controllers.VistaJuego">
    <children>
       <AnchorPane fx:id="contenedorMapa" layoutX="10.0" layoutY="10.0" prefHeight="697.0" prefWidth="997.0" style="-fx-border-color: black;" />
-      <AnchorPane layoutX="1006.0" layoutY="10.0" prefHeight="202.0" prefWidth="265.0" style="-fx-border-color: black;">
+      <AnchorPane layoutX="1006.0" layoutY="10.0" prefHeight="222.0" prefWidth="265.0" style="-fx-border-color: black;">
          <children>
-            <Label fx:id="nivel" alignment="CENTER" layoutX="30.0" layoutY="20.0" prefHeight="20.0" prefWidth="40.0" style="-fx-border-color: black;" text="0" />
-            <Label fx:id="vida" alignment="CENTER" layoutX="30.0" layoutY="65.0" prefHeight="20.0" prefWidth="40.0" style="-fx-border-color: black;" text="0" />
-            <Label fx:id="escudo" alignment="CENTER" layoutX="30.0" layoutY="110.0" prefHeight="20.0" prefWidth="40.0" style="-fx-border-color: black;" text="0" />
-            <Label fx:id="ataque" alignment="CENTER" layoutX="30.0" layoutY="155.0" prefHeight="20.0" prefWidth="40.0" style="-fx-border-color: black;" text="0" />
-            <ImageView fx:id="fotoNivel" fitHeight="30.0" fitWidth="30.0" layoutX="90.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+            <Label fx:id="nivel" alignment="CENTER" layoutX="30.0" layoutY="15.0" prefHeight="20.0" prefWidth="40.0" style="-fx-border-color: black;" text="0" />
+            <Label fx:id="vida" alignment="CENTER" layoutX="30.0" layoutY="55.0" prefHeight="20.0" prefWidth="40.0" style="-fx-border-color: black;" text="0" />
+            <Label fx:id="escudo" alignment="CENTER" layoutX="30.0" layoutY="95.0" prefHeight="20.0" prefWidth="40.0" style="-fx-border-color: black;" text="0" />
+            <Label fx:id="ataque" alignment="CENTER" layoutX="30.0" layoutY="135.0" prefHeight="20.0" prefWidth="40.0" style="-fx-border-color: black;" text="0" />
+            <ImageView fx:id="fotoNivel" fitHeight="30.0" fitWidth="30.0" layoutX="90.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/nivel.png" />
                </image></ImageView>
-            <ImageView fx:id="fotoVida" fitHeight="50.0" fitWidth="50.0" layoutX="80.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="fotoVida" fitHeight="45.0" fitWidth="45.0" layoutX="80.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/corazon.png" />
                </image></ImageView>
-            <ImageView fx:id="fotoEscudo" fitHeight="40.0" fitWidth="40.0" layoutX="82.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="fotoEscudo" fitHeight="35.0" fitWidth="35.0" layoutX="83.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/escudo.png" />
                </image></ImageView>
-            <ImageView fx:id="fotoAtaque" fitHeight="40.0" fitWidth="40.0" layoutX="82.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="fotoAtaque" fitHeight="35.0" fitWidth="35.0" layoutX="83.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/espada.png" />
                </image></ImageView>
@@ -40,9 +40,15 @@
                </image>
             </ImageView>
             <Label fx:id="nombrePersonaje" layoutX="133.0" layoutY="15.0" prefHeight="29.0" prefWidth="128.0" text="NombrePersonaje" />
+            <ImageView fx:id="fotoAtaque1" fitHeight="35.0" fitWidth="35.0" layoutX="83.0" layoutY="170.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/espada.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="velocidad" alignment="CENTER" layoutX="30.0" layoutY="175.0" prefHeight="20.0" prefWidth="40.0" style="-fx-border-color: black;" text="0" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="1006.0" layoutY="211.0" prefHeight="221.0" prefWidth="265.0" style="-fx-border-color: black;">
+      <AnchorPane layoutX="1006.0" layoutY="231.0" prefHeight="201.0" prefWidth="265.0" style="-fx-border-color: black;">
          <children>
             <Label fx:id="Enemigos" alignment="CENTER" layoutX="23.0" layoutY="5.0" style="-fx-underline: true;" text="Enemigos" />
             <Label fx:id="duendes" alignment="CENTER" layoutX="15.0" layoutY="37.0" prefHeight="18.0" prefWidth="68.0" text="Duendes:0" />

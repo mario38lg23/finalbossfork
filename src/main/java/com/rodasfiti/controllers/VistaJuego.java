@@ -24,6 +24,9 @@ public class VistaJuego implements Observer {
     private Label vida;
 
     @FXML
+    private Label velocidad;
+
+    @FXML
     private Label escudo;
 
     @FXML
@@ -42,7 +45,7 @@ public class VistaJuego implements Observer {
 
     @FXML
     public void initialize() {
-        actualizarDatosProtagonista();
+        //actualizarDatosProtagonista();
         mainGrid = new GridPane();
         mainGrid.setPadding(new Insets(10));
         mainGrid.setHgap(0);
@@ -69,6 +72,7 @@ public class VistaJuego implements Observer {
         vida.setText(String.valueOf(protagonista.getVida()));
         ataque.setText(String.valueOf(protagonista.getAtaque()));
         escudo.setText(String.valueOf(protagonista.getDefensa()));
+        velocidad.setText(String.valueOf(protagonista.getVelocidad()));
         nivel.setText(String.valueOf(protagonista.getNivel()));
     }
 
@@ -115,13 +119,8 @@ public class VistaJuego implements Observer {
                 Image image = cargarImagen(rutaImagen);
                 if (image != null) {
                     ImageView imageView = new ImageView(image);
-<<<<<<< HEAD
-                    imageView.setFitWidth(109);
-                    imageView.setFitHeight(75);
-=======
                     imageView.setFitWidth(anchoCelda);
                     imageView.setFitHeight(altoCelda);
->>>>>>> 168b86fc99e1307e8b1afaa9a78690d8353c5c3a
                     imageView.setPreserveRatio(false);
                     mainGrid.add(imageView, col, fila);
                 }

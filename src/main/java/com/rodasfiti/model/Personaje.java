@@ -26,7 +26,7 @@ public abstract class Personaje {
         this.defensa = defensa;
         this.nivel = nivel;
         this.posicion = posicion;
-        this.velocidad=velocidad;
+        this.velocidad= velocidad;
     }
 
     public void suscribe(Observer observer) {
@@ -81,6 +81,14 @@ public abstract class Personaje {
             this.defensa = defensa;
             notifyObservers();
         }
+    }
+
+    public int getVelocidad() {
+        return this.velocidad;
+    }
+
+    public void setVelocidad(int velocidad) {
+        this.velocidad = velocidad;
     }
 
     public ArrayList<Observer> getObservers() {

@@ -81,10 +81,7 @@ public class mainVista{
 
     @FXML
     private ImageView fondoCastillo;
-    @FXML
-    private Slider sliderVelocidad;
-    @FXML
-    private Label labelVelocidad;
+    
 
     private static final int MAX_PUNTOS = 20;
 
@@ -113,14 +110,13 @@ public class mainVista{
             labelVelocidad.setText(String.valueOf(valor));
             manejarCambioSlider(SliderDefensa, oldVal, newVal);
         });
-
         if (nombrePersonaje != null) {
             nombrePersonaje.textProperty().addListener((observable, oldValue, newValue) -> actualizarProtagonista());
             actualizarProtagonista();
         }
-        botonJugar.setOnAction(event -> {
+       botonJugar.setOnAction(event -> {
             if (mediaPlayer != null) {
-                mediaPlayer.stop();  // Detener la música al cambiar de escena
+                mediaPlayer.stop();
             }
             actualizarProtagonista();  // Actualizar los datos del protagonista
             SceneManager.getInstance().loadScene(SceneID.JUEGO);
@@ -129,6 +125,7 @@ public class mainVista{
                 controlador.actualizarDatosProtagonista();
             }
         });
+        
         cargarMusica();  // Cargar y reproducir la música de fondo
     }
     private void cargarMusica() {
