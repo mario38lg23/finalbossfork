@@ -76,6 +76,10 @@ public class mainVista{
 
     @FXML
     private ImageView fondoCastillo;
+    @FXML
+    private Slider sliderVelocidad;
+    @FXML
+    private Label labelVelocidad;
 
     private static final int MAX_PUNTOS = 15;
 
