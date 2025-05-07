@@ -92,9 +92,15 @@ public class VistaJuego implements Observer{
     private void mostrarMapa(Escenario escenario) {
         char[][] mapa = escenario.getMapa();
         mainGrid.getChildren().clear();
-
-        for (int fila = 0; fila < mapa.length; fila++) {
-            for (int col = 0; col < mapa[fila].length; col++) {
+    
+        int filas = mapa.length;
+        int columnas = mapa[0].length;  // Asumimos que todas las filas tienen el mismo tamaño
+    
+        int anchoCelda = 973 / columnas;
+        int altoCelda = 673 / filas;
+    
+        for (int fila = 0; fila < filas; fila++) {
+            for (int col = 0; col < columnas; col++) {
                 String rutaImagen;
                 switch (mapa[fila][col]) {
                     case 'P':
@@ -104,14 +110,14 @@ public class VistaJuego implements Observer{
                         rutaImagen = "/com/rodasfiti/images/suelo.png";
                         break;
                     default:
-                        rutaImagen = "/com/rodasfiti/images/suelo.png"; 
+                        rutaImagen = "/com/rodasfiti/images/suelo.png";
                 }
-
+    
                 Image image = cargarImagen(rutaImagen);
                 if (image != null) {
                     ImageView imageView = new ImageView(image);
-                    imageView.setFitWidth(110);
-                    imageView.setFitHeight(75);
+                    imageView.setFitWidth(anchoCelda);
+                    imageView.setFitHeight(altoCelda);
                     imageView.setPreserveRatio(false);
                     mainGrid.add(imageView, col, fila);
                 }
@@ -130,7 +136,6 @@ public class VistaJuego implements Observer{
 
     @Override
     public void onChange() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'onChange'");
     }
 }

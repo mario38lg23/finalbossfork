@@ -1,4 +1,4 @@
-tipo,nivel,ataque,escudo,vida
-Duende,1,1,1,1
-Esqueleto,3,3,3,3
-Orco,5,5,5,5.
+tipo,nivel,ataque,escudo,vida,velocidad
+Duende,1,1,1,1,1
+Esqueleto,3,3,3,3,3
+Orco,5,5,5,5,5
