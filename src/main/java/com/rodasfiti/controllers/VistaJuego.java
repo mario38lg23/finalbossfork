@@ -45,7 +45,7 @@ public class VistaJuego implements Observer {
 
     @FXML
     public void initialize() {
-        //actualizarDatosProtagonista();
+        // actualizarDatosProtagonista();
         mainGrid = new GridPane();
         mainGrid.setPadding(new Insets(10));
         mainGrid.setHgap(0);
@@ -95,13 +95,13 @@ public class VistaJuego implements Observer {
     private void mostrarMapa(Escenario escenario) {
         char[][] mapa = escenario.getMapa();
         mainGrid.getChildren().clear();
-    
+
         int filas = mapa.length;
-        int columnas = mapa[0].length;  // Asumimos que todas las filas tienen el mismo tamaño
-    
+        int columnas = mapa[0].length; // Asumimos que todas las filas tienen el mismo tamaño
+
         int anchoCelda = 973 / columnas;
         int altoCelda = 673 / filas;
-    
+
         for (int fila = 0; fila < filas; fila++) {
             for (int col = 0; col < columnas; col++) {
                 String rutaImagen;
@@ -115,7 +115,7 @@ public class VistaJuego implements Observer {
                     default:
                         rutaImagen = "/com/rodasfiti/images/suelo.png";
                 }
-    
+
                 Image image = cargarImagen(rutaImagen);
                 if (image != null) {
                     ImageView imageView = new ImageView(image);

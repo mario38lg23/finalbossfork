@@ -20,7 +20,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 
-public class mainVista{
+public class mainVista {
 
     @FXML
     private Label labelVida;
@@ -81,7 +81,6 @@ public class mainVista{
 
     @FXML
     private ImageView fondoCastillo;
-    
 
     private static final int MAX_PUNTOS = 20;
 
@@ -114,33 +113,34 @@ public class mainVista{
             nombrePersonaje.textProperty().addListener((observable, oldValue, newValue) -> actualizarProtagonista());
             actualizarProtagonista();
         }
-       botonJugar.setOnAction(event -> {
+        botonJugar.setOnAction(event -> {
             if (mediaPlayer != null) {
                 mediaPlayer.stop();
             }
-            actualizarProtagonista();  // Actualizar los datos del protagonista
+            actualizarProtagonista(); // Actualizar los datos del protagonista
             SceneManager.getInstance().loadScene(SceneID.JUEGO);
             VistaJuego controlador = (VistaJuego) SceneManager.getInstance().getController(SceneID.JUEGO);
             if (controlador != null) {
                 controlador.actualizarDatosProtagonista();
             }
         });
-        
-        cargarMusica();  // Cargar y reproducir la música de fondo
+
+        cargarMusica(); // Cargar y reproducir la música de fondo
     }
+
     private void cargarMusica() {
         try {
             // Ruta fija (recomendado si sabes el nombre del archivo)
             String rutaAudio = "/com/rodasfiti/media/Lord_of_the_Rings_Sound_of_The_Shire.mp3";
-        
+
             URL url = getClass().getResource(rutaAudio);
-        
+
             if (url == null) {
                 System.err.println("Archivo de audio no encontrado: " + rutaAudio);
             } else {
                 Media media = new Media(url.toExternalForm());
-                this.mediaPlayer = new MediaPlayer(media);  // Asignamos la instancia de MediaPlayer al campo
-                musica.setMediaPlayer(this.mediaPlayer);  // Usamos el mediaPlayer de la clase
+                this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
+                musica.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
                 this.mediaPlayer.setAutoPlay(true);
                 this.mediaPlayer.setVolume(0.6);
                 this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -150,6 +150,7 @@ public class mainVista{
             System.err.println("Error al cargar audio: " + e.getMessage());
         }
     }
+
     private void manejarCambioSlider(Slider sliderModificado, Number oldVal, Number newVal) {
         int vida = (int) SliderVida.getValue();
         int ataque = (int) SliderAtaque.getValue();
