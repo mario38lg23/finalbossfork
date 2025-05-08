@@ -72,7 +72,7 @@ public class VistaJuego implements Observer {
         }
 
         contenedorMapa.getChildren().add(mainGrid);
-        escucharTeclado();
+        mover();
 
     }
 
@@ -137,8 +137,7 @@ public class VistaJuego implements Observer {
         mainGrid.add(protagonistaView, posY, posX);
     }
 
-    // Escuchar teclas para mover al personaje
-    private void escucharTeclado() {
+    private void mover() {
         contenedorMapa.setFocusTraversable(true);
         contenedorMapa.requestFocus();
         contenedorMapa.setOnKeyPressed(this::moverProtagonista);
