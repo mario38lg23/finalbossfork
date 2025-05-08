@@ -5,6 +5,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
@@ -42,6 +44,12 @@ public class VistaJuego implements Observer {
     private AnchorPane contenedorMapa;
 
     private GridPane mainGrid;
+    private int posX = 1;
+    private int posY = 1;
+    private ImageView protagonistaView;
+    private Escenario escenario;
+    private int anchoCelda;
+    private int altoCelda;
 
     @FXML
     public void initialize() {
@@ -56,7 +64,7 @@ public class VistaJuego implements Observer {
         AnchorPane.setBottomAnchor(mainGrid, 0.0);
 
         // Cargar mapa desde CSV
-        Escenario escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapa.csv");
+        escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapa2.csv");
         if (escenario != null) {
             mostrarMapa(escenario);
         } else {
@@ -64,6 +72,8 @@ public class VistaJuego implements Observer {
         }
 
         contenedorMapa.getChildren().add(mainGrid);
+        escucharTeclado();
+
     }
 
     void actualizarDatosProtagonista() {
@@ -92,49 +102,98 @@ public class VistaJuego implements Observer {
         }
     }
 
-    private void mostrarMapa(Escenario escenario) {
-        char[][] mapa = escenario.getMapa();
+    private void mostrarMapa(Escenario esc) {
+        char[][] mapa = esc.getMapa();
         mainGrid.getChildren().clear();
 
         int filas = mapa.length;
-        int columnas = mapa[0].length; // Asumimos que todas las filas tienen el mismo tamaño
+        int columnas = mapa[0].length;
 
-        int anchoCelda = 973 / columnas;
-        int altoCelda = 673 / filas;
+        int ancho = 973 / columnas;
+        int alto = 673 / filas;
 
-        for (int fila = 0; fila < filas; fila++) {
-            for (int col = 0; col < columnas; col++) {
-                String rutaImagen;
-                switch (mapa[fila][col]) {
-                    case 'P':
-                        rutaImagen = "/com/rodasfiti/images/pared.png";
-                        break;
-                    case 'S':
-                        rutaImagen = "/com/rodasfiti/images/suelo.png";
-                        break;
-                    default:
-                        rutaImagen = "/com/rodasfiti/images/suelo.png";
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                String imagen = "/com/rodasfiti/images/";
+                if (mapa[i][j] == 'P') {
+                    imagen += "pared.png";
+                } else {
+                    imagen += "suelo.png";
                 }
 
-                Image image = cargarImagen(rutaImagen);
-                if (image != null) {
-                    ImageView imageView = new ImageView(image);
-                    imageView.setFitWidth(anchoCelda);
-                    imageView.setFitHeight(altoCelda);
-                    imageView.setPreserveRatio(false);
-                    mainGrid.add(imageView, col, fila);
-                }
+                ImageView bloque = new ImageView(cargarImagen(imagen));
+                bloque.setFitWidth(ancho);
+                bloque.setFitHeight(alto);
+                mainGrid.add(bloque, j, i);
             }
+        }
+
+        if (protagonistaView == null) {
+            protagonistaView = new ImageView(cargarImagen("/com/rodasfiti/images/caballero_abajo.png"));
+            protagonistaView.setFitWidth(ancho);
+            protagonistaView.setFitHeight(alto);
+        }
+
+        mainGrid.add(protagonistaView, posY, posX);
+    }
+
+    // Escuchar teclas para mover al personaje
+    private void escucharTeclado() {
+        contenedorMapa.setFocusTraversable(true);
+        contenedorMapa.requestFocus();
+        contenedorMapa.setOnKeyPressed(this::moverProtagonista);
+    }
+
+    // Movimiento del personaje
+    private void moverProtagonista(KeyEvent e) {
+        int nuevaX = posX;
+        int nuevaY = posY;
+        String img = "/com/rodasfiti/images/";
+
+        switch (e.getCode()) {
+            case W:
+            case UP:
+                nuevaX--;
+                img += "caballero_arriba.png";
+                break;
+
+            case S:
+            case DOWN:
+                nuevaX++;
+                img += "caballero_abajo.png";
+                break;
+
+            case A:
+            case LEFT:
+                nuevaY--;
+                img += "caballero_izquierda.png";
+                break;
+
+            case D:
+            case RIGHT:
+                nuevaY++;
+                img += "caballero_derecha.png";
+                break;
+
+            default:
+                return; // No hacer nada si no es una tecla válida
+        }
+
+        if (puedeMoverA(nuevaX, nuevaY)) {
+            posX = nuevaX;
+            posY = nuevaY;
+            protagonistaView.setImage(cargarImagen(img));
+            mostrarMapa(escenario);
         }
     }
 
+    private boolean puedeMoverA(int x, int y) {
+        return escenario.getMapa()[x][y] == 'S';
+    }
+
+    // Cargar imagen
     private Image cargarImagen(String ruta) {
-        try {
-            return new Image(Objects.requireNonNull(getClass().getResourceAsStream(ruta)));
-        } catch (Exception e) {
-            System.err.println("No se pudo cargar la imagen: " + ruta);
-            return null;
-        }
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(ruta)));
     }
 
     @Override
