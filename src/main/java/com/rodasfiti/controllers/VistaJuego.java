@@ -53,7 +53,7 @@ public class VistaJuego implements Observer {
 
     @FXML
     public void initialize() {
-        // actualizarDatosProtagonista();
+        actualizarDatosProtagonista();
         mainGrid = new GridPane();
         mainGrid.setPadding(new Insets(10));
         mainGrid.setHgap(0);
@@ -143,7 +143,6 @@ public class VistaJuego implements Observer {
         contenedorMapa.setOnKeyPressed(this::moverProtagonista);
     }
 
-    // Movimiento del personaje
     private void moverProtagonista(KeyEvent e) {
         int nuevaX = posX;
         int nuevaY = posY;
@@ -175,7 +174,7 @@ public class VistaJuego implements Observer {
                 break;
 
             default:
-                return; // No hacer nada si no es una tecla válida
+                return;
         }
 
         if (puedeMoverA(nuevaX, nuevaY)) {
@@ -190,7 +189,6 @@ public class VistaJuego implements Observer {
         return escenario.getMapa()[x][y] == 'S';
     }
 
-    // Cargar imagen
     private Image cargarImagen(String ruta) {
         return new Image(Objects.requireNonNull(getClass().getResourceAsStream(ruta)));
     }
