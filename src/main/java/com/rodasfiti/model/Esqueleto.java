@@ -2,8 +2,8 @@ package com.rodasfiti.model;
 
 public class Esqueleto extends Enemigo {
 
-    public Esqueleto(String nombre, int vida, int ataque, int defensa, int posicion, int nivel, int velocidad, int percepcion) {
-        super(nombre, vida, ataque, defensa,posicion,nivel, velocidad, percepcion);
+    public Esqueleto(TipoEnemigo tipo, int nivel, int ataque, int defensa, int vida, int velocidad, int percepcion, int x, int y) {
+        super(tipo, nivel, ataque, defensa, vida, velocidad, percepcion, x, y);
     }
 
     @Override

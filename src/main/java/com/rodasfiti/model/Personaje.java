@@ -10,7 +10,6 @@ public abstract class Personaje {
     protected int vida;
     protected int ataque;
     protected int defensa;
-    protected int posicion;
     protected int nivel;
     protected int velocidad;
     protected static Random r = new Random();
@@ -19,13 +18,11 @@ public abstract class Personaje {
         this.observers = new ArrayList<>();
     }
 
-    public Personaje(String nombre, int vida, int ataque, int defensa, int posicion, int nivel, int velocidad) {
-        this.nombre = nombre;
+    public Personaje(int vida, int ataque, int defensa, int nivel, int velocidad) {
         this.vida = vida;
         this.ataque = ataque;
         this.defensa = defensa;
         this.nivel = nivel;
-        this.posicion = posicion;
         this.velocidad= velocidad;
     }
 
@@ -97,14 +94,6 @@ public abstract class Personaje {
 
     public void setObservers(ArrayList<Observer> observers) {
         this.observers = observers;
-    }
-
-    public int getPosicion() {
-        return this.posicion;
-    }
-
-    public void setPosicion(int posicion) {
-        this.posicion = posicion;
     }
 
     public int getNivel() {

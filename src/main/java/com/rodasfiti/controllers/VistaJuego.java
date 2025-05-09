@@ -5,20 +5,20 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
+
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import com.rodasfiti.interfaces.Observer;
-import com.rodasfiti.model.Escenario;
-import com.rodasfiti.model.Protagonista;
-import com.rodasfiti.model.Proveedor;
+import com.rodasfiti.model.*;
 
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 public class VistaJuego implements Observer {
 
@@ -41,6 +41,9 @@ public class VistaJuego implements Observer {
     private Label nombrePersonaje;
 
     @FXML
+    private Label movimientosFaltantes;
+
+    @FXML
     private AnchorPane contenedorMapa;
 
     private GridPane mainGrid;
@@ -48,12 +51,15 @@ public class VistaJuego implements Observer {
     private int posY = 1;
     private ImageView protagonistaView;
     private Escenario escenario;
-    private int anchoCelda;
-    private int altoCelda;
+    private int movimientosRestantes = 15;
+    private static Random r = new Random();
+    private ArrayList<Enemigo> listaEnemigos = new ArrayList<>();
+    private ArrayList<ImageView> vistasEnemigos = new ArrayList<>(); // Añadida esta línea
 
     @FXML
     public void initialize() {
         actualizarDatosProtagonista();
+        movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
         mainGrid = new GridPane();
         mainGrid.setPadding(new Insets(10));
         mainGrid.setHgap(0);
@@ -62,18 +68,20 @@ public class VistaJuego implements Observer {
         AnchorPane.setLeftAnchor(mainGrid, 0.0);
         AnchorPane.setRightAnchor(mainGrid, 0.0);
         AnchorPane.setBottomAnchor(mainGrid, 0.0);
-
-        // Cargar mapa desde CSV
-        escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapa2.csv");
+        
+        escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapaprueba.csv");
         if (escenario != null) {
-            mostrarMapa(escenario);
+            listaEnemigos = GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
+            mostrarMapa();
+            spawnEnemigos(3);
+            
         } else {
             System.err.println("No se pudo cargar el escenario.");
         }
 
         contenedorMapa.getChildren().add(mainGrid);
         mover();
-
+        moverEnemigos();
     }
 
     void actualizarDatosProtagonista() {
@@ -102,16 +110,14 @@ public class VistaJuego implements Observer {
         }
     }
 
-    private void mostrarMapa(Escenario esc) {
-        char[][] mapa = esc.getMapa();
+    private void mostrarMapa() {
+        char[][] mapa = escenario.getMapa();
         mainGrid.getChildren().clear();
-
+        vistasEnemigos.clear();
         int filas = mapa.length;
         int columnas = mapa[0].length;
-
         int ancho = 973 / columnas;
         int alto = 673 / filas;
-
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 String imagen = "/com/rodasfiti/images/";
@@ -120,22 +126,108 @@ public class VistaJuego implements Observer {
                 } else {
                     imagen += "suelo.png";
                 }
-
                 ImageView bloque = new ImageView(cargarImagen(imagen));
                 bloque.setFitWidth(ancho);
                 bloque.setFitHeight(alto);
                 mainGrid.add(bloque, j, i);
             }
         }
-
         if (protagonistaView == null) {
             protagonistaView = new ImageView(cargarImagen("/com/rodasfiti/images/caballero_abajo.png"));
             protagonistaView.setFitWidth(ancho);
             protagonistaView.setFitHeight(alto);
         }
-
         mainGrid.add(protagonistaView, posY, posX);
+        mostrarEnemigos(ancho, alto);
     }
+
+    private void spawnEnemigos(int cantidad) {
+        char[][] mapa = escenario.getMapa();
+        int filas = mapa.length;
+        int columnas = mapa[0].length;
+        int nuevoX;
+        int nuevoY;
+        if (listaEnemigos == null || listaEnemigos.isEmpty()) {
+            listaEnemigos = GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
+        }
+        ArrayList<Enemigo> enemigosASpawn = new ArrayList<>();
+        for (int i = 0; i < cantidad && i < listaEnemigos.size(); i++) {
+            Enemigo enemigoBase = listaEnemigos.get(i);
+            int intentos = 0;
+            boolean ubicado = false;
+            while (intentos < 30 && !ubicado) {
+                if(posX + r.nextInt(10) > filas){
+                    nuevoX = posX - r.nextInt(10);
+                }else nuevoX = posX + r.nextInt(10);
+                if(posY + r.nextInt(10) > columnas){
+                    nuevoY = posY - r.nextInt(10);
+                }else nuevoY = posY + r.nextInt(10);
+                if (esPosicionValida(nuevoX, nuevoY)) {
+                    Enemigo enemigo = new Enemigo(
+                        enemigoBase.getTipo(),
+                        enemigoBase.getNivel(),
+                        enemigoBase.getAtaque(),
+                        enemigoBase.getDefensa(),
+                        enemigoBase.getVida(),
+                        enemigoBase.getVelocidad(),
+                        enemigoBase.getPercepcion(),
+                        nuevoX,
+                        nuevoY
+                    );
+                    enemigosASpawn.add(enemigo);
+                    ubicado = true;
+                }
+                intentos++;
+            }
+        }
+        listaEnemigos.clear();
+        vistasEnemigos.clear();
+        listaEnemigos.addAll(enemigosASpawn);
+        mostrarMapa();
+    }
+
+
+
+    private boolean esPosicionValida(int x, int y) {
+    return x >= 0 && y >= 0 && x < escenario.getMapa().length && y < escenario.getMapa()[0].length && puedeMoverA(x, y) && !(x == posX && y == posY);
+    }
+
+
+    private void mostrarEnemigos(int ancho, int alto) {
+        for (Enemigo enemigo : listaEnemigos) {
+            if (puedeMoverA(enemigo.getX(), enemigo.getY())) {
+                String imagen = "/com/rodasfiti/images/";
+                switch (enemigo.getTipo()) {
+                    case ORCO:
+                        imagen += "orco.png";
+                        break;
+                    case DUENDE:
+                        imagen += "duende.png";
+                        break;
+                    case ESQUELETO:
+                        imagen += "esqueleto.png";
+                        break;
+                    default:
+                        imagen += "duende.png";
+                        break;
+                }
+
+                try {
+                    Image enemigoImagen = cargarImagen(imagen);
+                    ImageView enemigoView = new ImageView(enemigoImagen);
+                    enemigoView.setFitWidth(ancho);
+                    enemigoView.setFitHeight(alto);
+                    mainGrid.add(enemigoView, enemigo.getY(), enemigo.getX());
+                    vistasEnemigos.add(enemigoView);
+                    System.out.println("Enemigo añadido en: X=" + enemigo.getX() + ", Y=" + enemigo.getY() + ", Tipo=" + enemigo.getTipo());
+                } catch (Exception e) {
+                    System.err.println("Error al cargar imagen de enemigo: " + imagen);
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
     private void mover() {
         contenedorMapa.setFocusTraversable(true);
@@ -181,20 +273,52 @@ public class VistaJuego implements Observer {
             posX = nuevaX;
             posY = nuevaY;
             protagonistaView.setImage(cargarImagen(img));
-            mostrarMapa(escenario);
+            mostrarMapa();
+            movimientosRestantes--;
+            movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
         }
     }
+
+    private void moverEnemigos() {
+    for (Enemigo enemigo : listaEnemigos) {
+        int actualX = enemigo.getX();
+        int actualY = enemigo.getY();
+        int nuevaX = actualX;
+        int nuevaY = actualY;
+        if (actualX < posX) {
+            nuevaX++;
+        } else if (actualX > posX) {
+            nuevaX--;
+        }
+        if (actualY < posY) {
+            nuevaY++;
+        } else if (actualY > posY) {
+            nuevaY--;
+        }
+        if (puedeMoverA(nuevaX, nuevaY)) {
+            enemigo.setX(nuevaX);
+            enemigo.setY(nuevaY);
+        }
+    }
+}
 
     private boolean puedeMoverA(int x, int y) {
         return escenario.getMapa()[x][y] == 'S';
     }
 
     private Image cargarImagen(String ruta) {
-        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(ruta)));
+        try {
+            return new Image(Objects.requireNonNull(getClass().getResourceAsStream(ruta)));
+        } catch (Exception e) {
+            System.err.println("No se pudo cargar la imagen: " + ruta);
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public void onChange() {
-        throw new UnsupportedOperationException("Unimplemented method 'onChange'");
+        actualizarDatosProtagonista();
+
     }
 }

@@ -39,7 +39,7 @@
                   <Image url="@../images/caballero.png" />
                </image>
             </ImageView>
-            <Label fx:id="nombrePersonaje" layoutX="133.0" layoutY="15.0" prefHeight="29.0" prefWidth="128.0" text="NombrePersonaje" />
+            <Label fx:id="nombrePersonaje" layoutX="133.0" layoutY="15.0" prefHeight="29.0" prefWidth="128.0" text="NombrePersonaje" textAlignment="CENTER" />
             <ImageView fx:id="fotoAtaque1" fitHeight="35.0" fitWidth="35.0" layoutX="80.0" layoutY="170.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/botas.png" />
