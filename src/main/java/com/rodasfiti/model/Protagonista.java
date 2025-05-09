@@ -16,5 +16,4 @@ public class Protagonista extends Personaje {
     public void movimiento() {
         super.movimiento();
     }
-
 }
