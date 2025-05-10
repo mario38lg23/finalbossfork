@@ -67,7 +67,7 @@
          </image>
       </ImageView>
       <Slider fx:id="SliderDefensa" blockIncrement="1.0" layoutX="800.0" layoutY="240.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="44.0" prefWidth="140.0" showTickMarks="true" snapToTicks="true" />
-      <Label layoutX="800.0" layoutY="200.0" prefHeight="25.0" prefWidth="120.0" text="Desfensa" textFill="WHITE">
+      <Label layoutX="800.0" layoutY="200.0" prefHeight="25.0" prefWidth="120.0" text="Defensa" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font></Label>
@@ -81,7 +81,7 @@
          <font>
             <Font size="15.0" />
          </font></Label>
-      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="1000.0" layoutY="500.0" prefHeight="100.0" prefWidth="100.0" progress="0.0">
+      <ProgressIndicator fx:id="porcentajeAtributos" layoutX="1000.0" layoutY="500.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0" progress="0.0">
                <effect>
                   <InnerShadow />
                </effect></ProgressIndicator>
@@ -112,7 +112,7 @@
             <Slider fx:id="SliderVelocidad" blockIncrement="1.0" layoutX="800.0" layoutY="440.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" prefHeight="44.0" prefWidth="140.0" showTickMarks="true" snapToTicks="true" />
             <ImageView fx:id="imageVelocidad" fitHeight="100.0" fitWidth="100.0" layoutX="1000.0" layoutY="390.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/espada.png" />
+                  <Image url="@../images/botas.png" />
                </image>
             </ImageView>
    </children>

@@ -39,10 +39,10 @@
                   <Image url="@../images/caballero.png" />
                </image>
             </ImageView>
-            <Label fx:id="nombrePersonaje" layoutX="133.0" layoutY="15.0" prefHeight="29.0" prefWidth="128.0" text="NombrePersonaje" />
-            <ImageView fx:id="fotoAtaque1" fitHeight="35.0" fitWidth="35.0" layoutX="83.0" layoutY="170.0" pickOnBounds="true" preserveRatio="true">
+            <Label fx:id="nombrePersonaje" layoutX="133.0" layoutY="15.0" prefHeight="29.0" prefWidth="128.0" text="NombrePersonaje" textAlignment="CENTER" />
+            <ImageView fx:id="fotoAtaque1" fitHeight="35.0" fitWidth="35.0" layoutX="80.0" layoutY="170.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/espada.png" />
+                  <Image url="@../images/botas.png" />
                </image>
             </ImageView>
             <Label fx:id="velocidad" alignment="CENTER" layoutX="30.0" layoutY="175.0" prefHeight="20.0" prefWidth="40.0" style="-fx-border-color: black;" text="0" />

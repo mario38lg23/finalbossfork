@@ -1,4 +1,4 @@
-tipo,nivel,ataque,defensa,vida,velocidad,percepcion
-Duende,1,1,1,1,2,3
-Esqueleto,3,3,3,3,3,4
-Orco,5,5,5,5,1,5
+TipoEnemigo,nivel,ataque,defensa,vida,velocidad,percepcion,x,y
+DUENDE,1,1,1,1,3,3,9,9
+ESQUELETO,3,3,3,3,2,1,1
+ORCO,5,5,5,5,1,5,13,18

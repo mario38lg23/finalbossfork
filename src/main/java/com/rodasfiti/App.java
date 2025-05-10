@@ -1,6 +1,7 @@
 package com.rodasfiti;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         stage.setTitle("FinalBoss");
+        stage.getIcons().add(new Image(App.class.getResource("images/icono.png").toExternalForm()));
 
         SceneManager sm = SceneManager.getInstance();
 
