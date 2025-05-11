@@ -14,16 +14,13 @@ public abstract class Personaje {
     protected int velocidad;
     protected static Random r = new Random();
 
-    public Personaje() {
-        this.observers = new ArrayList<>();
-    }
-
     public Personaje(int vida, int ataque, int defensa, int nivel, int velocidad) {
         this.vida = vida;
         this.ataque = ataque;
         this.defensa = defensa;
         this.nivel = nivel;
         this.velocidad= velocidad;
+        this.observers = new ArrayList<>();
     }
 
     public void suscribe(Observer observer) {
@@ -52,10 +49,9 @@ public abstract class Personaje {
     }
 
     public void setVida(int vida) {
-        if (this.vida > 0 && this.vida < 15) {
-            this.vida = vida;
-            notifyObservers();
-        }
+        this.vida = vida;
+        notifyObservers();
+        
     }
 
     public int getAtaque() {
@@ -63,10 +59,9 @@ public abstract class Personaje {
     }
 
     public void setAtaque(int ataque) {
-        if (this.ataque > 0 && this.ataque < 15) {
-            this.ataque = ataque;
-            notifyObservers();
-        }
+        this.ataque = ataque;
+        notifyObservers();
+        
     }
 
     public int getDefensa() {
@@ -74,10 +69,9 @@ public abstract class Personaje {
     }
 
     public void setDefensa(int defensa) {
-        if (this.defensa > 0 && this.defensa < 15) {
-            this.defensa = defensa;
-            notifyObservers();
-        }
+        this.defensa = defensa;
+        notifyObservers();
+        
     }
 
     public int getVelocidad() {
@@ -105,19 +99,18 @@ public abstract class Personaje {
         notifyObservers();
     }
 
-    public void atacar() {
-        if (r.nextInt(10) > getDefensa()) {
-            vida = getVida() - getAtaque();
+    public void atacar(Personaje objetivo) {
+        if (r.nextInt(10) > objetivo.getDefensa()) {
+            int nuevaVida = objetivo.getVida() - this.ataque;
+            objetivo.setVida(Math.max(0, nuevaVida)); 
         }
-    }
-
-    public void movimiento() {
-
     }
 
     public void morir() {
         if (getVida() <= 0) {
             System.out.println("El personaje ha muerto");
         }
+    }
+    public void movimiento() {
     }
 }

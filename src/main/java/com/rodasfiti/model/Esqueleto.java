@@ -7,8 +7,8 @@ public class Esqueleto extends Enemigo {
     }
 
     @Override
-    public void atacar() {
-        super.atacar();
+    public void atacar(Personaje objetivo) {
+        super.atacar(objetivo);
     }
 
     @Override

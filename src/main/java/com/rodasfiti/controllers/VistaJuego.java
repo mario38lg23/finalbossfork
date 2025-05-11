@@ -9,6 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 
 import com.rodasfiti.interfaces.Observer;
 import com.rodasfiti.model.*;
@@ -21,6 +24,8 @@ import java.util.Objects;
 import java.util.Random;
 
 public class VistaJuego implements Observer {
+    @FXML
+    private MediaView musica;
 
     @FXML
     private Label vida;
@@ -56,6 +61,8 @@ public class VistaJuego implements Observer {
     private ArrayList<Enemigo> listaEnemigos = new ArrayList<>();
     private ArrayList<ImageView> vistasEnemigos = new ArrayList<>(); // Añadida esta línea
 
+    private MediaPlayer mediaPlayer;
+
     @FXML
     public void initialize() {
         actualizarDatosProtagonista();
@@ -69,24 +76,32 @@ public class VistaJuego implements Observer {
         AnchorPane.setRightAnchor(mainGrid, 0.0);
         AnchorPane.setBottomAnchor(mainGrid, 0.0);
 
-        escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapaprueba.csv");
+        escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapa.csv");
         if (escenario != null) {
             listaEnemigos = GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
             mostrarMapa();
-            spawnEnemigos(10);
+            spawnEnemigos(2);
 
         } else {
             System.err.println("No se pudo cargar el escenario.");
         }
+        if (movimientosRestantes<=0){
+            subirNivel();
+            spawnEnemigos(2);
+            movimientosRestantes = 15;
+            movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
+        }
+        
 
         contenedorMapa.getChildren().add(mainGrid);
         mover();
         moverEnemigos();
+        atacar(Proveedor.getInstance().getProtagonista(), listaEnemigos.get(0));
     }
 
     void actualizarDatosProtagonista() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
-        nombrePersonaje.setText(protagonista.getNombre());
+        nombrePersonaje.setText(protagonista.getNombre()); 
         vida.setText(String.valueOf(protagonista.getVida()));
         ataque.setText(String.valueOf(protagonista.getAtaque()));
         escudo.setText(String.valueOf(protagonista.getDefensa()));
@@ -146,7 +161,6 @@ public class VistaJuego implements Observer {
         ArrayList<Enemigo> enemigosASpawn = new ArrayList<>();
         int enemigosCreados = 0;
 
-        // Agrupar enemigos por tipo
         ArrayList<Enemigo> duendes = new ArrayList<>();
         ArrayList<Enemigo> orcos = new ArrayList<>();
         ArrayList<Enemigo> esqueletos = new ArrayList<>();
@@ -174,7 +188,6 @@ public class VistaJuego implements Observer {
         while (enemigosCreados < cantidad) {
             Enemigo base = todos.get(r.nextInt(todos.size()));
 
-            // Buscar una posición aleatoria válida
             int intentos = 0;
             while (intentos < 100) {
                 int x = r.nextInt(escenario.getMapa().length);
@@ -196,11 +209,11 @@ public class VistaJuego implements Observer {
             }
         }
 
-        listaEnemigos.clear();
+        // ✅ En lugar de limpiar la lista, agregamos a los ya existentes
         listaEnemigos.addAll(enemigosASpawn);
-        vistasEnemigos.clear();
         mostrarMapa();
     }
+
 
     private boolean esPosicionValida(int x, int y) {
         return x >= 0 && y >= 0 && x < escenario.getMapa().length && y < escenario.getMapa()[0].length
@@ -250,6 +263,7 @@ public class VistaJuego implements Observer {
     }
 
     private void moverProtagonista(KeyEvent e) {
+        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
         int nuevaX = posX;
         int nuevaY = posY;
         String img = "/com/rodasfiti/images/";
@@ -260,25 +274,21 @@ public class VistaJuego implements Observer {
                 nuevaX--;
                 img += "caballero_arriba.png";
                 break;
-
             case S:
             case DOWN:
                 nuevaX++;
                 img += "caballero_abajo.png";
                 break;
-
             case A:
             case LEFT:
                 nuevaY--;
                 img += "caballero_izquierda.png";
                 break;
-
             case D:
             case RIGHT:
                 nuevaY++;
                 img += "caballero_derecha.png";
                 break;
-
             default:
                 return;
         }
@@ -287,70 +297,76 @@ public class VistaJuego implements Observer {
             posX = nuevaX;
             posY = nuevaY;
             protagonistaView.setImage(cargarImagen(img));
-            mostrarMapa();
             movimientosRestantes--;
             movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
-            moverEnemigos(); // <- Esto hace que los enemigos se muevan después del jugador
-            mostrarMapa();
+
+            mostrarMapa();       
+            moverEnemigos();     
+            mostrarMapa();       
+            detectarYAtacarEnemigos(); 
+
+            if (movimientosRestantes <= 0) {
+            subirNivel();
+            spawnEnemigos(protagonista.getNivel());
+            movimientosRestantes = 15;
+            movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
+        }
         }
     }
 
+
     private void moverEnemigos() {
-        // Crear una copia de las posiciones actuales para controlar colisiones
         ArrayList<String> posicionesOcupadas = new ArrayList<>();
+
+        // Añadir la posición del protagonista para que los enemigos no se muevan a esa casilla
+        posicionesOcupadas.add(posX + "," + posY);
 
         for (Enemigo enemigo : listaEnemigos) {
             int actualX = enemigo.getX();
             int actualY = enemigo.getY();
-            posicionesOcupadas.add(actualX + "," + actualY); // Añadir la posición actual
+            posicionesOcupadas.add(actualX + "," + actualY); // Añadir posición inicial
+
+            int nuevoX = actualX;
+            int nuevoY = actualY;
 
             int distanciaX = Math.abs(actualX - posX);
             int distanciaY = Math.abs(actualY - posY);
 
-            int nuevaX = actualX;
-            int nuevaY = actualY;
-
             if (distanciaX <= 2 && distanciaY <= 2) {
-                if (actualX < posX)
-                    nuevaX++;
-                else if (actualX > posX)
-                    nuevaX--;
-                if (actualY < posY)
-                    nuevaY++;
-                else if (actualY > posY)
-                    nuevaY--;
+                if (actualX < posX) nuevoX++;
+                else if (actualX > posX) nuevoX--;
+                if (actualY < posY) nuevoY++;
+                else if (actualY > posY) nuevoY--;
             } else {
                 int direccion = r.nextInt(4);
                 switch (direccion) {
-                    case 0:
-                        nuevaX--;
-                        break;
-                    case 1:
-                        nuevaX++;
-                        break;
-                    case 2:
-                        nuevaY--;
-                        break;
-                    case 3:
-                        nuevaY++;
-                        break;
+                    case 0: nuevoX--; break;
+                    case 1: nuevoX++; break;
+                    case 2: nuevoY--; break;
+                    case 3: nuevoY++; break;
                 }
             }
 
-            String nuevaPos = nuevaX + "," + nuevaY;
+            String nuevaPos = nuevoX + "," + nuevoY;
 
-            // Verifica que no se mueva a una posición ya ocupada ni al jugador
-            if (esPosicionValida(nuevaX, nuevaY) && !posicionesOcupadas.contains(nuevaPos)) {
-                enemigo.setX(nuevaX);
-                enemigo.setY(nuevaY);
-                posicionesOcupadas.add(nuevaPos); // Marcar como ocupada
+            // Verifica que no se mueva a una posición ocupada ni a una pared
+            if (esPosicionValida(nuevoX, nuevoY) && !posicionesOcupadas.contains(nuevaPos)) {
+                enemigo.setX(nuevoX);
+                enemigo.setY(nuevoY);
+                posicionesOcupadas.add(nuevaPos); // Marcar nueva posición como ocupada
             }
         }
     }
 
+
     private boolean puedeMoverA(int x, int y) {
-        return escenario.getMapa()[x][y] == 'S';
+    char[][] mapa = escenario.getMapa();
+    if (x < 0 || y < 0 || x >= mapa.length || y >= mapa[0].length) {
+        return false;
     }
+    return mapa[x][y] == 'S';
+}
+
 
     private Image cargarImagen(String ruta) {
         try {
@@ -359,6 +375,110 @@ public class VistaJuego implements Observer {
             System.err.println("No se pudo cargar la imagen: " + ruta);
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void atacar(Protagonista protagonista, Enemigo enemigo) {
+        // Verifica si el enemigo está en una celda adyacente
+        int dx = Math.abs(posX - enemigo.getX());
+        int dy = Math.abs(posY - enemigo.getY());
+
+        if ((dx <= 1 && dy <= 1)) {
+            // El más rápido ataca primero
+            if (protagonista.getVelocidad() >= enemigo.getVelocidad()) {
+                protagonista.atacar(enemigo);
+                if (enemigo.getVida() > 0) {
+                    enemigo.atacar(protagonista);
+                }
+            } else {
+                enemigo.atacar(protagonista);
+                if (protagonista.getVida() > 0) {
+                    protagonista.atacar(enemigo);
+                }
+            }
+
+            // Verifica muertes
+            if (protagonista.getVida() <= 0) {
+                protagonista.morir();
+            }
+
+            if (enemigo.getVida() <= 0) {
+                listaEnemigos.remove(enemigo);
+                mostrarMapa(); // actualizar mapa para quitar enemigo visualmente
+            }
+
+            actualizarDatosProtagonista(); // actualiza stats en la UI
+        }
+    }
+    
+    private void detectarYAtacarEnemigos() {
+        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
+        ArrayList<Enemigo> enemigosCercanos = new ArrayList<>();
+
+        for (Enemigo enemigo : listaEnemigos) {
+            int distanciaX = Math.abs(posX - enemigo.getX());
+            int distanciaY = Math.abs(posY - enemigo.getY());
+            if (distanciaX <= 1 && distanciaY <= 1) {
+                enemigosCercanos.add(enemigo);
+            }
+        }
+
+        for (Enemigo enemigo : enemigosCercanos) {
+            if (protagonista.getVelocidad() >= enemigo.getVelocidad()) {
+                protagonista.atacar(enemigo);
+                if (enemigo.getVida() > 0) {
+                    enemigo.atacar(protagonista);
+                }
+            } else {
+                enemigo.atacar(protagonista);
+                if (protagonista.getVida() > 0) {
+                    protagonista.atacar(enemigo);
+                }
+            }
+
+            if (enemigo.getVida() <= 0) {
+                listaEnemigos.remove(enemigo);
+            }
+
+            if (protagonista.getVida() <= 0) {
+                protagonista.morir();
+                break;
+            }
+        }
+
+        actualizarDatosProtagonista(); // Refresca la UI
+    }
+
+    private void subirNivel() {
+        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
+        protagonista.setNivel(protagonista.getNivel() + 1);
+        protagonista.setVida(protagonista.getVida() + 1);
+        protagonista.setAtaque(protagonista.getAtaque() + 1);
+        protagonista.setDefensa(protagonista.getDefensa() + 1);
+        protagonista.setVelocidad(protagonista.getVelocidad());
+        actualizarDatosProtagonista();
+        cargarMusica();
+    }
+    private void cargarMusica() {
+        try {
+            // Ruta fija (recomendado si sabes el nombre del archivo)
+            String rutaAudio = "/com/rodasfiti/media/trompeta.mp3";
+
+            URL url = getClass().getResource(rutaAudio);
+
+            if (url == null) {
+                System.err.println("Archivo de audio no encontrado: " + rutaAudio);
+            } else {
+                Media media = new Media(url.toExternalForm());
+                this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
+                musica.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
+                this.mediaPlayer.setAutoPlay(true);
+                this.mediaPlayer.setVolume(0.6);
+                this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                this.mediaPlayer.play();
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar audio: " + e.getMessage());
         }
     }
 
