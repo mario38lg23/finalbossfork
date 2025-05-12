@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class VistaJuego implements Observer {
     @FXML
-    private MediaView musica;
+    private MediaView musicaLevel;
 
     @FXML
     private Label vida;
@@ -471,10 +471,9 @@ public class VistaJuego implements Observer {
             } else {
                 Media media = new Media(url.toExternalForm());
                 this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
-                musica.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
+                musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
                 this.mediaPlayer.setAutoPlay(true);
                 this.mediaPlayer.setVolume(0.6);
-                this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
                 this.mediaPlayer.play();
             }
         } catch (Exception e) {
