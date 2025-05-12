@@ -40,24 +40,13 @@ public class finalJuego {
         cargarMusica();
     }
     private void cargarMusica() {
-        try {
             // Ruta fija (recomendado si sabes el nombre del archivo)
-            String rutaAudio = "/com/rodasfiti/media/Lord_of_the_Rings_Sound_of_The_Shire.mp3";
-
-            URL url = getClass().getResource(rutaAudio);
-
-            if (url == null) {
-                System.err.println("Archivo de audio no encontrado: " + rutaAudio);
-            } else {
+            String rutaAudio = "/com/rodasfiti/media/final.mp3";
                 Media media = new Media(rutaAudio);
                 this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
                 musica.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
                 this.mediaPlayer.setVolume(0.6);
                 this.mediaPlayer.play();
-            }
-        } catch (Exception e) {
-            System.err.println("Error al cargar audio: " + e.getMessage());
-        }
     }
     
 

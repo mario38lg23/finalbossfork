@@ -96,7 +96,7 @@ public class VistaJuego implements Observer {
         escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapaprueba.csv");
 
         if (escenario != null) {
-            protagonista = Proveedor.getInstance().getProtagonista();
+            /*protagonista = Proveedor.getInstance().getProtagonista();
             System.out.println(
                     "ANTES de setPosicionAleatoria: " + protagonista.getFila() + "," + protagonista.getColumna());
 
@@ -106,11 +106,11 @@ public class VistaJuego implements Observer {
             System.out.println(
                     "DESPUÉS de setPosicionAleatoria: " + protagonista.getFila() + "," + protagonista.getColumna());
 
-            actualizarDatosProtagonista();
-            listaEnemigos = GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
+            actualizarDatosProtagonista();*/
+            //listaEnemigos = GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
 
-            System.out.println("ANTES de mostrarMapa: " + protagonista.getFila() + "," + protagonista.getColumna());
-
+            //System.out.println("ANTES de mostrarMapa: " + protagonista.getFila() + "," + protagonista.getColumna());
+            spawnEnemigos(2);
             mostrarMapa();
         } else {
             System.err.println("No se pudo cargar el escenario.");
@@ -128,7 +128,7 @@ public class VistaJuego implements Observer {
         mover();
         detectarYAtacarEnemigos();
 
-        System.out.println(">>> [FIN initialize()]");
+        //System.out.println(">>> [FIN initialize()]");
     }
 
     public void actualizarDatosProtagonista() {
@@ -183,7 +183,7 @@ public class VistaJuego implements Observer {
         protagonistaView.setFitWidth(ancho);
         protagonistaView.setFitHeight(alto);
         mainGrid.add(protagonistaView, protagonista.getColumna(), protagonista.getFila());
-        mostrarEnemigos(ancho, alto);
+        //mostrarEnemigos(ancho, alto);
     }
 
     private void spawnEnemigos(int cantidad) {
@@ -249,7 +249,7 @@ public class VistaJuego implements Observer {
                 && puedeMoverA(x, y) && !(x == posX && y == posY);
     }
 
-    private void mostrarEnemigos(int ancho, int alto) {
+    /*private void mostrarEnemigos(int ancho, int alto) {
         char[][] mapa = escenario.getMapa();
         int filas = mapa.length;
         int columnas = mapa[0].length;
@@ -297,7 +297,7 @@ public class VistaJuego implements Observer {
                 }
             }
         }
-    }
+    }*/
 
     private void mover() {
         contenedorMapa.setFocusTraversable(true);
@@ -376,7 +376,7 @@ public class VistaJuego implements Observer {
             String direccion = enemigo.moverInteligente(posX, posY, escenario, posicionesOcupadas);
 
         }
-        mostrarEnemigos(50, 50);
+        //mostrarEnemigos(50, 50);
     }
 
     private boolean puedeMoverA(int x, int y) {
