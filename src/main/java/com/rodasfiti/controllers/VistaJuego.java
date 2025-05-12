@@ -59,7 +59,8 @@ public class VistaJuego implements Observer {
 
     @FXML
     public void initialize() {
-        actualizarDatosProtagonista();
+        System.out.println(">>> [INICIO initialize()]");
+
         movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
         mainGrid = new GridPane();
         mainGrid.setPadding(new Insets(10));
@@ -71,19 +72,32 @@ public class VistaJuego implements Observer {
         AnchorPane.setBottomAnchor(mainGrid, 0.0);
 
         escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapaprueba.csv");
+
         if (escenario != null) {
             protagonista = Proveedor.getInstance().getProtagonista();
-            protagonista.setPosicionAleatoria(escenario);
+            System.out.println(
+                    "ANTES de setPosicionAleatoria: " + protagonista.getFila() + "," + protagonista.getColumna());
 
+            protagonista.setPosicionAleatoria(escenario);
+            Proveedor.getInstance().setProtagonista(protagonista);
+
+            System.out.println(
+                    "DESPUÉS de setPosicionAleatoria: " + protagonista.getFila() + "," + protagonista.getColumna());
+
+            actualizarDatosProtagonista();
             listaEnemigos = GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
+
+            System.out.println("ANTES de mostrarMapa: " + protagonista.getFila() + "," + protagonista.getColumna());
+
             mostrarMapa();
-            // spawnEnemigos(10);
         } else {
             System.err.println("No se pudo cargar el escenario.");
         }
+
         contenedorMapa.getChildren().add(mainGrid);
         mover();
-        // moverEnemigos();
+
+        System.out.println(">>> [FIN initialize()]");
     }
 
     void actualizarDatosProtagonista() {
@@ -257,7 +271,7 @@ public class VistaJuego implements Observer {
 
     private void moverProtagonista(KeyEvent e) {
         System.out.println("Tecla pulsada: " + e.getCode());
-        protagonista = Proveedor.getInstance().getProtagonista();
+
         int dx = 0, dy = 0;
 
         String img = "/com/rodasfiti/images/";
