@@ -387,7 +387,7 @@ public class VistaJuego implements Observer {
         }
     }
 
-    private void atacar(Protagonista protagonista, Enemigo enemigo) {
+    /*private void atacar(Protagonista protagonista, Enemigo enemigo) {
         // Verifica si el enemigo está en una celda adyacente
         int dx = Math.abs(posX - enemigo.getX());
         int dy = Math.abs(posY - enemigo.getY());
@@ -418,7 +418,7 @@ public class VistaJuego implements Observer {
 
             actualizarDatosProtagonista(); // actualiza stats en la UI
         }
-    }
+    } */
     
     private void detectarYAtacarEnemigos() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
