@@ -42,8 +42,8 @@ public class Protagonista extends Personaje {
     }
 
     @Override
-    public void atacar() {
-        super.atacar();
+    public void atacar(Personaje objetivo) {
+        super.atacar(objetivo);
     }
 
     public boolean mover(int dx, int dy, Escenario escenario) {

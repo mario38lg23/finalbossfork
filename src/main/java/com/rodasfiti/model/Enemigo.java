@@ -16,9 +16,7 @@ public class Enemigo extends Personaje{
         this.fila = x;
         this.columna = y;
     }
-    public Enemigo() {
-        
-    }
+    
     public int getPercepcion() {
         return percepcion;
     }
@@ -27,7 +25,8 @@ public class Enemigo extends Personaje{
     }
     
 
-    public void atacar() {
+    public void atacar(Personaje objetivo) {
+        super.atacar(objetivo);
     }
 
     public TipoEnemigo getTipo() {

@@ -80,5 +80,9 @@ public class SceneManager {
             return null;
         }
     }
+    @SuppressWarnings("exports")
+    public Stage getStage() {
+        return stage;
+    }
 
 }
