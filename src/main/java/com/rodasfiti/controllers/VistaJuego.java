@@ -17,8 +17,12 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.Set;
 
 public class VistaJuego implements Observer {
 
@@ -95,6 +99,7 @@ public class VistaJuego implements Observer {
         }
 
         contenedorMapa.getChildren().add(mainGrid);
+        
         mover();
 
         System.out.println(">>> [FIN initialize()]");
@@ -152,116 +157,127 @@ public class VistaJuego implements Observer {
         protagonistaView.setFitWidth(ancho);
         protagonistaView.setFitHeight(alto);
         mainGrid.add(protagonistaView, protagonista.getColumna(), protagonista.getFila());
-        // mostrarEnemigos(ancho, alto);
+        mostrarEnemigos(ancho, alto);
     }
 
-    /*
-     * private void spawnEnemigos(int cantidad) {
-     * ArrayList<Enemigo> enemigosDesdeCSV =
-     * GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
-     * ArrayList<Enemigo> enemigosASpawn = new ArrayList<>();
-     * int enemigosCreados = 0;
-     * 
-     * // Agrupar enemigos por tipo
-     * ArrayList<Enemigo> duendes = new ArrayList<>();
-     * ArrayList<Enemigo> orcos = new ArrayList<>();
-     * ArrayList<Enemigo> esqueletos = new ArrayList<>();
-     * 
-     * for (Enemigo enemigo : enemigosDesdeCSV) {
-     * switch (enemigo.getTipo()) {
-     * case DUENDE:
-     * duendes.add(enemigo);
-     * break;
-     * case ORCO:
-     * orcos.add(enemigo);
-     * break;
-     * case ESQUELETO:
-     * esqueletos.add(enemigo);
-     * break;
-     * }
-     * }
-     * 
-     * ArrayList<Enemigo> todos = new ArrayList<>();
-     * todos.addAll(duendes);
-     * todos.addAll(orcos);
-     * todos.addAll(esqueletos);
-     * 
-     * Random r = new Random();
-     * while (enemigosCreados < cantidad) {
-     * Enemigo base = todos.get(r.nextInt(todos.size()));
-     * 
-     * // Buscar una posición aleatoria válida
-     * int intentos = 0;
-     * while (intentos < 100) {
-     * int x = r.nextInt(escenario.getMapa().length);
-     * int y = r.nextInt(escenario.getMapa()[0].length);
-     * if (esPosicionValida(x, y)) {
-     * enemigosASpawn.add(new Enemigo(
-     * base.getTipo(),
-     * base.getNivel(),
-     * base.getAtaque(),
-     * base.getDefensa(),
-     * base.getVida(),
-     * base.getVelocidad(),
-     * base.getPercepcion(),
-     * x, y));
-     * enemigosCreados++;
-     * break;
-     * }
-     * intentos++;
-     * }
-     * }
-     * 
-     * listaEnemigos.clear();
-     * listaEnemigos.addAll(enemigosASpawn);
-     * vistasEnemigos.clear();
-     * mostrarMapa();
-     * }
-     */
+    
+    private void spawnEnemigos(int cantidad) {
+    ArrayList<Enemigo> enemigosDesdeCSV =
+    GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
+    ArrayList<Enemigo> enemigosASpawn = new ArrayList<>();
+    int enemigosCreados = 0;
+    ArrayList<Enemigo> duendes = new ArrayList<>();
+    ArrayList<Enemigo> orcos = new ArrayList<>();
+    ArrayList<Enemigo> esqueletos = new ArrayList<>();
+    
+    for (Enemigo enemigo : enemigosDesdeCSV) {
+    switch (enemigo.getTipo()) {
+    case DUENDE:
+    duendes.add(enemigo);
+    break;
+    case ORCO:
+    orcos.add(enemigo);
+    break;
+    case ESQUELETO:
+    esqueletos.add(enemigo);
+    break;
+    }
+    }
+    
+    ArrayList<Enemigo> todos = new ArrayList<>();
+    todos.addAll(duendes);
+    todos.addAll(orcos);
+    todos.addAll(esqueletos);
+    
+    Random r = new Random();
+    while (enemigosCreados < cantidad) {
+    Enemigo base = todos.get(r.nextInt(todos.size()));
+    
+    
+    int intentos = 0;
+    while (intentos < 100) {
+    int x = r.nextInt(escenario.getMapa().length);
+    int y = r.nextInt(escenario.getMapa()[0].length);
+    if (esPosicionValida(x, y)) {
+    enemigosASpawn.add(new Enemigo(
+    base.getTipo(),
+    base.getNivel(),
+    base.getAtaque(),
+    base.getDefensa(),
+    base.getVida(),
+    base.getVelocidad(),
+    base.getPercepcion(),
+    x, y));
+    enemigosCreados++;
+    break;
+    }
+    intentos++;
+    }
+    }
+    
+    listaEnemigos.clear();
+    listaEnemigos.addAll(enemigosASpawn);
+    vistasEnemigos.clear();
+    mostrarMapa();
+    }
+    
 
     private boolean esPosicionValida(int x, int y) {
         return x >= 0 && y >= 0 && x < escenario.getMapa().length && y < escenario.getMapa()[0].length
                 && puedeMoverA(x, y) && !(x == posX && y == posY);
     }
 
-    /*
-     * private void mostrarEnemigos(int ancho, int alto) {
-     * for (Enemigo enemigo : listaEnemigos) {
-     * if (puedeMoverA(enemigo.getX(), enemigo.getY())) {
-     * String imagen = "/com/rodasfiti/images/";
-     * switch (enemigo.getTipo()) {
-     * case ORCO:
-     * imagen += "orco.png";
-     * break;
-     * case DUENDE:
-     * imagen += "duende.png";
-     * break;
-     * case ESQUELETO:
-     * imagen += "esqueleto.png";
-     * break;
-     * default:
-     * imagen += "duende.png";
-     * break;
-     * }
-     * 
-     * try {
-     * Image enemigoImagen = cargarImagen(imagen);
-     * ImageView enemigoView = new ImageView(enemigoImagen);
-     * enemigoView.setFitWidth(ancho);
-     * enemigoView.setFitHeight(alto);
-     * mainGrid.add(enemigoView, enemigo.getY(), enemigo.getX());
-     * vistasEnemigos.add(enemigoView);
-     * System.out.println("Enemigo añadido en: X=" + enemigo.getX() + ", Y=" +
-     * enemigo.getY() + ", Tipo="
-     * + enemigo.getTipo());
-     * } catch (Exception e) {
-     * System.err.println("Error al cargar imagen de enemigo: " + imagen);
-     * e.printStackTrace();
-     * }
-     * }
-     * }
-     * }
-     */
+    
+    private void mostrarEnemigos(int ancho, int alto) {
+        char[][] mapa = escenario.getMapa();
+        int filas = mapa.length;
+        int columnas = mapa[0].length;
+         ancho = 973 / columnas;
+         alto = 673 / filas;
+        
+        mainGrid.getChildren().removeAll(vistasEnemigos);
+        vistasEnemigos.clear();
+    
+        for (Enemigo enemigo : listaEnemigos) {
+            
+            if (puedeMoverA(enemigo.getColumna(), enemigo.getFila())) {
+                String imagen = "/com/rodasfiti/images/";
+    
+                switch (enemigo.getTipo()) {
+                    case ORCO:
+                        imagen += "orco.png";
+                        break;
+                    case DUENDE:
+                        imagen += "duende.png";
+                        break;
+                    case ESQUELETO:
+                        imagen += "esqueleto.png";
+                        break;
+                    default:
+                        imagen += "duende.png";
+                        break;
+                }
+    
+                try {
+                    
+                    Image enemigoImagen = cargarImagen(imagen);
+                    ImageView enemigoView = new ImageView(enemigoImagen);
+                    enemigoView.setFitWidth(ancho);
+                    enemigoView.setFitHeight(alto);
+                    
+                    mainGrid.add(enemigoView, enemigo.getColumna(), enemigo.getFila());
+                    vistasEnemigos.add(enemigoView);
+    
+                    System.out.println("Enemigo añadido en: X=" + enemigo.getColumna() + ", Y=" +
+                            enemigo.getFila() + ", Tipo=" + enemigo.getTipo());
+                } catch (Exception e) {
+                    System.err.println("Error al cargar imagen de enemigo: " + imagen);
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
 
     private void mover() {
         contenedorMapa.setFocusTraversable(true);
@@ -300,6 +316,16 @@ public class VistaJuego implements Observer {
             default:
                 return;
         }
+        int nuevaFila = protagonista.getFila() + dx;
+       int nuevaColumna = protagonista.getColumna() + dy;
+
+
+for (Enemigo enemigo : listaEnemigos) {
+    if (enemigo.getFila() == nuevaFila && enemigo.getColumna() == nuevaColumna) {
+        System.out.println("Movimiento bloqueado: hay un enemigo en (" + nuevaFila + ", " + nuevaColumna + ")");
+        return; 
+    }
+}
 
         if (protagonista.mover(dx, dy, escenario)) {
 
@@ -313,74 +339,36 @@ public class VistaJuego implements Observer {
 
             movimientosRestantes--;
             movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
+            moverEnemigos();
         }
 
         System.out.println("Intentando mover a (" + dx + ", " + dy + ")");
         System.out.println("Después de mover: (" + protagonista.getFila() + ", " + protagonista.getColumna() + ")");
     }
 
-    /*
-     * private void moverEnemigos() {
-     * // Crear una copia de las posiciones actuales para controlar colisiones
-     * ArrayList<String> posicionesOcupadas = new ArrayList<>();
-     * 
-     * for (Enemigo enemigo : listaEnemigos) {
-     * int actualX = enemigo.getX();
-     * int actualY = enemigo.getY();
-     * posicionesOcupadas.add(actualX + "," + actualY); // Añadir la posición actual
-     * 
-     * int distanciaX = Math.abs(actualX - posX);
-     * int distanciaY = Math.abs(actualY - posY);
-     * 
-     * int nuevaX = actualX;
-     * int nuevaY = actualY;
-     * 
-     * if (distanciaX <= 2 && distanciaY <= 2) {
-     * if (actualX < posX)
-     * nuevaX++;
-     * else if (actualX > posX)
-     * nuevaX--;
-     * if (actualY < posY)
-     * nuevaY++;
-     * else if (actualY > posY)
-     * nuevaY--;
-     * } else {
-     * int direccion = r.nextInt(4);
-     * switch (direccion) {
-     * case 0:
-     * nuevaX--;
-     * break;
-     * case 1:
-     * nuevaX++;
-     * break;
-     * case 2:
-     * nuevaY--;
-     * break;
-     * case 3:
-     * nuevaY++;
-     * break;
-     * }
-     * }
-     * 
-     * String nuevaPos = nuevaX + "," + nuevaY;
-     * 
-     * // Verifica que no se mueva a una posición ya ocupada ni al jugador
-     * if (esPosicionValida(nuevaX, nuevaY) &&
-     * !posicionesOcupadas.contains(nuevaPos)) {
-     * enemigo.setX(nuevaX);
-     * enemigo.setY(nuevaY);
-     * posicionesOcupadas.add(nuevaPos); // Marcar como ocupada
-     * }
-     * }
-     * }
-     */
+    private void moverEnemigos() {
+        Set<String> posicionesOcupadas = new HashSet<>();
+for (Enemigo enemigo : listaEnemigos) {
+    posicionesOcupadas.add(enemigo.getFila() + "," + enemigo.getColumna());
+}
+
+posicionesOcupadas.add(protagonista.getFila() + "," + protagonista.getColumna());
+        for (Enemigo enemigo : listaEnemigos) {
+            String direccion = enemigo.moverInteligente(posX, posY, escenario, posicionesOcupadas);
+            
+           
+        }
+        mostrarEnemigos(50, 50); 
+    }
+
+
 
     private boolean puedeMoverA(int x, int y) {
         char[][] mapa = escenario.getMapa();
         if (x < 0 || x >= mapa.length || y < 0 || y >= mapa[0].length) {
             return false;
         }
-        return mapa[x][y] == 'S'; // 'S' es suelo, por ejemplo
+        return mapa[x][y] == 'S'; 
     }
 
     private Image cargarImagen(String ruta) {
