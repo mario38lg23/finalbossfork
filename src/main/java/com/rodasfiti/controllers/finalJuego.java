@@ -49,12 +49,10 @@ public class finalJuego {
             if (url == null) {
                 System.err.println("Archivo de audio no encontrado: " + rutaAudio);
             } else {
-                Media media = new Media(url.toExternalForm());
+                Media media = new Media(rutaAudio);
                 this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
                 musica.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
-                this.mediaPlayer.setAutoPlay(true);
                 this.mediaPlayer.setVolume(0.6);
-                this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
                 this.mediaPlayer.play();
             }
         } catch (Exception e) {
