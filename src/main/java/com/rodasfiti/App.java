@@ -13,7 +13,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         stage.setTitle("FinalBoss");
-        stage.getIcons().add(new Image(App.class.getResource("images/icono.png").toExternalForm()));
+        stage.getIcons().add(new Image(App.class.getResource("images/corazon.png").toExternalForm()));
 
         SceneManager sm = SceneManager.getInstance();
 
