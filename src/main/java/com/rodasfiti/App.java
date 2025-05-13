@@ -6,6 +6,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Clase principal que lanza la aplicación FinalBoss.
+ * 
+ * @author Mario López, Manuel Rodas
+ */
+
 public class App extends Application {
 
     @SuppressWarnings("exports")
