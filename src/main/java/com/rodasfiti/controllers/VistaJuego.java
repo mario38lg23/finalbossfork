@@ -116,7 +116,7 @@ public class VistaJuego implements Observer {
         System.out.println(">>> [FIN initialize()]");
     }
 
-    void actualizarDatosProtagonista() {
+    public void actualizarDatosProtagonista() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
         nombrePersonaje.setText(protagonista.getNombre());
         vida.setText(String.valueOf(protagonista.getVida()));
@@ -222,7 +222,6 @@ public class VistaJuego implements Observer {
                 intentos++;
             }
         }
-
         listaEnemigos.addAll(enemigosASpawn);
         mostrarMapa();
     }
@@ -290,6 +289,7 @@ public class VistaJuego implements Observer {
 
     private void moverProtagonista(KeyEvent e) {
         System.out.println("Tecla pulsada: " + e.getCode());
+        int c = 1;
 
         int dx = 0, dy = 0;
         String img = "/com/rodasfiti/images/";
@@ -344,8 +344,9 @@ public class VistaJuego implements Observer {
 
             // Verifica si los movimientos han llegado a 0
             if (movimientosRestantes <= 0) {
+                c++;
                 subirNivel();
-                spawnEnemigos(protagonista.getNivel());
+                spawnEnemigos(c);
                 movimientosRestantes = 15;
                 movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
             }
@@ -553,9 +554,9 @@ public class VistaJuego implements Observer {
         protagonista.setVida(protagonista.getVida() + 1);
         protagonista.setAtaque(protagonista.getAtaque() + 1);
         protagonista.setDefensa(protagonista.getDefensa() + 1);
-        protagonista.setVelocidad(protagonista.getVelocidad());
+        protagonista.setVelocidad(protagonista.getVelocidad()+1);
         actualizarDatosProtagonista();
-        cargarMusica();
+        cargarMusicaLevel();
     }
 
     public void reiniciarMusica() {
