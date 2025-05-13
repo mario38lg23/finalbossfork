@@ -35,7 +35,7 @@ public class VistaJuego implements Observer {
     private Label vida;
 
     @FXML
-    private MediaView musica;
+    private MediaView musicaLevel;
 
     @FXML
     private MediaPlayer mediaPlayer;
@@ -75,7 +75,7 @@ public class VistaJuego implements Observer {
     @FXML
     public void initialize() {
         System.out.println(">>> [INICIO initialize()]");
-
+        
         movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
         mainGrid = new GridPane();
         mainGrid.setPadding(new Insets(10));
@@ -471,6 +471,7 @@ public class VistaJuego implements Observer {
             } else {
                 p.reducirVida(enemigoEnCasilla.getAtaque());
                 if (p.estaMuerto()) {
+                    this.mediaPlayer.stop();
                     System.out.println("¡Has muerto!");
                     SceneManager.getInstance().loadScene(SceneID.FINAL);
                     finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
@@ -509,7 +510,7 @@ public class VistaJuego implements Observer {
             return null;
         }
     }
-    private void cargarMusica() {
+    private void cargarMusicaLevel() {
         try {
             // Ruta fija (recomendado si sabes el nombre del archivo)
             String rutaAudio = "/com/rodasfiti/media/trompeta.mp3";
@@ -521,10 +522,30 @@ public class VistaJuego implements Observer {
             } else {
                 Media media = new Media(url.toExternalForm());
                 this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
-                musica.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
+                musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
                 this.mediaPlayer.setAutoPlay(true);
                 this.mediaPlayer.setVolume(0.6);
-                this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                this.mediaPlayer.play();
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar audio: " + e.getMessage());
+        }
+    }
+    private void cargarMusica() {
+        try {
+            // Ruta fija (recomendado si sabes el nombre del archivo)
+            String rutaAudio = "/com/rodasfiti/media/juego.mp3";
+
+            URL url = getClass().getResource(rutaAudio);
+
+            if (url == null) {
+                System.err.println("Archivo de audio no encontrado: " + rutaAudio);
+            } else {
+                Media media = new Media(url.toExternalForm());
+                this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
+                musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
+                this.mediaPlayer.setAutoPlay(true);
+                this.mediaPlayer.setVolume(0.6);
                 this.mediaPlayer.play();
             }
         } catch (Exception e) {
@@ -539,6 +560,25 @@ public class VistaJuego implements Observer {
         protagonista.setDefensa(protagonista.getDefensa() + 1);
         protagonista.setVelocidad(protagonista.getVelocidad());
         actualizarDatosProtagonista();
+        cargarMusicaLevel();
+    }
+    public void reiniciarMusica() {
+        if (mediaPlayer != null) {
+            // Transición de volumen (fade out)
+                new Thread(() -> {
+                    try {
+                        for (double vol = mediaPlayer.getVolume(); vol > 0; vol -= 0.05) {
+                            final double v = vol;
+                            javafx.application.Platform.runLater(() -> mediaPlayer.setVolume(v));
+                            Thread.sleep(100); // esperar 100 ms entre cada paso
+                        }
+                        javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+                    }
+                }).start();
+        }
         cargarMusica();
     }
 

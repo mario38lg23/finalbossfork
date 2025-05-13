@@ -115,12 +115,26 @@ public class mainVista {
         }
         botonJugar.setOnAction(event -> {
             if (mediaPlayer != null) {
-                mediaPlayer.stop();
+                // Transición de volumen (fade out)
+                new Thread(() -> {
+                    try {
+                        for (double vol = mediaPlayer.getVolume(); vol > 0; vol -= 0.05) {
+                            final double v = vol;
+                            javafx.application.Platform.runLater(() -> mediaPlayer.setVolume(v));
+                            Thread.sleep(100); // esperar 100 ms entre cada paso
+                        }
+                        javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+                    }
+                }).start();
             }
             actualizarProtagonista(); // Actualizar los datos del protagonista
             SceneManager.getInstance().loadScene(SceneID.JUEGO);
             VistaJuego controlador = (VistaJuego) SceneManager.getInstance().getController(SceneID.JUEGO);
             if (controlador != null) {
+                controlador.reiniciarMusica();
                 controlador.actualizarDatosProtagonista();
             }
         });

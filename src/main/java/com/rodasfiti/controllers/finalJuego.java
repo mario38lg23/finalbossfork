@@ -47,6 +47,24 @@ public class finalJuego {
             Media sound = new Media(resource.toExternalForm());
             mediaPlayer = new MediaPlayer(sound);
             musica.setMediaPlayer(mediaPlayer); // Opcional, si usas MediaView
+
+            mediaPlayer.setVolume(0); // Comenzar en volumen 0
+
+            mediaPlayer.setOnPlaying(() -> {
+                new Thread(() -> {
+                    try {
+                        double targetVolume = 0.6;
+                        for (double vol = 0; vol <= targetVolume; vol += 0.02) {
+                            double finalVol = vol;
+                            javafx.application.Platform.runLater(() -> mediaPlayer.setVolume(finalVol));
+                            Thread.sleep(100);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            });
+
             mediaPlayer.play(); // Empieza sola
         } else {
             System.err.println("No se pudo cargar el recurso de audio.");
