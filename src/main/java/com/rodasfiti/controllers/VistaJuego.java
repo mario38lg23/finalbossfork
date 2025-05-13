@@ -518,7 +518,7 @@ public class VistaJuego implements Observer {
                 this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
                 musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
                 this.mediaPlayer.setAutoPlay(true);
-                this.mediaPlayer.setVolume(0.6);
+                this.mediaPlayer.setVolume(1);
                 this.mediaPlayer.play();
             }
         } catch (Exception e) {
@@ -540,7 +540,7 @@ public class VistaJuego implements Observer {
                 this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
                 musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
                 this.mediaPlayer.setAutoPlay(true);
-                this.mediaPlayer.setVolume(0.6);
+                this.mediaPlayer.setVolume(0.2);
                 this.mediaPlayer.play();
             }
         } catch (Exception e) {
