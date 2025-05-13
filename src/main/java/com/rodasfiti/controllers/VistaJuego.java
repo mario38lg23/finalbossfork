@@ -30,20 +30,15 @@ import java.util.Random;
 import java.util.Set;
 
 public class VistaJuego implements Observer {
-    @FXML
-    private MediaView musicaLevel;
 
     @FXML
     private Label vida;
 
     @FXML
-    private Label duendes;
+    private MediaView musicaLevel;
 
     @FXML
-    private Label orcos;
-
-    @FXML
-    private Label esqueletos;
+    private MediaPlayer mediaPlayer;
 
     @FXML
     private Label velocidad;
@@ -77,8 +72,6 @@ public class VistaJuego implements Observer {
     private ArrayList<ImageView> vistasEnemigos = new ArrayList<>();
     private Protagonista protagonista;
 
-    private MediaPlayer mediaPlayer;
-
     @FXML
     public void initialize() {
         System.out.println(">>> [INICIO initialize()]");
@@ -96,7 +89,7 @@ public class VistaJuego implements Observer {
         escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapaprueba.csv");
 
         if (escenario != null) {
-            /*protagonista = Proveedor.getInstance().getProtagonista();
+            protagonista = Proveedor.getInstance().getProtagonista();
             System.out.println(
                     "ANTES de setPosicionAleatoria: " + protagonista.getFila() + "," + protagonista.getColumna());
 
@@ -106,32 +99,24 @@ public class VistaJuego implements Observer {
             System.out.println(
                     "DESPUÉS de setPosicionAleatoria: " + protagonista.getFila() + "," + protagonista.getColumna());
 
-            actualizarDatosProtagonista();*/
-            //listaEnemigos = GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
+            actualizarDatosProtagonista();
+            listaEnemigos = GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
 
-            //System.out.println("ANTES de mostrarMapa: " + protagonista.getFila() + "," + protagonista.getColumna());
-            spawnEnemigos(2);
+            System.out.println("ANTES de mostrarMapa: " + protagonista.getFila() + "," + protagonista.getColumna());
+
             mostrarMapa();
         } else {
             System.err.println("No se pudo cargar el escenario.");
         }
-        if (movimientosRestantes <= 0) {
-            subirNivel();
-            spawnEnemigos(Proveedor.getInstance().getProtagonista().getNivel());
-            movimientosRestantes = 15;
-            movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
-        }
 
-        actualizarDatosEnemigos();
         contenedorMapa.getChildren().add(mainGrid);
-        
-        mover();
-        detectarYAtacarEnemigos();
 
-        //System.out.println(">>> [FIN initialize()]");
+        mover();
+
+        System.out.println(">>> [FIN initialize()]");
     }
 
-    public void actualizarDatosProtagonista() {
+    void actualizarDatosProtagonista() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
         nombrePersonaje.setText(protagonista.getNombre());
         vida.setText(String.valueOf(protagonista.getVida()));
@@ -183,7 +168,7 @@ public class VistaJuego implements Observer {
         protagonistaView.setFitWidth(ancho);
         protagonistaView.setFitHeight(alto);
         mainGrid.add(protagonistaView, protagonista.getColumna(), protagonista.getFila());
-        //mostrarEnemigos(ancho, alto);
+        mostrarEnemigos(ancho, alto);
     }
 
     private void spawnEnemigos(int cantidad) {
@@ -238,9 +223,9 @@ public class VistaJuego implements Observer {
             }
         }
 
-        listaEnemigos.clear();
         listaEnemigos.addAll(enemigosASpawn);
         vistasEnemigos.clear();
+        mostrarMapa();
         mostrarMapa();
     }
 
@@ -249,7 +234,7 @@ public class VistaJuego implements Observer {
                 && puedeMoverA(x, y) && !(x == posX && y == posY);
     }
 
-    /*private void mostrarEnemigos(int ancho, int alto) {
+    private void mostrarEnemigos(int ancho, int alto) {
         char[][] mapa = escenario.getMapa();
         int filas = mapa.length;
         int columnas = mapa[0].length;
@@ -297,7 +282,7 @@ public class VistaJuego implements Observer {
                 }
             }
         }
-    }*/
+    }
 
     private void mover() {
         contenedorMapa.setFocusTraversable(true);
@@ -309,7 +294,6 @@ public class VistaJuego implements Observer {
         System.out.println("Tecla pulsada: " + e.getCode());
 
         int dx = 0, dy = 0;
-
         String img = "/com/rodasfiti/images/";
 
         switch (e.getCode()) {
@@ -336,12 +320,13 @@ public class VistaJuego implements Observer {
             default:
                 return;
         }
+
         int nuevaFila = protagonista.getFila() + dx;
         int nuevaColumna = protagonista.getColumna() + dy;
 
         for (Enemigo enemigo : listaEnemigos) {
             if (enemigo.getFila() == nuevaFila && enemigo.getColumna() == nuevaColumna) {
-                System.out.println("Movimiento bloqueado: hay un enemigo en (" + nuevaFila + ", " + nuevaColumna + ")");
+                combatirSiHayEnemigoCerca(nuevaFila, nuevaColumna);
                 return;
             }
         }
@@ -358,6 +343,23 @@ public class VistaJuego implements Observer {
 
             movimientosRestantes--;
             movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
+
+            // Verifica si los movimientos han llegado a 0
+            if (movimientosRestantes <= 0) {
+                System.out.println("Movimientos restantes son 0, subiendo de nivel...");
+                subirNivel();
+                movimientosRestantes = 15; // Restablecer los movimientos restantes
+                movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
+                spawnEnemigos(protagonista.getNivel()); // Generar enemigos según el nivel
+
+                // Actualizar solo los números de los atributos en la interfaz
+                nivel.setText(String.valueOf(protagonista.getNivel()));
+                ataque.setText(String.valueOf(protagonista.getAtaque()));
+                escudo.setText(String.valueOf(protagonista.getDefensa()));
+                velocidad.setText(String.valueOf(protagonista.getVelocidad()));
+                vida.setText(String.valueOf(protagonista.getVida()));
+            }
+
             moverEnemigos();
         }
 
@@ -376,7 +378,121 @@ public class VistaJuego implements Observer {
             String direccion = enemigo.moverInteligente(posX, posY, escenario, posicionesOcupadas);
 
         }
-        //mostrarEnemigos(50, 50);
+        mostrarEnemigos(50, 50);
+    }
+
+    private void combatirEnemigosAdyacentes() {
+        int x = protagonista.getFila();
+        int y = protagonista.getColumna();
+
+        ArrayList<Enemigo> enemigosAdyacentes = new ArrayList<>();
+
+        for (Enemigo enemigo : listaEnemigos) {
+            int ex = enemigo.getFila();
+            int ey = enemigo.getColumna();
+
+            boolean esAdyacente = (Math.abs(x - ex) == 1 && y == ey) || (Math.abs(y - ey) == 1 && x == ex);
+            if (esAdyacente) {
+                enemigosAdyacentes.add(enemigo);
+            }
+        }
+
+        for (Enemigo enemigo : enemigosAdyacentes) {
+            // Combate 1 vs 1
+            if (protagonista.getVelocidad() >= enemigo.getVelocidad()) {
+                protagonista.atacar(enemigo);
+                System.out.println("Protagonista ataca primero.");
+                if (!enemigo.estaMuerto()) {
+                    enemigo.atacar(protagonista);
+                    System.out.println("Enemigo contraataca.");
+                }
+            } else {
+                enemigo.atacar(protagonista);
+                System.out.println("Enemigo ataca primero.");
+                if (protagonista.getVida() > 0) {
+                    protagonista.atacar(enemigo);
+                    System.out.println("Protagonista contraataca.");
+                }
+            }
+
+            if (enemigo.estaMuerto()) {
+                System.out.println("Enemigo derrotado: " + enemigo.getTipo());
+                listaEnemigos.remove(enemigo);
+                break; // Para evitar `ConcurrentModificationException`
+            }
+
+            if (protagonista.getVida() <= 0) {
+                System.out.println("¡Has muerto!");
+                SceneManager.getInstance().loadScene(SceneID.FINAL);
+                finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
+                if (controller != null) {
+                    controller.reiniciarMusica();
+                }
+                break;
+            }
+        }
+
+        // Actualiza vista
+        actualizarDatosProtagonista();
+        mostrarEnemigos(50, 50);
+    }
+
+    private void combatirSiHayEnemigoCerca(int nuevaFila, int nuevaColumna) {
+        Enemigo enemigoEnCasilla = null;
+
+        for (Enemigo enemigo : listaEnemigos) {
+            if (enemigo.getFila() == nuevaFila && enemigo.getColumna() == nuevaColumna) {
+                enemigoEnCasilla = enemigo;
+                break;
+            }
+        }
+
+        if (enemigoEnCasilla != null) {
+            Protagonista p = Proveedor.getInstance().getProtagonista();
+
+            System.out.println("¡Combate entre Protagonista y " + enemigoEnCasilla.getTipo() + "!");
+
+            if (p.getVelocidad() >= enemigoEnCasilla.getVelocidad()) {
+                enemigoEnCasilla.recibirDanio(p.getAtaque());
+                if (enemigoEnCasilla.estaMuerto()) {
+                    listaEnemigos.remove(enemigoEnCasilla);
+                    mostrarMapa(); // para que desaparezca del mapa
+                    System.out.println("¡Enemigo derrotado!");
+                } else {
+                    p.reducirVida(enemigoEnCasilla.getAtaque());
+                    if (p.estaMuerto()) {
+                        System.out.println("¡Has muerto!");
+                        SceneManager.getInstance().loadScene(SceneID.FINAL);
+                        finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
+                        if (controller != null) {
+                            controller.reiniciarMusica();
+                        }
+                        return;
+                    }
+                }
+            } else {
+                p.reducirVida(enemigoEnCasilla.getAtaque());
+                if (p.estaMuerto()) {
+                    this.mediaPlayer.stop();
+                    System.out.println("¡Has muerto!");
+                    SceneManager.getInstance().loadScene(SceneID.FINAL);
+                    finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
+                    if (controller != null) {
+                        controller.reiniciarMusica();
+                    }
+                    return;
+                } else {
+                    enemigoEnCasilla.recibirDanio(p.getAtaque());
+                    if (enemigoEnCasilla.estaMuerto()) {
+                        listaEnemigos.remove(enemigoEnCasilla);
+                        mostrarMapa();
+                        System.out.println("¡Enemigo derrotado!");
+                    }
+                }
+            }
+
+            actualizarDatosProtagonista();
+        }
     }
 
     private boolean puedeMoverA(int x, int y) {
@@ -397,89 +513,7 @@ public class VistaJuego implements Observer {
         }
     }
 
-    private void atacar(Protagonista protagonista, Enemigo enemigo) {
-        // Verifica si el enemigo está en una celda adyacente
-        int dx = Math.abs(posX - enemigo.getFila());
-        int dy = Math.abs(posY - enemigo.getColumna());
-
-        if ((dx <= 1 && dy <= 1)) {
-            // El más rápido ataca primero
-            if (protagonista.getVelocidad() >= enemigo.getVelocidad()) {
-                protagonista.atacar(enemigo);
-                if (enemigo.getVida() > 0) {
-                    enemigo.atacar(protagonista);
-                }
-            } else {
-                enemigo.atacar(protagonista);
-                if (protagonista.getVida() > 0) {
-                    protagonista.atacar(enemigo);
-                }
-            }
-
-            // Verifica muertes
-            if (protagonista.getVida() <= 0) {
-                protagonista.morir();
-            }
-
-            if (enemigo.getVida() <= 0) {
-                listaEnemigos.remove(enemigo);
-                mostrarMapa(); // actualizar mapa para quitar enemigo visualmente
-            }
-
-            actualizarDatosProtagonista(); // actualiza stats en la UI
-        }
-    }
-
-    private void detectarYAtacarEnemigos() {
-        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
-        ArrayList<Enemigo> enemigosCercanos = new ArrayList<>();
-
-        for (Enemigo enemigo : listaEnemigos) {
-            int distanciaX = Math.abs(posX - enemigo.getFila());
-            int distanciaY = Math.abs(posY - enemigo.getColumna());
-            if (distanciaX <= 2 && distanciaY <= 2) {
-                enemigosCercanos.add(enemigo);
-            }
-        }
-
-        for (Enemigo enemigo : enemigosCercanos) {
-            if (protagonista.getVelocidad() >= enemigo.getVelocidad()) {
-                protagonista.atacar(enemigo);
-                if (enemigo.getVida() > 0) {
-                    enemigo.atacar(protagonista);
-                }
-            } else {
-                enemigo.atacar(protagonista);
-                if (protagonista.getVida() > 0) {
-                    protagonista.atacar(enemigo);
-                }
-            }
-
-            if (enemigo.getVida() <= 0) {
-                listaEnemigos.remove(enemigo);
-            }
-
-            if (protagonista.getVida() <= 0) {
-                SceneManager.getInstance().loadScene(SceneID.FINAL);
-                break;
-            }
-        }
-
-        actualizarDatosProtagonista(); // Refresca la UI
-    }
-
-    private void subirNivel() {
-        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
-        protagonista.setNivel(protagonista.getNivel() + 1);
-        protagonista.setVida(protagonista.getVida() + 1);
-        protagonista.setAtaque(protagonista.getAtaque() + 1);
-        protagonista.setDefensa(protagonista.getDefensa() + 1);
-        protagonista.setVelocidad(protagonista.getVelocidad());
-        actualizarDatosProtagonista();
-        cargarMusica();
-    }
-
-    private void cargarMusica() {
+    private void cargarMusicaLevel() {
         try {
             // Ruta fija (recomendado si sabes el nombre del archivo)
             String rutaAudio = "/com/rodasfiti/media/trompeta.mp3";
@@ -501,35 +535,62 @@ public class VistaJuego implements Observer {
         }
     }
 
-    public void actualizarDatosEnemigos() {
-        int eq = 0;
-        int or = 0;
-        int dnd = 0;
-        for (Enemigo enemigo : listaEnemigos) {
-            switch (enemigo.getTipo()) {
-                case ORCO:
-                    or++;
-                    break;
-                case DUENDE:
-                    dnd++;
-                    break;
-                case ESQUELETO:
-                    eq++;
-                    break;
-                default:
+    private void cargarMusica() {
+        try {
+            // Ruta fija (recomendado si sabes el nombre del archivo)
+            String rutaAudio = "/com/rodasfiti/media/juego.mp3";
 
-                    break;
+            URL url = getClass().getResource(rutaAudio);
+
+            if (url == null) {
+                System.err.println("Archivo de audio no encontrado: " + rutaAudio);
+            } else {
+                Media media = new Media(url.toExternalForm());
+                this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
+                musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
+                this.mediaPlayer.setAutoPlay(true);
+                this.mediaPlayer.setVolume(0.6);
+                this.mediaPlayer.play();
             }
+        } catch (Exception e) {
+            System.err.println("Error al cargar audio: " + e.getMessage());
         }
-        orcos.setText("Orco: " + or);
-        duendes.setText("Duende: " + dnd);
-        esqueletos.setText("Esqueleto: " + eq);
+    }
+
+    private void subirNivel() {
+        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
+        protagonista.setNivel(protagonista.getNivel() + 1);
+        protagonista.setVida(protagonista.getVida() + 1);
+        protagonista.setAtaque(protagonista.getAtaque() + 1);
+        protagonista.setDefensa(protagonista.getDefensa() + 1);
+        protagonista.setVelocidad(protagonista.getVelocidad());
+        actualizarDatosProtagonista();
+        cargarMusicaLevel();
+    }
+
+    public void reiniciarMusica() {
+        if (mediaPlayer != null) {
+            // Transición de volumen (fade out)
+            new Thread(() -> {
+                try {
+                    for (double vol = mediaPlayer.getVolume(); vol > 0; vol -= 0.05) {
+                        final double v = vol;
+                        javafx.application.Platform.runLater(() -> mediaPlayer.setVolume(v));
+                        Thread.sleep(100); // esperar 100 ms entre cada paso
+                    }
+                    javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+                }
+            }).start();
+        }
+        cargarMusica();
     }
 
     @Override
     public void onChange() {
         actualizarDatosProtagonista();
-        actualizarDatosEnemigos();
 
     }
 }

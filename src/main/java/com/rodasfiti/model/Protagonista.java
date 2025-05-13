@@ -97,4 +97,31 @@ public class Protagonista extends Personaje {
         }
     }
 
+    public void atacar(Enemigo enemigo) {
+        int danio = Math.max(0, this.ataque - enemigo.getDefensa());
+        enemigo.reducirVida(danio);
+        System.out.println("Atacaste al enemigo y le hiciste " + danio + " de daño.");
+    }
+
+    public void reducirVida(int cantidad) {
+        this.vida -= cantidad;
+        if (this.vida < 0) {
+            this.vida = 0;
+        }
+        System.out.println("Protagonista pierde " + cantidad + " de vida. Vida actual: " + this.vida);
+    }
+
+    public boolean estaMuerto() {
+        return this.vida <= 0;
+    }
+
+    public void subirNivel() {
+        this.nivel++;
+        this.ataque++;
+        this.defensa++;
+        this.velocidad++;
+        this.vida++;
+        System.out.println("¡Nivel aumentado a " + nivel + "! Todos los atributos han subido en 1.");
+    }
+
 }
