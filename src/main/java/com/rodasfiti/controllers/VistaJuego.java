@@ -30,20 +30,15 @@ import java.util.Random;
 import java.util.Set;
 
 public class VistaJuego implements Observer {
-    @FXML
-    private MediaView musicaLevel;
 
     @FXML
     private Label vida;
 
     @FXML
-    private Label duendes;
+    private MediaView musica;
 
     @FXML
-    private Label orcos;
-
-    @FXML
-    private Label esqueletos;
+    private MediaPlayer mediaPlayer;
 
     @FXML
     private Label velocidad;
@@ -76,8 +71,6 @@ public class VistaJuego implements Observer {
     private ArrayList<Enemigo> listaEnemigos = new ArrayList<>();
     private ArrayList<ImageView> vistasEnemigos = new ArrayList<>();
     private Protagonista protagonista;
-
-    private MediaPlayer mediaPlayer;
 
     @FXML
     public void initialize() {
@@ -115,14 +108,7 @@ public class VistaJuego implements Observer {
         } else {
             System.err.println("No se pudo cargar el escenario.");
         }
-        if (movimientosRestantes <= 0) {
-            subirNivel();
-            spawnEnemigos(Proveedor.getInstance().getProtagonista().getNivel());
-            movimientosRestantes = 15;
-            movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
-        }
 
-        actualizarDatosEnemigos();
         contenedorMapa.getChildren().add(mainGrid);
 
         mover();
@@ -130,7 +116,7 @@ public class VistaJuego implements Observer {
         System.out.println(">>> [FIN initialize()]");
     }
 
-    public void actualizarDatosProtagonista() {
+    void actualizarDatosProtagonista() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
         nombrePersonaje.setText(protagonista.getNombre());
         vida.setText(String.valueOf(protagonista.getVida()));
@@ -237,7 +223,6 @@ public class VistaJuego implements Observer {
             }
         }
 
-        // ✅ En lugar de limpiar la lista, agregamos a los ya existentes
         listaEnemigos.addAll(enemigosASpawn);
         mostrarMapa();
     }
@@ -360,9 +345,10 @@ public class VistaJuego implements Observer {
             // Verifica si los movimientos han llegado a 0
             if (movimientosRestantes <= 0) {
                 System.out.println("Movimientos restantes son 0, subiendo de nivel...");
-                protagonista.subirNivel(); // Llamada para subir de nivel
+                subirNivel();
                 movimientosRestantes = 15; // Restablecer los movimientos restantes
                 movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
+                spawnEnemigos(protagonista.getNivel()); // Generar enemigos según el nivel
 
                 // Actualizar solo los números de los atributos en la interfaz
                 nivel.setText(String.valueOf(protagonista.getNivel()));
@@ -398,10 +384,6 @@ public class VistaJuego implements Observer {
         int y = protagonista.getColumna();
 
         ArrayList<Enemigo> enemigosAdyacentes = new ArrayList<>();
-
-        // Añadir la posición del protagonista para que los enemigos no se muevan a esa
-        // casilla
-        posicionesOcupadas.add(posX + "," + posY);
 
         for (Enemigo enemigo : listaEnemigos) {
             int ex = enemigo.getFila();
@@ -439,7 +421,11 @@ public class VistaJuego implements Observer {
 
             if (protagonista.getVida() <= 0) {
                 System.out.println("¡Has muerto!");
-                // Aquí podrías llamar a una escena de Game Over
+                SceneManager.getInstance().loadScene(SceneID.FINAL);
+                finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
+                if (controller != null) {
+                    controller.reiniciarMusica();
+                }
                 break;
             }
         }
@@ -474,13 +460,24 @@ public class VistaJuego implements Observer {
                     p.reducirVida(enemigoEnCasilla.getAtaque());
                     if (p.estaMuerto()) {
                         System.out.println("¡Has muerto!");
-                        // Aquí podrías cambiar de escena o mostrar un mensaje de derrota
+                        SceneManager.getInstance().loadScene(SceneID.FINAL);
+                        finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
+                        if (controller != null) {
+                            controller.reiniciarMusica();
+                        }
+                        return;
                     }
                 }
             } else {
                 p.reducirVida(enemigoEnCasilla.getAtaque());
                 if (p.estaMuerto()) {
                     System.out.println("¡Has muerto!");
+                    SceneManager.getInstance().loadScene(SceneID.FINAL);
+                    finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
+                    if (controller != null) {
+                        controller.reiniciarMusica();
+                    }
+                    return;
                 } else {
                     enemigoEnCasilla.recibirDanio(p.getAtaque());
                     if (enemigoEnCasilla.estaMuerto()) {
@@ -512,91 +509,6 @@ public class VistaJuego implements Observer {
             return null;
         }
     }
-
-    /*
-     * private void atacar(Protagonista protagonista, Enemigo enemigo) {
-     * // Verifica si el enemigo está en una celda adyacente
-     * int dx = Math.abs(posX - enemigo.getX());
-     * int dy = Math.abs(posY - enemigo.getY());
-     * 
-     * if ((dx <= 1 && dy <= 1)) {
-     * // El más rápido ataca primero
-     * if (protagonista.getVelocidad() >= enemigo.getVelocidad()) {
-     * protagonista.atacar(enemigo);
-     * if (enemigo.getVida() > 0) {
-     * enemigo.atacar(protagonista);
-     * }
-     * } else {
-     * enemigo.atacar(protagonista);
-     * if (protagonista.getVida() > 0) {
-     * protagonista.atacar(enemigo);
-     * }
-     * }
-     * 
-     * // Verifica muertes
-     * if (protagonista.getVida() <= 0) {
-     * protagonista.morir();
-     * }
-     * 
-     * if (enemigo.getVida() <= 0) {
-     * listaEnemigos.remove(enemigo);
-     * mostrarMapa(); // actualizar mapa para quitar enemigo visualmente
-     * }
-     * 
-     * actualizarDatosProtagonista(); // actualiza stats en la UI
-     * }
-     * }
-     */
-
-    private void detectarYAtacarEnemigos() {
-        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
-        ArrayList<Enemigo> enemigosCercanos = new ArrayList<>();
-
-        for (Enemigo enemigo : listaEnemigos) {
-            int distanciaX = Math.abs(posX - enemigo.getX());
-            int distanciaY = Math.abs(posY - enemigo.getY());
-            if (distanciaX <= 1 && distanciaY <= 1) {
-                enemigosCercanos.add(enemigo);
-            }
-        }
-
-        for (Enemigo enemigo : enemigosCercanos) {
-            if (protagonista.getVelocidad() >= enemigo.getVelocidad()) {
-                protagonista.atacar(enemigo);
-                if (enemigo.getVida() > 0) {
-                    enemigo.atacar(protagonista);
-                }
-            } else {
-                enemigo.atacar(protagonista);
-                if (protagonista.getVida() > 0) {
-                    protagonista.atacar(enemigo);
-                }
-            }
-
-            if (enemigo.getVida() <= 0) {
-                listaEnemigos.remove(enemigo);
-            }
-
-            if (protagonista.getVida() <= 0) {
-                SceneManager.getInstance().loadScene(SceneID.FINAL);
-                break;
-            }
-        }
-
-        actualizarDatosProtagonista(); // Refresca la UI
-    }
-
-    private void subirNivel() {
-        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
-        protagonista.setNivel(protagonista.getNivel() + 1);
-        protagonista.setVida(protagonista.getVida() + 1);
-        protagonista.setAtaque(protagonista.getAtaque() + 1);
-        protagonista.setDefensa(protagonista.getDefensa() + 1);
-        protagonista.setVelocidad(protagonista.getVelocidad());
-        actualizarDatosProtagonista();
-        cargarMusica();
-    }
-
     private void cargarMusica() {
         try {
             // Ruta fija (recomendado si sabes el nombre del archivo)
@@ -609,45 +521,30 @@ public class VistaJuego implements Observer {
             } else {
                 Media media = new Media(url.toExternalForm());
                 this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
-                musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
+                musica.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
                 this.mediaPlayer.setAutoPlay(true);
                 this.mediaPlayer.setVolume(0.6);
+                this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
                 this.mediaPlayer.play();
             }
         } catch (Exception e) {
             System.err.println("Error al cargar audio: " + e.getMessage());
         }
     }
-
-    public void actualizarDatosEnemigos() {
-        int eq = 0;
-        int or = 0;
-        int dnd = 0;
-        for (Enemigo enemigo : listaEnemigos) {
-            switch (enemigo.getTipo()) {
-                case ORCO:
-                    or++;
-                    break;
-                case DUENDE:
-                    dnd++;
-                    break;
-                case ESQUELETO:
-                    eq++;
-                    break;
-                default:
-
-                    break;
-            }
-        }
-        orcos.setText("Orco: " + or);
-        duendes.setText("Duende: " + dnd);
-        esqueletos.setText("Esqueleto: " + eq);
+    private void subirNivel() {
+        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
+        protagonista.setNivel(protagonista.getNivel() + 1);
+        protagonista.setVida(protagonista.getVida() + 1);
+        protagonista.setAtaque(protagonista.getAtaque() + 1);
+        protagonista.setDefensa(protagonista.getDefensa() + 1);
+        protagonista.setVelocidad(protagonista.getVelocidad());
+        actualizarDatosProtagonista();
+        cargarMusica();
     }
 
     @Override
     public void onChange() {
         actualizarDatosProtagonista();
-        actualizarDatosEnemigos();
 
     }
 }

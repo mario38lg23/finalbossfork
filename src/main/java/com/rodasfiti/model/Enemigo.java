@@ -18,10 +18,6 @@ public class Enemigo extends Personaje {
         this.columna = y;
     }
 
-    public Enemigo() {
-
-    }
-
     public int getPercepcion() {
         return percepcion;
     }
@@ -29,7 +25,6 @@ public class Enemigo extends Personaje {
     public void setPercepcion(int percepcion) {
         this.percepcion = percepcion;
     }
-    
 
     public void atacar() {
     }
