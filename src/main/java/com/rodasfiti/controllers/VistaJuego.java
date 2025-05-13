@@ -9,7 +9,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 
+import com.rodasfiti.SceneID;
+import com.rodasfiti.SceneManager;
 import com.rodasfiti.interfaces.Observer;
 import com.rodasfiti.model.*;
 
@@ -28,6 +33,12 @@ public class VistaJuego implements Observer {
 
     @FXML
     private Label vida;
+
+    @FXML
+    private MediaView musicaLevel;
+
+    @FXML
+    private MediaPlayer mediaPlayer;
 
     @FXML
     private Label velocidad;
@@ -212,9 +223,9 @@ public class VistaJuego implements Observer {
             }
         }
 
-        listaEnemigos.clear();
         listaEnemigos.addAll(enemigosASpawn);
         vistasEnemigos.clear();
+        mostrarMapa();
         mostrarMapa();
     }
 
@@ -336,9 +347,10 @@ public class VistaJuego implements Observer {
             // Verifica si los movimientos han llegado a 0
             if (movimientosRestantes <= 0) {
                 System.out.println("Movimientos restantes son 0, subiendo de nivel...");
-                protagonista.subirNivel(); // Llamada para subir de nivel
+                subirNivel();
                 movimientosRestantes = 15; // Restablecer los movimientos restantes
                 movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
+                spawnEnemigos(protagonista.getNivel()); // Generar enemigos según el nivel
 
                 // Actualizar solo los números de los atributos en la interfaz
                 nivel.setText(String.valueOf(protagonista.getNivel()));
@@ -411,7 +423,11 @@ public class VistaJuego implements Observer {
 
             if (protagonista.getVida() <= 0) {
                 System.out.println("¡Has muerto!");
-                // Aquí podrías llamar a una escena de Game Over
+                SceneManager.getInstance().loadScene(SceneID.FINAL);
+                finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
+                if (controller != null) {
+                    controller.reiniciarMusica();
+                }
                 break;
             }
         }
@@ -446,13 +462,25 @@ public class VistaJuego implements Observer {
                     p.reducirVida(enemigoEnCasilla.getAtaque());
                     if (p.estaMuerto()) {
                         System.out.println("¡Has muerto!");
-                        // Aquí podrías cambiar de escena o mostrar un mensaje de derrota
+                        SceneManager.getInstance().loadScene(SceneID.FINAL);
+                        finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
+                        if (controller != null) {
+                            controller.reiniciarMusica();
+                        }
+                        return;
                     }
                 }
             } else {
                 p.reducirVida(enemigoEnCasilla.getAtaque());
                 if (p.estaMuerto()) {
+                    this.mediaPlayer.stop();
                     System.out.println("¡Has muerto!");
+                    SceneManager.getInstance().loadScene(SceneID.FINAL);
+                    finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
+                    if (controller != null) {
+                        controller.reiniciarMusica();
+                    }
+                    return;
                 } else {
                     enemigoEnCasilla.recibirDanio(p.getAtaque());
                     if (enemigoEnCasilla.estaMuerto()) {
@@ -483,6 +511,81 @@ public class VistaJuego implements Observer {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void cargarMusicaLevel() {
+        try {
+            // Ruta fija (recomendado si sabes el nombre del archivo)
+            String rutaAudio = "/com/rodasfiti/media/trompeta.mp3";
+
+            URL url = getClass().getResource(rutaAudio);
+
+            if (url == null) {
+                System.err.println("Archivo de audio no encontrado: " + rutaAudio);
+            } else {
+                Media media = new Media(url.toExternalForm());
+                this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
+                musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
+                this.mediaPlayer.setAutoPlay(true);
+                this.mediaPlayer.setVolume(0.6);
+                this.mediaPlayer.play();
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar audio: " + e.getMessage());
+        }
+    }
+
+    private void cargarMusica() {
+        try {
+            // Ruta fija (recomendado si sabes el nombre del archivo)
+            String rutaAudio = "/com/rodasfiti/media/juego.mp3";
+
+            URL url = getClass().getResource(rutaAudio);
+
+            if (url == null) {
+                System.err.println("Archivo de audio no encontrado: " + rutaAudio);
+            } else {
+                Media media = new Media(url.toExternalForm());
+                this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
+                musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
+                this.mediaPlayer.setAutoPlay(true);
+                this.mediaPlayer.setVolume(0.6);
+                this.mediaPlayer.play();
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar audio: " + e.getMessage());
+        }
+    }
+
+    private void subirNivel() {
+        Protagonista protagonista = Proveedor.getInstance().getProtagonista();
+        protagonista.setNivel(protagonista.getNivel() + 1);
+        protagonista.setVida(protagonista.getVida() + 1);
+        protagonista.setAtaque(protagonista.getAtaque() + 1);
+        protagonista.setDefensa(protagonista.getDefensa() + 1);
+        protagonista.setVelocidad(protagonista.getVelocidad());
+        actualizarDatosProtagonista();
+        cargarMusicaLevel();
+    }
+
+    public void reiniciarMusica() {
+        if (mediaPlayer != null) {
+            // Transición de volumen (fade out)
+            new Thread(() -> {
+                try {
+                    for (double vol = mediaPlayer.getVolume(); vol > 0; vol -= 0.05) {
+                        final double v = vol;
+                        javafx.application.Platform.runLater(() -> mediaPlayer.setVolume(v));
+                        Thread.sleep(100); // esperar 100 ms entre cada paso
+                    }
+                    javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+                }
+            }).start();
+        }
+        cargarMusica();
     }
 
     @Override

@@ -21,6 +21,7 @@ public class App extends Application {
 
         sm.setScene(SceneID.MAINVISTA, "paginaInicio");
         sm.setScene(SceneID.JUEGO, "VistaJuego");
+        sm.setScene(SceneID.FINAL, "finalJuego");
 
         sm.loadScene(SceneID.MAINVISTA);
     }

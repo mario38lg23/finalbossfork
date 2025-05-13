@@ -42,8 +42,8 @@ public class Protagonista extends Personaje {
     }
 
     @Override
-    public void atacar() {
-        super.atacar();
+    public void atacar(Personaje objetivo) {
+        super.atacar(objetivo);
     }
 
     public boolean mover(int dx, int dy, Escenario escenario) {
@@ -116,11 +116,11 @@ public class Protagonista extends Personaje {
     }
 
     public void subirNivel() {
-        nivel++;
-        ataque++;
-        defensa++;
-        velocidad++;
-        vida++;
+        this.nivel++;
+        this.ataque++;
+        this.defensa++;
+        this.velocidad++;
+        this.vida++;
         System.out.println("¡Nivel aumentado a " + nivel + "! Todos los atributos han subido en 1.");
     }
 
