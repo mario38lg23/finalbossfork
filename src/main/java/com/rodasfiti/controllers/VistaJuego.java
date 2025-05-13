@@ -502,6 +502,7 @@ public class VistaJuego implements Observer {
         }
 
         if (protagonista.mover(dx, dy, escenario)) {
+
             posX = protagonista.getFila();
             posY = protagonista.getColumna();
 
@@ -513,18 +514,13 @@ public class VistaJuego implements Observer {
             movimientosRestantes--;
             movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
 
+            // Verifica si los movimientos han llegado a 0
             if (movimientosRestantes <= 0) {
                 c++;
                 subirNivel();
+                spawnEnemigos(c);
                 movimientosRestantes = 15;
                 movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
-                spawnEnemigos(protagonista.getNivel());
-
-                nivel.setText(String.valueOf(protagonista.getNivel()));
-                ataque.setText(String.valueOf(protagonista.getAtaque()));
-                escudo.setText(String.valueOf(protagonista.getDefensa()));
-                velocidad.setText(String.valueOf(protagonista.getVelocidad()));
-                vida.setText(String.valueOf(protagonista.getVida()));
             }
 
             moverEnemigos();
@@ -553,71 +549,6 @@ public class VistaJuego implements Observer {
             // El movimiento inteligente del enemigo
             String direccion = enemigo.moverInteligente(posX, posY, escenario, posicionesOcupadas);
         }
-        mostrarEnemigos(50, 50);
-    }
-
-    /**
-     * Método encargado de gestionar los combates con los enemigos adyacentes al
-     * protagonista.
-     * Verifica si el protagonista está adyacente a algún enemigo (en las casillas
-     * adyacentes) y,
-     * en ese caso, inicia el combate entre el protagonista y el enemigo.
-     * El combate se resuelve según la velocidad de cada uno, donde el de mayor
-     * velocidad ataca primero.
-     * Si un enemigo es derrotado, se elimina de la lista de enemigos, y si el
-     * protagonista muere, se termina el juego.
-     */
-    private void combatirEnemigosAdyacentes() {
-        int x = protagonista.getFila();
-        int y = protagonista.getColumna();
-
-        ArrayList<Enemigo> enemigosAdyacentes = new ArrayList<>();
-
-        for (Enemigo enemigo : listaEnemigos) {
-            int ex = enemigo.getFila();
-            int ey = enemigo.getColumna();
-
-            boolean esAdyacente = (Math.abs(x - ex) == 1 && y == ey) || (Math.abs(y - ey) == 1 && x == ex);
-            if (esAdyacente) {
-                enemigosAdyacentes.add(enemigo);
-            }
-        }
-
-        for (Enemigo enemigo : enemigosAdyacentes) {
-            if (protagonista.getVelocidad() >= enemigo.getVelocidad()) {
-                protagonista.atacar(enemigo);
-                System.out.println("Protagonista ataca primero.");
-                if (!enemigo.estaMuerto()) {
-                    enemigo.atacar(protagonista);
-                    System.out.println("Enemigo contraataca.");
-                }
-            } else {
-                enemigo.atacar(protagonista);
-                System.out.println("Enemigo ataca primero.");
-                if (protagonista.getVida() > 0) {
-                    protagonista.atacar(enemigo);
-                    System.out.println("Protagonista contraataca.");
-                }
-            }
-
-            if (enemigo.estaMuerto()) {
-                System.out.println("Enemigo derrotado: " + enemigo.getTipo());
-                listaEnemigos.remove(enemigo);
-                break;
-            }
-
-            if (protagonista.getVida() <= 0) {
-                System.out.println("¡Has muerto!");
-                SceneManager.getInstance().loadScene(SceneID.FINAL);
-                finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
-                if (controller != null) {
-                    controller.reiniciarMusica();
-                }
-                break;
-            }
-        }
-
-        actualizarDatosProtagonista();
         mostrarEnemigos(50, 50);
     }
 
@@ -705,12 +636,11 @@ public class VistaJuego implements Observer {
      * @param y La columna de la casilla a verificar.
      * @return true si la casilla es válida para moverse, false en caso contrario.
      */
-    private boolean puedeMoverA(int x, int y) {
+    private boolean puedeMoverA(int columna, int fila) {
         char[][] mapa = escenario.getMapa();
-        if (x < 0 || x >= mapa.length || y < 0 || y >= mapa[0].length) {
-            return false;
-        }
-        return mapa[x][y] == 'S';
+        return fila >= 0 && fila < mapa.length &&
+                columna >= 0 && columna < mapa[0].length &&
+                mapa[fila][columna] == 'S';
     }
 
     /**
