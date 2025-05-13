@@ -115,13 +115,13 @@ public class Protagonista extends Personaje {
         return this.vida <= 0;
     }
 
-    public void subirNivel() {
+    /*public void subirNivel() {
         this.nivel++;
         this.ataque++;
         this.defensa++;
         this.velocidad++;
         this.vida++;
         System.out.println("¡Nivel aumentado a " + nivel + "! Todos los atributos han subido en 1.");
-    }
+    }*/
 
 }

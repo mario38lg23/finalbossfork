@@ -116,7 +116,7 @@ public class VistaJuego implements Observer {
         System.out.println(">>> [FIN initialize()]");
     }
 
-    void actualizarDatosProtagonista() {
+    public void actualizarDatosProtagonista() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
         nombrePersonaje.setText(protagonista.getNombre());
         vida.setText(String.valueOf(protagonista.getVida()));
@@ -222,7 +222,6 @@ public class VistaJuego implements Observer {
                 intentos++;
             }
         }
-
         listaEnemigos.addAll(enemigosASpawn);
         vistasEnemigos.clear();
         mostrarMapa();
@@ -292,6 +291,7 @@ public class VistaJuego implements Observer {
 
     private void moverProtagonista(KeyEvent e) {
         System.out.println("Tecla pulsada: " + e.getCode());
+        int c = 1;
 
         int dx = 0, dy = 0;
         String img = "/com/rodasfiti/images/";
@@ -346,18 +346,11 @@ public class VistaJuego implements Observer {
 
             // Verifica si los movimientos han llegado a 0
             if (movimientosRestantes <= 0) {
-                System.out.println("Movimientos restantes son 0, subiendo de nivel...");
+                c++;
                 subirNivel();
-                movimientosRestantes = 15; // Restablecer los movimientos restantes
+                spawnEnemigos(c);
+                movimientosRestantes = 15;
                 movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
-                spawnEnemigos(protagonista.getNivel()); // Generar enemigos según el nivel
-
-                // Actualizar solo los números de los atributos en la interfaz
-                nivel.setText(String.valueOf(protagonista.getNivel()));
-                ataque.setText(String.valueOf(protagonista.getAtaque()));
-                escudo.setText(String.valueOf(protagonista.getDefensa()));
-                velocidad.setText(String.valueOf(protagonista.getVelocidad()));
-                vida.setText(String.valueOf(protagonista.getVida()));
             }
 
             moverEnemigos();
@@ -563,7 +556,7 @@ public class VistaJuego implements Observer {
         protagonista.setVida(protagonista.getVida() + 1);
         protagonista.setAtaque(protagonista.getAtaque() + 1);
         protagonista.setDefensa(protagonista.getDefensa() + 1);
-        protagonista.setVelocidad(protagonista.getVelocidad());
+        protagonista.setVelocidad(protagonista.getVelocidad()+1);
         actualizarDatosProtagonista();
         cargarMusicaLevel();
     }

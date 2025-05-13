@@ -100,7 +100,7 @@ public abstract class Personaje {
     }
 
     public void atacar(Personaje objetivo) {
-        if (r.nextInt(10) > objetivo.getDefensa()) {
+        if (r.nextInt(20) > objetivo.getDefensa()) {
             int nuevaVida = objetivo.getVida() - this.ataque;
             objetivo.setVida(Math.max(0, nuevaVida)); 
         }
