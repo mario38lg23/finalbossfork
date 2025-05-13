@@ -5,8 +5,24 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Clase utilitaria encargada de cargar enemigos desde un archivo CSV ubicado en
+ * los recursos del proyecto.
+ */
 public class GestorEnemigos {
 
+    /**
+     * Carga una lista de enemigos desde un archivo CSV especificado.
+     * Cada línea del archivo representa un enemigo con sus atributos en el
+     * siguiente orden:
+     * tipo, nivel, ataque, defensa, vida, velocidad, percepción, posición X,
+     * posición Y.
+     * Se omite la primera línea del archivo asumiendo que es un encabezado.
+     *
+     * @param rutaCSV Ruta al archivo CSV en los recursos del proyecto (por ejemplo:
+     *                "/data/enemigos.csv").
+     * @return Lista de enemigos cargados desde el archivo.
+     */
     public static ArrayList<Enemigo> cargarEnemigosDesdeCSV(String rutaCSV) {
         ArrayList<Enemigo> listaEnemigos = new ArrayList<>();
 
@@ -17,11 +33,13 @@ public class GestorEnemigos {
             String linea;
             boolean esPrimera = true;
             while ((linea = br.readLine()) != null) {
+                // Saltar la primera línea si es encabezado
                 if (esPrimera) {
                     esPrimera = false;
                     continue;
                 }
 
+                // Separar los valores por comas
                 String[] partes = linea.split(",");
                 if (partes.length == 9) {
                     TipoEnemigo tipo = TipoEnemigo.valueOf(partes[0].toUpperCase().trim());
@@ -34,8 +52,8 @@ public class GestorEnemigos {
                     int x = Integer.parseInt(partes[7]);
                     int y = Integer.parseInt(partes[8]);
 
+                    // Crear y agregar enemigo a la lista
                     listaEnemigos.add(new Enemigo(tipo, nivel, ataque, defensa, vida, velocidad, percepcion, x, y));
-
                 }
             }
 
@@ -45,5 +63,4 @@ public class GestorEnemigos {
 
         return listaEnemigos;
     }
-
 }

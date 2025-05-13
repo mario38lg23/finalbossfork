@@ -29,53 +29,134 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * Clase que representa la vista del juego, incluyendo la visualización del
+ * escenario, el protagonista, los enemigos,
+ * y la lógica para gestionar el movimiento del protagonista, los enemigos, el
+ * combate y la música del juego.
+ */
 public class VistaJuego implements Observer {
 
+    /**
+     * Etiqueta que muestra la vida del protagonista.
+     */
     @FXML
     private Label vida;
 
+    /**
+     * Vista del reproductor de música para el nivel.
+     */
     @FXML
     private MediaView musicaLevel;
 
+    /**
+     * Reproductor de medios para la música de fondo.
+     */
     @FXML
     private MediaPlayer mediaPlayer;
 
+    /**
+     * Etiqueta que muestra la velocidad del protagonista.
+     */
     @FXML
     private Label velocidad;
 
+    /**
+     * Etiqueta que muestra el valor del escudo del protagonista.
+     */
     @FXML
     private Label escudo;
 
+    /**
+     * Etiqueta que muestra el valor de ataque del protagonista.
+     */
     @FXML
     private Label ataque;
 
+    /**
+     * Etiqueta que muestra el nivel del protagonista.
+     */
     @FXML
     private Label nivel;
 
+    /**
+     * Etiqueta que muestra el nombre del protagonista.
+     */
     @FXML
     private Label nombrePersonaje;
 
+    /**
+     * Etiqueta que muestra los movimientos restantes del protagonista.
+     */
     @FXML
     private Label movimientosFaltantes;
 
+    /**
+     * Contenedor principal del mapa del juego.
+     */
     @FXML
     private AnchorPane contenedorMapa;
 
+    /**
+     * GridPane que contiene los elementos visuales del mapa del juego.
+     */
     private GridPane mainGrid;
+
+    /**
+     * Posición en el eje X del protagonista.
+     */
     private int posX = 1;
+
+    /**
+     * Posición en el eje Y del protagonista.
+     */
     private int posY = 1;
+
+    /**
+     * Vista gráfica que representa al protagonista.
+     */
     private ImageView protagonistaView;
+
+    /**
+     * Objeto que representa el escenario del juego.
+     */
     private Escenario escenario;
+
+    /**
+     * Número de movimientos restantes para el protagonista en cada turno.
+     */
     private int movimientosRestantes = 15;
+
+    /**
+     * Instancia de la clase Random, utilizada para generar valores aleatorios en el
+     * juego.
+     */
     private static Random r = new Random();
+
+    /**
+     * Lista de enemigos presentes en el escenario.
+     */
     private ArrayList<Enemigo> listaEnemigos = new ArrayList<>();
+
+    /**
+     * Lista de vistas gráficas de los enemigos.
+     */
     private ArrayList<ImageView> vistasEnemigos = new ArrayList<>();
+
+    /**
+     * Objeto que representa al protagonista en el juego.
+     */
     private Protagonista protagonista;
 
+    /**
+     * Método que inicializa los elementos del juego, carga el escenario y prepara
+     * la vista.
+     */
     @FXML
     public void initialize() {
         System.out.println(">>> [INICIO initialize()]");
 
+        // Configuración inicial de los movimientos restantes
         movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
         mainGrid = new GridPane();
         mainGrid.setPadding(new Insets(10));
@@ -88,7 +169,16 @@ public class VistaJuego implements Observer {
 
         escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapaprueba.csv");
 
+        /**
+         * Verifica si el escenario ha sido cargado correctamente. Si es así, configura
+         * el protagonista,
+         * asigna una posición aleatoria, actualiza los datos en la interfaz, carga los
+         * enemigos desde un archivo
+         * CSV y muestra el mapa. Si el escenario es {@code null}, muestra un mensaje de
+         * error.
+         */
         if (escenario != null) {
+            // Configuración del protagonista
             protagonista = Proveedor.getInstance().getProtagonista();
             System.out.println(
                     "ANTES de setPosicionAleatoria: " + protagonista.getFila() + "," + protagonista.getColumna());
@@ -99,16 +189,19 @@ public class VistaJuego implements Observer {
             System.out.println(
                     "DESPUÉS de setPosicionAleatoria: " + protagonista.getFila() + "," + protagonista.getColumna());
 
+            // Actualizar la interfaz con los datos del protagonista
             actualizarDatosProtagonista();
+
+            // Cargar enemigos desde archivo CSV
             listaEnemigos = GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
 
             System.out.println("ANTES de mostrarMapa: " + protagonista.getFila() + "," + protagonista.getColumna());
 
+            // Mostrar el mapa en la vista
             mostrarMapa();
         } else {
             System.err.println("No se pudo cargar el escenario.");
         }
-
         contenedorMapa.getChildren().add(mainGrid);
 
         mover();
@@ -116,6 +209,9 @@ public class VistaJuego implements Observer {
         System.out.println(">>> [FIN initialize()]");
     }
 
+    /**
+     * Actualiza la información mostrada del protagonista en la interfaz de usuario.
+     */
     void actualizarDatosProtagonista() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
         nombrePersonaje.setText(protagonista.getNombre());
@@ -126,6 +222,13 @@ public class VistaJuego implements Observer {
         nivel.setText(String.valueOf(protagonista.getNivel()));
     }
 
+    /**
+     * Carga el escenario desde un archivo CSV ubicado en la ruta proporcionada.
+     * 
+     * @param ruta Ruta del archivo CSV que contiene la información del escenario.
+     * @return Un objeto {@link Escenario} con los datos cargados, o null si no se
+     *         pudo cargar.
+     */
     private Escenario cargarEscenarioDesdeRecursos(String ruta) {
         try {
             URL resource = getClass().getResource(ruta);
@@ -142,6 +245,17 @@ public class VistaJuego implements Observer {
         }
     }
 
+    /**
+     * Método encargado de mostrar el mapa en la interfaz gráfica.
+     * Este método genera una representación visual del mapa cargado desde el
+     * escenario.
+     * Las casillas del mapa se representan como bloques de imágenes, donde las
+     * casillas de
+     * tipo 'P' (pared) se muestran como imágenes de pared, y las de tipo 'S'
+     * (suelo) como imágenes de suelo.
+     * Además, se coloca al protagonista en su posición actual y se actualiza la
+     * vista de los enemigos.
+     */
     private void mostrarMapa() {
         char[][] mapa = escenario.getMapa();
         mainGrid.getChildren().clear();
@@ -150,6 +264,7 @@ public class VistaJuego implements Observer {
         int columnas = mapa[0].length;
         int ancho = 973 / columnas;
         int alto = 673 / filas;
+
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 String imagen = "/com/rodasfiti/images/";
@@ -168,13 +283,26 @@ public class VistaJuego implements Observer {
         protagonistaView.setFitWidth(ancho);
         protagonistaView.setFitHeight(alto);
         mainGrid.add(protagonistaView, protagonista.getColumna(), protagonista.getFila());
+
         mostrarEnemigos(ancho, alto);
     }
 
+    /**
+     * Método encargado de generar y colocar enemigos en el mapa.
+     * Los enemigos se cargan desde un archivo CSV, se clasifican por tipo y luego
+     * se seleccionan
+     * aleatoriamente para su aparición en el mapa. Se intenta colocar un enemigo en
+     * una posición
+     * válida, repitiendo el proceso si no es posible.
+     *
+     * @param cantidad El número de enemigos que se desea generar y colocar en el
+     *                 mapa.
+     */
     private void spawnEnemigos(int cantidad) {
         ArrayList<Enemigo> enemigosDesdeCSV = GestorEnemigos.cargarEnemigosDesdeCSV("/com/rodasfiti/data/enemigos.csv");
         ArrayList<Enemigo> enemigosASpawn = new ArrayList<>();
         int enemigosCreados = 0;
+
         ArrayList<Enemigo> duendes = new ArrayList<>();
         ArrayList<Enemigo> orcos = new ArrayList<>();
         ArrayList<Enemigo> esqueletos = new ArrayList<>();
@@ -229,11 +357,34 @@ public class VistaJuego implements Observer {
         mostrarMapa();
     }
 
+    /**
+     * Método que verifica si una posición (x, y) es válida para colocar un enemigo.
+     * La posición es válida si está dentro de los límites del mapa, si es una
+     * casilla de suelo
+     * y si no coincide con la posición actual del protagonista.
+     *
+     * @param x La fila de la posición a verificar.
+     * @param y La columna de la posición a verificar.
+     * @return `true` si la posición es válida, `false` en caso contrario.
+     */
     private boolean esPosicionValida(int x, int y) {
         return x >= 0 && y >= 0 && x < escenario.getMapa().length && y < escenario.getMapa()[0].length
                 && puedeMoverA(x, y) && !(x == posX && y == posY);
     }
 
+    /**
+     * Método encargado de mostrar a los enemigos en el mapa.
+     * Este método recorre la lista de enemigos y, si su posición es válida (es
+     * decir,
+     * una casilla de suelo), los coloca en el mapa con la imagen correspondiente a
+     * su tipo.
+     * Además, asegura que las imágenes se ajusten al tamaño de la celda en el mapa.
+     *
+     * @param ancho El ancho de las celdas del mapa para ajustar el tamaño de las
+     *              imágenes de los enemigos.
+     * @param alto  El alto de las celdas del mapa para ajustar el tamaño de las
+     *              imágenes de los enemigos.
+     */
     private void mostrarEnemigos(int ancho, int alto) {
         char[][] mapa = escenario.getMapa();
         int filas = mapa.length;
@@ -265,7 +416,6 @@ public class VistaJuego implements Observer {
                 }
 
                 try {
-
                     Image enemigoImagen = cargarImagen(imagen);
                     ImageView enemigoView = new ImageView(enemigoImagen);
                     enemigoView.setFitWidth(ancho);
@@ -284,12 +434,32 @@ public class VistaJuego implements Observer {
         }
     }
 
+    /**
+     * Método encargado de configurar el evento de teclado para mover al
+     * protagonista.
+     * Establece el contenedor del mapa como focos de entrada y asigna el evento que
+     * se ejecutará
+     * cuando una tecla sea presionada, lo cual invoca el método
+     * `moverProtagonista`.
+     */
     private void mover() {
         contenedorMapa.setFocusTraversable(true);
         contenedorMapa.requestFocus();
         contenedorMapa.setOnKeyPressed(this::moverProtagonista);
     }
 
+    /**
+     * Método encargado de mover al protagonista en el mapa en función de la tecla
+     * presionada.
+     * Determina la dirección de movimiento (arriba, abajo, izquierda, derecha) y
+     * actualiza la posición
+     * del protagonista. Si el protagonista se mueve a una casilla ocupada por un
+     * enemigo, se inicia un combate.
+     * Además, maneja la lógica de los movimientos restantes y el nivel del
+     * protagonista.
+     *
+     * @param e El evento de teclado que contiene la tecla presionada.
+     */
     private void moverProtagonista(KeyEvent e) {
         System.out.println("Tecla pulsada: " + e.getCode());
 
@@ -332,7 +502,6 @@ public class VistaJuego implements Observer {
         }
 
         if (protagonista.mover(dx, dy, escenario)) {
-
             posX = protagonista.getFila();
             posY = protagonista.getColumna();
 
@@ -344,15 +513,13 @@ public class VistaJuego implements Observer {
             movimientosRestantes--;
             movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
 
-            // Verifica si los movimientos han llegado a 0
             if (movimientosRestantes <= 0) {
                 System.out.println("Movimientos restantes son 0, subiendo de nivel...");
                 subirNivel();
-                movimientosRestantes = 15; // Restablecer los movimientos restantes
+                movimientosRestantes = 15;
                 movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
-                spawnEnemigos(protagonista.getNivel()); // Generar enemigos según el nivel
+                spawnEnemigos(protagonista.getNivel());
 
-                // Actualizar solo los números de los atributos en la interfaz
                 nivel.setText(String.valueOf(protagonista.getNivel()));
                 ataque.setText(String.valueOf(protagonista.getAtaque()));
                 escudo.setText(String.valueOf(protagonista.getDefensa()));
@@ -367,6 +534,14 @@ public class VistaJuego implements Observer {
         System.out.println("Después de mover: (" + protagonista.getFila() + ", " + protagonista.getColumna() + ")");
     }
 
+    /**
+     * Método encargado de mover a los enemigos en el mapa de manera inteligente.
+     * Los enemigos intentan acercarse al protagonista utilizando una lógica de
+     * movimiento
+     * en función de la posición del protagonista y las posiciones ocupadas en el
+     * mapa.
+     * Después de mover a los enemigos, se actualiza la vista del mapa.
+     */
     private void moverEnemigos() {
         Set<String> posicionesOcupadas = new HashSet<>();
         for (Enemigo enemigo : listaEnemigos) {
@@ -375,12 +550,23 @@ public class VistaJuego implements Observer {
 
         posicionesOcupadas.add(protagonista.getFila() + "," + protagonista.getColumna());
         for (Enemigo enemigo : listaEnemigos) {
+            // El movimiento inteligente del enemigo
             String direccion = enemigo.moverInteligente(posX, posY, escenario, posicionesOcupadas);
-
         }
         mostrarEnemigos(50, 50);
     }
 
+    /**
+     * Método encargado de gestionar los combates con los enemigos adyacentes al
+     * protagonista.
+     * Verifica si el protagonista está adyacente a algún enemigo (en las casillas
+     * adyacentes) y,
+     * en ese caso, inicia el combate entre el protagonista y el enemigo.
+     * El combate se resuelve según la velocidad de cada uno, donde el de mayor
+     * velocidad ataca primero.
+     * Si un enemigo es derrotado, se elimina de la lista de enemigos, y si el
+     * protagonista muere, se termina el juego.
+     */
     private void combatirEnemigosAdyacentes() {
         int x = protagonista.getFila();
         int y = protagonista.getColumna();
@@ -398,7 +584,6 @@ public class VistaJuego implements Observer {
         }
 
         for (Enemigo enemigo : enemigosAdyacentes) {
-            // Combate 1 vs 1
             if (protagonista.getVelocidad() >= enemigo.getVelocidad()) {
                 protagonista.atacar(enemigo);
                 System.out.println("Protagonista ataca primero.");
@@ -418,7 +603,7 @@ public class VistaJuego implements Observer {
             if (enemigo.estaMuerto()) {
                 System.out.println("Enemigo derrotado: " + enemigo.getTipo());
                 listaEnemigos.remove(enemigo);
-                break; // Para evitar `ConcurrentModificationException`
+                break;
             }
 
             if (protagonista.getVida() <= 0) {
@@ -432,14 +617,29 @@ public class VistaJuego implements Observer {
             }
         }
 
-        // Actualiza vista
         actualizarDatosProtagonista();
         mostrarEnemigos(50, 50);
     }
 
+    /**
+     * Realiza un combate entre el protagonista y un enemigo si el enemigo se
+     * encuentra
+     * en la misma casilla que el protagonista. El combate se resuelve por turnos,
+     * en
+     * función de la velocidad de cada uno. Si el protagonista o el enemigo mueren
+     * durante
+     * el combate, se toman las acciones correspondientes, como eliminar al enemigo
+     * o terminar el juego.
+     * 
+     * @param nuevaFila    La fila de la casilla a la que el protagonista intentó
+     *                     moverse.
+     * @param nuevaColumna La columna de la casilla a la que el protagonista intentó
+     *                     moverse.
+     */
     private void combatirSiHayEnemigoCerca(int nuevaFila, int nuevaColumna) {
         Enemigo enemigoEnCasilla = null;
 
+        // Busca si hay un enemigo en la casilla donde el protagonista se ha movido
         for (Enemigo enemigo : listaEnemigos) {
             if (enemigo.getFila() == nuevaFila && enemigo.getColumna() == nuevaColumna) {
                 enemigoEnCasilla = enemigo;
@@ -456,7 +656,7 @@ public class VistaJuego implements Observer {
                 enemigoEnCasilla.recibirDanio(p.getAtaque());
                 if (enemigoEnCasilla.estaMuerto()) {
                     listaEnemigos.remove(enemigoEnCasilla);
-                    mostrarMapa(); // para que desaparezca del mapa
+                    mostrarMapa(); // Para que desaparezca del mapa
                     System.out.println("¡Enemigo derrotado!");
                 } else {
                     p.reducirVida(enemigoEnCasilla.getAtaque());
@@ -495,6 +695,16 @@ public class VistaJuego implements Observer {
         }
     }
 
+    /**
+     * Determina si el protagonista puede moverse a la casilla especificada.
+     * Verifica si las coordenadas están dentro de los límites del mapa y si la
+     * casilla
+     * está disponible para ser ocupada (es decir, si es un espacio vacío 'S').
+     * 
+     * @param x La fila de la casilla a verificar.
+     * @param y La columna de la casilla a verificar.
+     * @return true si la casilla es válida para moverse, false en caso contrario.
+     */
     private boolean puedeMoverA(int x, int y) {
         char[][] mapa = escenario.getMapa();
         if (x < 0 || x >= mapa.length || y < 0 || y >= mapa[0].length) {
@@ -503,6 +713,15 @@ public class VistaJuego implements Observer {
         return mapa[x][y] == 'S';
     }
 
+    /**
+     * Carga una imagen desde la ruta especificada y la devuelve como un objeto
+     * {@link Image}.
+     * Si ocurre un error al cargar la imagen, se imprime un mensaje de error y se
+     * devuelve null.
+     * 
+     * @param ruta La ruta de la imagen a cargar.
+     * @return La imagen cargada, o null si no se pudo cargar.
+     */
     private Image cargarImagen(String ruta) {
         try {
             return new Image(Objects.requireNonNull(getClass().getResourceAsStream(ruta)));
@@ -513,6 +732,11 @@ public class VistaJuego implements Observer {
         }
     }
 
+    /**
+     * Carga la música del nivel actual y la reproduce. Si la música no se
+     * encuentra, se imprime un mensaje de error.
+     * La música se reproduce con un volumen del 60%.
+     */
     private void cargarMusicaLevel() {
         try {
             // Ruta fija (recomendado si sabes el nombre del archivo)
@@ -535,6 +759,11 @@ public class VistaJuego implements Observer {
         }
     }
 
+    /**
+     * Carga la música del juego y la reproduce. Si la música no se encuentra, se
+     * imprime un mensaje de error.
+     * La música se reproduce con un volumen del 60%.
+     */
     private void cargarMusica() {
         try {
             // Ruta fija (recomendado si sabes el nombre del archivo)
@@ -557,6 +786,13 @@ public class VistaJuego implements Observer {
         }
     }
 
+    /**
+     * Aumenta el nivel del protagonista y actualiza sus atributos. Incrementa el
+     * nivel, la vida,
+     * el ataque, la defensa y la velocidad del protagonista. Luego, se actualiza la
+     * interfaz de usuario
+     * con los nuevos valores y se carga la música correspondiente al nivel.
+     */
     private void subirNivel() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
         protagonista.setNivel(protagonista.getNivel() + 1);
@@ -568,6 +804,11 @@ public class VistaJuego implements Observer {
         cargarMusicaLevel();
     }
 
+    /**
+     * Reinicia la música del juego. Detiene la música actual con un efecto de
+     * fade-out y luego
+     * recarga la música inicial del juego.
+     */
     public void reiniciarMusica() {
         if (mediaPlayer != null) {
             // Transición de volumen (fade out)
@@ -588,9 +829,13 @@ public class VistaJuego implements Observer {
         cargarMusica();
     }
 
+    /**
+     * Método de callback que se llama cuando ocurre un cambio en el modelo de
+     * datos.
+     * Actualiza los datos del protagonista en la interfaz de usuario.
+     */
     @Override
     public void onChange() {
         actualizarDatosProtagonista();
-
     }
 }
