@@ -75,7 +75,7 @@ public class VistaJuego implements Observer {
     @FXML
     public void initialize() {
         System.out.println(">>> [INICIO initialize()]");
-        
+
         movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
         mainGrid = new GridPane();
         mainGrid.setPadding(new Insets(10));
@@ -344,18 +344,10 @@ public class VistaJuego implements Observer {
 
             // Verifica si los movimientos han llegado a 0
             if (movimientosRestantes <= 0) {
-                System.out.println("Movimientos restantes son 0, subiendo de nivel...");
                 subirNivel();
-                movimientosRestantes = 15; // Restablecer los movimientos restantes
+                spawnEnemigos(protagonista.getNivel());
+                movimientosRestantes = 15;
                 movimientosFaltantes.setText(String.valueOf(movimientosRestantes));
-                spawnEnemigos(protagonista.getNivel()); // Generar enemigos según el nivel
-
-                // Actualizar solo los números de los atributos en la interfaz
-                nivel.setText(String.valueOf(protagonista.getNivel()));
-                ataque.setText(String.valueOf(protagonista.getAtaque()));
-                escudo.setText(String.valueOf(protagonista.getDefensa()));
-                velocidad.setText(String.valueOf(protagonista.getVelocidad()));
-                vida.setText(String.valueOf(protagonista.getVida()));
             }
 
             moverEnemigos();
@@ -510,6 +502,7 @@ public class VistaJuego implements Observer {
             return null;
         }
     }
+
     private void cargarMusicaLevel() {
         try {
             // Ruta fija (recomendado si sabes el nombre del archivo)
@@ -531,6 +524,7 @@ public class VistaJuego implements Observer {
             System.err.println("Error al cargar audio: " + e.getMessage());
         }
     }
+
     private void cargarMusica() {
         try {
             // Ruta fija (recomendado si sabes el nombre del archivo)
@@ -552,6 +546,7 @@ public class VistaJuego implements Observer {
             System.err.println("Error al cargar audio: " + e.getMessage());
         }
     }
+
     private void subirNivel() {
         Protagonista protagonista = Proveedor.getInstance().getProtagonista();
         protagonista.setNivel(protagonista.getNivel() + 1);
@@ -560,24 +555,25 @@ public class VistaJuego implements Observer {
         protagonista.setDefensa(protagonista.getDefensa() + 1);
         protagonista.setVelocidad(protagonista.getVelocidad());
         actualizarDatosProtagonista();
-        cargarMusicaLevel();
+        cargarMusica();
     }
+
     public void reiniciarMusica() {
         if (mediaPlayer != null) {
             // Transición de volumen (fade out)
-                new Thread(() -> {
-                    try {
-                        for (double vol = mediaPlayer.getVolume(); vol > 0; vol -= 0.05) {
-                            final double v = vol;
-                            javafx.application.Platform.runLater(() -> mediaPlayer.setVolume(v));
-                            Thread.sleep(100); // esperar 100 ms entre cada paso
-                        }
-                        javafx.application.Platform.runLater(() -> mediaPlayer.stop());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+            new Thread(() -> {
+                try {
+                    for (double vol = mediaPlayer.getVolume(); vol > 0; vol -= 0.05) {
+                        final double v = vol;
+                        javafx.application.Platform.runLater(() -> mediaPlayer.setVolume(v));
+                        Thread.sleep(100); // esperar 100 ms entre cada paso
                     }
-                }).start();
+                    javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    javafx.application.Platform.runLater(() -> mediaPlayer.stop());
+                }
+            }).start();
         }
         cargarMusica();
     }
