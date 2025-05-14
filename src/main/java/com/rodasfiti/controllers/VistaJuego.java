@@ -22,9 +22,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
@@ -53,7 +51,12 @@ public class VistaJuego implements Observer {
      * Reproductor de medios para la música de fondo.
      */
     @FXML
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer1;
+    /**
+    * Reproductor de medios para la música de fondo.
+    */
+    @FXML
+    private MediaPlayer mediaPlayer2;
 
     /**
      * Etiqueta que muestra la velocidad del protagonista.
@@ -126,12 +129,6 @@ public class VistaJuego implements Observer {
      * Número de movimientos restantes para el protagonista en cada turno.
      */
     private int movimientosRestantes = 15;
-
-    /**
-     * Instancia de la clase Random, utilizada para generar valores aleatorios en el
-     * juego.
-     */
-    private static Random r = new Random();
 
     /**
      * Lista de enemigos presentes en el escenario.
@@ -549,8 +546,8 @@ public class VistaJuego implements Observer {
 
         posicionesOcupadas.add(protagonista.getFila() + "," + protagonista.getColumna());
         for (Enemigo enemigo : listaEnemigos) {
-            // El movimiento inteligente del enemigo
             String direccion = enemigo.moverInteligente(posX, posY, escenario, posicionesOcupadas);
+            System.out.println("El enemigo se movió hacia: " + direccion);
         }
         mostrarEnemigos(50, 50);
     }
@@ -607,7 +604,7 @@ public class VistaJuego implements Observer {
             } else {
                 p.reducirVida(enemigoEnCasilla.getAtaque());
                 if (p.estaMuerto()) {
-                    this.mediaPlayer.stop();
+                    this.mediaPlayer1.stop();
                     System.out.println("¡Has muerto!");
                     SceneManager.getInstance().loadScene(SceneID.FINAL);
                     finalJuego controller = (finalJuego) SceneManager.getInstance().getController(SceneID.FINAL);
@@ -681,11 +678,11 @@ public class VistaJuego implements Observer {
                 System.err.println("Archivo de audio no encontrado: " + rutaAudio);
             } else {
                 Media media = new Media(url.toExternalForm());
-                this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
-                musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
-                this.mediaPlayer.setAutoPlay(true);
-                this.mediaPlayer.setVolume(1);
-                this.mediaPlayer.play();
+                this.mediaPlayer2 = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
+                musicaLevel.setMediaPlayer(this.mediaPlayer2); // Usamos el mediaPlayer1 de la clase
+                this.mediaPlayer2.setAutoPlay(true);
+                this.mediaPlayer2.setVolume(1);
+                this.mediaPlayer2.play();
             }
         } catch (Exception e) {
             System.err.println("Error al cargar audio: " + e.getMessage());
@@ -708,11 +705,11 @@ public class VistaJuego implements Observer {
                 System.err.println("Archivo de audio no encontrado: " + rutaAudio);
             } else {
                 Media media = new Media(url.toExternalForm());
-                this.mediaPlayer = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
-                musicaLevel.setMediaPlayer(this.mediaPlayer); // Usamos el mediaPlayer de la clase
-                this.mediaPlayer.setAutoPlay(true);
-                this.mediaPlayer.setVolume(0.2);
-                this.mediaPlayer.play();
+                this.mediaPlayer1 = new MediaPlayer(media); // Asignamos la instancia de MediaPlayer al campo
+                musicaLevel.setMediaPlayer(this.mediaPlayer1); // Usamos el mediaPlayer1 de la clase
+                this.mediaPlayer1.setAutoPlay(true);
+                this.mediaPlayer1.setVolume(0.6);
+                this.mediaPlayer1.play();
             }
         } catch (Exception e) {
             System.err.println("Error al cargar audio: " + e.getMessage());
@@ -742,22 +739,9 @@ public class VistaJuego implements Observer {
      * fade-out y luego
      * recarga la música inicial del juego.
      */
-    public void reiniciarMusica() {
-        if (mediaPlayer != null) {
-            // Transición de volumen (fade out)
-            new Thread(() -> {
-                try {
-                    for (double vol = mediaPlayer.getVolume(); vol > 0; vol -= 0.05) {
-                        final double v = vol;
-                        javafx.application.Platform.runLater(() -> mediaPlayer.setVolume(v));
-                        Thread.sleep(100); // esperar 100 ms entre cada paso
-                    }
-                    javafx.application.Platform.runLater(() -> mediaPlayer.stop());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    javafx.application.Platform.runLater(() -> mediaPlayer.stop());
-                }
-            }).start();
+    public void reiniciarMusicaJuego() {
+        if (mediaPlayer1 != null) {
+            mediaPlayer1.stop(); // Detiene la música actual.
         }
         cargarMusica();
     }

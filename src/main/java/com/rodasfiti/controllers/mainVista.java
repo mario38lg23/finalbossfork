@@ -176,7 +176,7 @@ public class mainVista {
             SceneManager.getInstance().loadScene(SceneID.JUEGO);
             VistaJuego controlador = (VistaJuego) SceneManager.getInstance().getController(SceneID.JUEGO);
             if (controlador != null) {
-                controlador.reiniciarMusica();
+                controlador.reiniciarMusicaJuego();
                 controlador.actualizarDatosProtagonista();
             }
         });
