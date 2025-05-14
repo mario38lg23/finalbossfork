@@ -117,7 +117,7 @@ public class Protagonista extends Personaje {
             return false;
         }
 
-        if (mapa[nuevaFila][nuevaColumna] == 'S') {
+        if (mapa[nuevaFila][nuevaColumna] == 'S'||mapa[nuevaFila][nuevaColumna]=='T') {
             this.fila = nuevaFila;
             this.columna = nuevaColumna;
             return true;
@@ -193,7 +193,6 @@ public class Protagonista extends Personaje {
         if (this.vida < 0) {
             this.vida = 0;
         }
-        System.out.println("Protagonista pierde " + cantidad + " de vida. Vida actual: " + this.vida);
     }
 
     /**
