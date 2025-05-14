@@ -265,20 +265,23 @@ public class VistaJuego implements Observer {
         int ancho = 973 / columnas;
         int alto = 673 / filas;
 
+        Image imagenPared = cargarImagen("/com/rodasfiti/images/pared2.png");
+        Image imagenSuelo = cargarImagen("/com/rodasfiti/images/suelo2.png");
+
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                String imagen = "/com/rodasfiti/images/";
+                ImageView bloque;
                 if (mapa[i][j] == 'P') {
-                    imagen += "pared.png";
+                    bloque = new ImageView(imagenPared);
                 } else {
-                    imagen += "suelo.png";
+                    bloque = new ImageView(imagenSuelo);
                 }
-                ImageView bloque = new ImageView(cargarImagen(imagen));
                 bloque.setFitWidth(ancho);
                 bloque.setFitHeight(alto);
                 mainGrid.add(bloque, j, i);
             }
         }
+
         protagonistaView = new ImageView(cargarImagen("/com/rodasfiti/images/caballero_abajo.png"));
         protagonistaView.setFitWidth(ancho);
         protagonistaView.setFitHeight(alto);
