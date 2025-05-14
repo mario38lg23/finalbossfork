@@ -167,7 +167,7 @@ public class VistaJuego implements Observer {
         AnchorPane.setRightAnchor(mainGrid, 0.0);
         AnchorPane.setBottomAnchor(mainGrid, 0.0);
 
-        escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapaprueba.csv");
+        escenario = cargarEscenarioDesdeRecursos("/com/rodasfiti/data/mapaprueba2.csv");
 
         /**
          * Verifica si el escenario ha sido cargado correctamente. Si es así, configura
